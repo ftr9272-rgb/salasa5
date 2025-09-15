@@ -1,0 +1,13 @@
+{
+  "name": "headless-check",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node run.js",
+    "axe": "node axe_check.js"
+  },
+  "dependencies": {
+    "axe-core": "^4.10.3",
+    "playwright": "^1.40.0"
+  }
+}

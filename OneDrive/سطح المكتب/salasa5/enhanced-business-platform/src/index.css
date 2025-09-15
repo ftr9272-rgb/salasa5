@@ -1,0 +1,16 @@
+/* Global index styles */
+@layer base {
+	/* Add Cairo font-family for components that opt-in */
+	.font-cairo {
+		font-family: 'Cairo', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, "Noto Naskh Arabic", sans-serif;
+	}
+}
+
+/* Optional: set a sensible base font-size for RTL Arabic layout */
+:root {
+	--base-font-size: 16px;
+}
+html, body, #root {
+	height: 100%;
+}
+
