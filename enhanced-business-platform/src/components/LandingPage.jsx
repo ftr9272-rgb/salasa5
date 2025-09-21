@@ -15,10 +15,11 @@ import {
   Globe,
   CheckCircle,
   PlayCircle,
-  ChevronDown
+  ChevronDown,
+  Sparkles
 } from 'lucide-react';
 
-const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
+const LandingPage = ({ onGetStarted, onGoToMarketplace, onGoToImageDescription }) => {
   const [activeFeature, setActiveFeature] = useState(0);
 
   const stats = [
@@ -115,7 +116,7 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
               المنصة الذكية التي تربط الموردين والتجار وشركات الشحن في مكان واحد لتحقيق نمو غير مسبوق
             </motion.p>
             
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -138,6 +139,16 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
               >
                 <span>اذهب إلى السوق الذكي</span>
                 <Store className="h-4 w-4" />
+              </motion.button>
+
+              <motion.button
+                onClick={onGoToImageDescription}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full font-semibold text-md shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Sparkles className="h-4 w-4" />
+                <span>وصف الصور بالذكاء الاصطناعي</span>
               </motion.button>
 
               <motion.button
