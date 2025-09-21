@@ -15,8 +15,10 @@ import {
   Globe,
   CheckCircle,
   PlayCircle,
-  ChevronDown
+  ChevronDown,
+  Eye
 } from 'lucide-react';
+import ImageDescriber from './ui/ImageDescriber';
 
 const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -294,6 +296,99 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Image Description Demo Section */}
+      <section className="py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <span className="text-purple-600">وصف الصور الذكي</span> للمنصة
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              تقنية متقدمة لوصف الصور تلقائياً وتحسين إمكانية الوصول للمحتوى البصري
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Demo Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="bg-white p-6 rounded-2xl shadow-xl">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <Eye className="h-5 w-5 text-purple-600" />
+                  عرض توضيحي تفاعلي
+                </h3>
+                <ImageDescriber
+                  src="https://images.unsplash.com/photo-1566577134770-3d85bb3a9cc4?w=400&h=300&fit=crop"
+                  alt="مستودع حديث مليء بالمنتجات والبضائع"
+                  context="warehouse-products"
+                  userType="supplier"
+                  currentSection="products"
+                  lang="ar"
+                  showControls={true}
+                  className="rounded-lg overflow-hidden"
+                />
+              </div>
+            </motion.div>
+
+            {/* Features List */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Shield className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-900 mb-2">وصف تلقائي ذكي</h4>
+                    <p className="text-gray-600">تحليل تلقائي للصور وإنتاج أوصاف دقيقة باللغة العربية</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Users className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-900 mb-2">دعم إمكانية الوصول</h4>
+                    <p className="text-gray-600">تحسين تجربة المستخدمين ذوي الاحتياجات الخاصة مع قراءة صوتية</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Zap className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-900 mb-2">تكامل سلس</h4>
+                    <p className="text-gray-600">يعمل تلقائياً مع جميع الصور في المنصة دون تدخل إضافي</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
