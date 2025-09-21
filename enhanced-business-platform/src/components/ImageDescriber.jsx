@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { 
   Upload, 
@@ -22,7 +23,7 @@ const ImageDescriber = ({ onBack }) => {
   const [error, setError] = useState('');
 
   // Mock AI image description service
-  const analyzeImage = async (imageFile) => {
+  const analyzeImage = async () => {
     setIsAnalyzing(true);
     setError('');
     
@@ -41,7 +42,7 @@ const ImageDescriber = ({ onBack }) => {
       
       const randomDescription = mockDescriptions[Math.floor(Math.random() * mockDescriptions.length)];
       setDescription(randomDescription);
-    } catch (err) {
+    } catch {
       setError('حدث خطأ أثناء تحليل الصورة. يرجى المحاولة مرة أخرى.');
     } finally {
       setIsAnalyzing(false);
@@ -78,7 +79,7 @@ const ImageDescriber = ({ onBack }) => {
 
   const handleAnalyze = () => {
     if (selectedImage) {
-      analyzeImage(selectedImage);
+      analyzeImage();
     }
   };
 
