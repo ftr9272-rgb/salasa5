@@ -20,8 +20,40 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # العلاقات - فقط مع النماذج الموجودة في هذا الملف
     supplier = db.relationship('Supplier', backref='user', uselist=False, cascade='all, delete-orphan')
-    merchant = db.relationship('Merchant', backref='user', uselist=False, cascade='all, delete-orphan')
+    
+    def get_merchant(self):
+        """العثور على بيانات التاجر المرتبط بهذا المستخدم"""
+        if self.user_type != 'merchant':
+            return None
+        try:
+            # استيراد المحلي لتجنب الاستيراد الدائري
+            from src.models.merchant import Merchant
+            return Merchant.query.filter_by(user_id=self.id).first()
+        except Exception:
+            return None
+    
+    def get_shipping_company(self):
+        """العثور على بيانات شركة الشحن المرتبطة بهذا المستخدم"""
+        if self.user_type != 'shipping':
+            return None
+        try:
+            # استيراد المحلي لتجنب الاستيراد الدائري
+            from src.models.shipping import ShippingCompany
+            return ShippingCompany.query.filter_by(user_id=self.id).first()
+        except Exception:
+            return None
+    
+    @property
+    def merchant(self):
+        """خاصية للوصول إلى بيانات التاجر"""
+        return self.get_merchant()
+    
+    @property
+    def shipping_company(self):
+        """خاصية للوصول إلى بيانات شركة الشحن"""
+        return self.get_shipping_company()
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

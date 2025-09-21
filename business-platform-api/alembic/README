@@ -1,0 +1,11 @@
+Alembic environment for business-platform-api
+
+To create a migration use the alembic CLI. Example:
+
+    py -3 -m alembic revision --autogenerate -m "initial"
+
+To apply migrations:
+
+    py -3 -m alembic upgrade head
+
+The env.py reads the SQLALCHEMY_DATABASE_URI from `src.main.app` so Alembic runs against the same DB as the Flask app.

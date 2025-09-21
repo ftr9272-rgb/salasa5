@@ -363,10 +363,10 @@ def create_merchant_sample_data():
     
     # إنشاء إعدادات تجريبية للتاجر
     merchant_settings_data = [
-        {'setting_key': 'auto_approve_quotes', 'setting_value': 'false', 'setting_type': 'boolean'},
-        {'setting_key': 'preferred_delivery_time', 'setting_value': 'morning', 'setting_type': 'string'},
-        {'setting_key': 'max_order_amount', 'setting_value': '10000', 'setting_type': 'number'},
-        {'setting_key': 'notification_preferences', 'setting_value': '{"email": true, "sms": false, "push": true}', 'setting_type': 'json'}
+        {'key': 'auto_approve_quotes', 'value': 'false'},
+        {'key': 'preferred_delivery_time', 'value': 'morning'},
+        {'key': 'max_order_amount', 'value': '10000'},
+        {'key': 'notification_preferences', 'value': '{"email": true, "sms": false, "push": true}'}
     ]
     
     for setting_data in merchant_settings_data:
@@ -381,25 +381,21 @@ def create_merchant_sample_data():
         {
             'title': 'عرض سعر جديد',
             'message': f'تم استلام عرض سعر جديد من {supplier.company_name}',
-            'type': 'info',
             'is_read': False
         },
         {
             'title': 'تم تأكيد الطلب',
             'message': 'تم تأكيد طلب الشراء PO-20250906-001',
-            'type': 'success',
             'is_read': True
         },
         {
             'title': 'عرض شحن جديد',
             'message': f'تم استلام عرض شحن من {shipping_company.company_name}',
-            'type': 'info',
             'is_read': False
         },
         {
             'title': 'تذكير دفع',
             'message': 'يوجد فاتورة مستحقة الدفع بقيمة 1575 ريال',
-            'type': 'warning',
             'is_read': False
         }
     ]

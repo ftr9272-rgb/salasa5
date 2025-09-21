@@ -29,7 +29,15 @@ const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
       if (data && data.token) {
         try { setToken(data.token); } catch (setErr) { console.debug('Failed to set token', setErr); }
       }
-      onLogin(userType, data.user || null);
+      // Use the actual user type from the server response instead of UI selection
+      const actualUserType = data.user?.user_type || userType;
+      
+      // Validate that the user type matches what was selected (optional security check)
+      if (data.user?.user_type && userType !== data.user.user_type) {
+        console.warn(`تحذير: نوع المستخدم المحدد (${userType}) لا يطابق نوع الحساب الفعلي (${data.user.user_type})`);
+      }
+      
+      onLogin(actualUserType, data.user || null);
     } catch (err) {
       // apiFetch throws on non-2xx with message like "<status> <body>"; try to extract useful text
       let msg = err && err.message ? err.message : null;

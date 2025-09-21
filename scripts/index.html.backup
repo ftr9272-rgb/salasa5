@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>منصة أعمالي - المنصة الذكية للأعمال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Ensure a global `motion` is available for any built modules that expect it -->
+    <script type="module">
+      // Import the vendor bundle (already present in the build) and expose its motion export
+      // to `window.motion` so legacy modules that reference a global `motion` don't crash.
+      import * as __vendor from '/assets/vendor-DwOelw1b.js';
+      try {
+        window.motion = __vendor.m || __vendor.motion || __vendor.default || window.motion;
+      } catch (e) {
+        console.warn('Failed to init global motion shim', e);
+      }
+    </script>
+  <script type="module" crossorigin src="/assets/index-C4SP-OeM.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/vendor-DwOelw1b.js">
+  <link rel="modulepreload" crossorigin href="/assets/merchant-f4S5zkbu.js">
+  <link rel="modulepreload" crossorigin href="/assets/supplier-BFueokcD.js">
+  <link rel="modulepreload" crossorigin href="/assets/shipping-zZEhyfxS.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-C7I5MVlm.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

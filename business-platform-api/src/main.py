@@ -48,6 +48,19 @@ try:
     db.init_app(app)
     with app.app_context():
         db.create_all()
+        
+        # إضافة البيانات التجريبية إذا لم تكن موجودة
+        from src.models.supplier import User
+        if User.query.count() == 0:
+            print("إضافة البيانات التجريبية...")
+            try:
+                from src.seed_data import create_sample_data
+                from src.seed_merchant_data import create_merchant_sample_data
+                create_sample_data()
+                create_merchant_sample_data() 
+                print("تم إضافة البيانات التجريبية بنجاح")
+            except Exception as e:
+                print(f"خطأ في إضافة البيانات التجريبية: {e}")
 
 
     @app.route('/', defaults={'path': ''})
