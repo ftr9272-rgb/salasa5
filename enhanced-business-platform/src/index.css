@@ -1,0 +1,37 @@
+/* Global index styles */
+@layer base {
+	/* Add Cairo font-family for components that opt-in */
+	.font-cairo {
+		font-family: 'Cairo', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, "Noto Naskh Arabic", sans-serif;
+	}
+}
+
+/* Optional: set a sensible base font-size for RTL Arabic layout */
+:root {
+	--base-font-size: 16px;
+	/* fallback background token used by supplier-card */
+	--bg: #ffffff;
+}
+html, body, #root {
+	height: 100%;
+}
+/* Supplier card readability helpers */
+.supplier-card {
+	background-color: var(--bg);
+	color: #0f172a; /* slate-900 */
+}
+.supplier-card h3,
+.supplier-card p,
+.supplier-card span {
+	color: #0f172a;
+	-webkit-text-fill-color: #0f172a;
+}
+.supplier-card .clamp-2 {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
