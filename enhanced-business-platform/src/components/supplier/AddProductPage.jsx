@@ -332,7 +332,7 @@ const AddProductPage = () => {
                         <div key={index} className="relative">
                           <img
                             src={preview}
-                            alt={`معاينة ${index + 1}`}
+                            alt={`معاينة صورة المنتج رقم ${index + 1}`}
                             className="w-full h-32 object-cover rounded-lg"
                           />
                           <button

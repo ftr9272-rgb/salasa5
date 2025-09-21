@@ -64,9 +64,9 @@ const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
   };
 
   const userTypes = [
-    { value: 'merchant', label: 'تاجر', icon: <Store className="h-5 w-5" />, color: 'bg-blue-500' },
-    { value: 'supplier', label: 'مورد', icon: <Factory className="h-5 w-5" />, color: 'bg-green-500' },
-    { value: 'shipping', label: 'شركة شحن', icon: <Truck className="h-5 w-5" />, color: 'bg-purple-500' }
+    { value: 'merchant', label: 'تاجر', icon: <Store className="h-5 w-5" aria-label="أيقونة التاجر" />, color: 'bg-blue-500' },
+    { value: 'supplier', label: 'مورد', icon: <Factory className="h-5 w-5" aria-label="أيقونة المورد" />, color: 'bg-green-500' },
+    { value: 'shipping', label: 'شركة شحن', icon: <Truck className="h-5 w-5" aria-label="أيقونة شركة الشحن" />, color: 'bg-purple-500' }
   ];
 
   return (
@@ -85,7 +85,7 @@ const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4"
             >
-              <User className="h-8 w-8 text-white" />
+              <User className="h-8 w-8 text-white" aria-label="أيقونة المستخدم" />
             </motion.div>
             <CardTitle className="text-2xl font-bold text-gray-900">تسجيل الدخول</CardTitle>
             <p className="text-gray-600">اختر نوع حسابك وادخل بياناتك</p>
@@ -122,7 +122,7 @@ const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
               <div className="space-y-2">
                 <Label htmlFor="username">اسم المستخدم</Label>
                 <div className="relative">
-                  <User className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <User className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" aria-label="أيقونة حقل اسم المستخدم" />
                   <Input
                     id="username"
                     type="text"
@@ -138,7 +138,7 @@ const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
               <div className="space-y-2">
                 <Label htmlFor="password">كلمة المرور</Label>
                 <div className="relative">
-                  <Lock className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Lock className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" aria-label="أيقونة حقل كلمة المرور" />
                   <Input
                     id="password"
                     type="password"

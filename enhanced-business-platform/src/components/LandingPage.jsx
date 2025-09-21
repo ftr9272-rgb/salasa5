@@ -22,30 +22,30 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
   const [activeFeature, setActiveFeature] = useState(0);
 
   const stats = [
-    { value: "500+", label: "مورد معتمد", icon: <Factory className="h-6 w-6" /> },
-    { value: "1000+", label: "تاجر نشط", icon: <Store className="h-6 w-6" /> },
-    { value: "50+", label: "شركة شحن", icon: <Truck className="h-6 w-6" /> },
-    { value: "10K+", label: "معاملة يومية", icon: <TrendingUp className="h-6 w-6" /> }
+    { value: "500+", label: "مورد معتمد", icon: <Factory className="h-6 w-6" aria-label="أيقونة المصنع" /> },
+    { value: "1000+", label: "تاجر نشط", icon: <Store className="h-6 w-6" aria-label="أيقونة المتجر" /> },
+    { value: "50+", label: "شركة شحن", icon: <Truck className="h-6 w-6" aria-label="أيقونة الشاحنة" /> },
+    { value: "10K+", label: "معاملة يومية", icon: <TrendingUp className="h-6 w-6" aria-label="أيقونة النمو" /> }
   ];
 
   const features = [
     {
-      icon: <Shield className="h-8 w-8" />,
+      icon: <Shield className="h-8 w-8" aria-label="أيقونة الحماية والأمان" />,
       title: "أمان متقدم",
       description: "حماية شاملة لجميع المعاملات والبيانات مع تشفير من الدرجة المصرفية"
     },
     {
-      icon: <Zap className="h-8 w-8" />,
+      icon: <Zap className="h-8 w-8" aria-label="أيقونة السرعة والأداء" />,
       title: "سرعة فائقة",
       description: "معالجة فورية للطلبات والمدفوعات مع استجابة في الوقت الفعلي"
     },
     {
-      icon: <Globe className="h-8 w-8" />,
+      icon: <Globe className="h-8 w-8" aria-label="أيقونة التغطية العالمية" />,
       title: "تغطية شاملة",
       description: "خدمات متاحة في جميع أنحاء المنطقة مع شبكة واسعة من الشركاء"
     },
     {
-      icon: <Users className="h-8 w-8" />,
+      icon: <Users className="h-8 w-8" aria-label="أيقونة فريق الدعم" />,
       title: "دعم متميز",
       description: "فريق دعم متخصص متاح 24/7 لمساعدتك في جميع احتياجاتك"
     }
@@ -53,7 +53,7 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
 
   const userTypes = [
     {
-      icon: <Store className="h-12 w-12" />,
+      icon: <Store className="h-12 w-12" aria-label="أيقونة التاجر - متجر" />,
       title: "أنا تاجر",
       description: "تواصل مع الموردين، وقم بإدارة طلباتك ومخزونك بسهولة",
       benefits: ["البحث عن أفضل الموردين", "مقارنة الأسعار", "إدارة الطلبات", "تتبع الشحنات"],
@@ -61,7 +61,7 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
       bgColor: "bg-blue-50"
     },
     {
-      icon: <Factory className="h-12 w-12" />,
+      icon: <Factory className="h-12 w-12" aria-label="أيقونة المورد - مصنع" />,
       title: "أنا مورد",
       description: "إدارة منتجاتك، عروض الأسعار، والطلبات الواردة بكفاءة عالية",
       benefits: ["عرض منتجاتك", "إدارة المخزون", "تلقي الطلبات", "تحليل المبيعات"],
@@ -69,7 +69,7 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
       bgColor: "bg-green-50"
     },
     {
-      icon: <Truck className="h-12 w-12" />,
+      icon: <Truck className="h-12 w-12" aria-label="أيقونة شركة الشحن - شاحنة" />,
       title: "أنا شركة شحن",
       description: "تتبع الشحنات، إدارة السائقين، وقدم عروض أسعار تنافسية",
       benefits: ["إدارة الأسطول", "تتبع الشحنات", "عروض الأسعار", "تحسين الطرق"],
