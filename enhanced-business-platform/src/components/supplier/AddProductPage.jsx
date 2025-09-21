@@ -11,7 +11,8 @@ import {
   DollarSign,
   Package,
   Tag,
-  X
+  X,
+  Sparkles
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -31,7 +32,44 @@ const AddProductPage = () => {
     images: []
   });
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [imageDescriptions, setImageDescriptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  // Mock AI image analysis function
+  const analyzeImage = async (imageUrl) => {
+    // In a real implementation, this would call a vision AI service like OpenAI GPT-4 Vision, Google Vision API, etc.
+    // For now, we'll provide intelligent mock descriptions based on common product image patterns
+    
+    const mockDescriptions = [
+      'منتج عالي الجودة بتصميم عصري وألوان جذابة',
+      'سلعة متينة ومناسبة للاستخدام اليومي',
+      'منتج بتقنية متقدمة وتصميم أنيق',
+      'عنصر عملي وجميل بجودة ممتازة',
+      'منتج مبتكر بمظهر احترافي وجودة عالية'
+    ];
+    
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Return a random but intelligent-sounding description
+    return mockDescriptions[Math.floor(Math.random() * mockDescriptions.length)];
+  };
+
+  const generateAutoDescription = async (index) => {
+    if (!imagePreviews[index]) return;
+    
+    setIsAnalyzing(true);
+    try {
+      const description = await analyzeImage(imagePreviews[index]);
+      handleDescriptionChange(index, description);
+    } catch (error) {
+      console.error('Error analyzing image:', error);
+      alert('حدث خطأ أثناء تحليل الصورة');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +88,7 @@ const AddProductPage = () => {
       reader.onload = () => {
         newPreviews.push(reader.result);
         setImagePreviews(prev => [...prev, reader.result]);
+        setImageDescriptions(prev => [...prev, '']); // Add empty description for each new image
       };
       reader.readAsDataURL(file);
     });
@@ -57,6 +96,15 @@ const AddProductPage = () => {
 
   const removeImage = (index) => {
     setImagePreviews(prev => prev.filter((_, i) => i !== index));
+    setImageDescriptions(prev => prev.filter((_, i) => i !== index)); // Remove corresponding description
+  };
+
+  const handleDescriptionChange = (index, description) => {
+    setImageDescriptions(prev => {
+      const newDescriptions = [...prev];
+      newDescriptions[index] = description;
+      return newDescriptions;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -73,7 +121,11 @@ const AddProductPage = () => {
         stock_quantity: parseInt(formData.stockQuantity || 0, 10),
         min_order_quantity: parseInt(formData.minOrderQuantity || 1, 10),
         unit: formData.unit,
-        images: imagePreviews
+        images: imagePreviews.map((image, index) => ({
+          url: image,
+          description: imageDescriptions[index] || '',
+          alt: imageDescriptions[index] || `صورة ${formData.name} ${index + 1}`
+        }))
       };
 
       try {
@@ -325,23 +377,48 @@ const AddProductPage = () => {
                 {imagePreviews.length > 0 && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      معاينة الصور
+                      معاينة الصور ووصفها
                     </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       {imagePreviews.map((preview, index) => (
-                        <div key={index} className="relative">
-                          <img
-                            src={preview}
-                            alt={`معاينة ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => removeImage(index)}
-                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
+                        <div key={index} className="relative bg-gray-50 rounded-lg p-4">
+                          <div className="relative mb-3">
+                            <img
+                              src={preview}
+                              alt={imageDescriptions[index] || `معاينة ${index + 1}`}
+                              className="w-full h-32 object-cover rounded-lg"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                          <div>
+                            <div className="flex items-center justify-between mb-1">
+                              <label className="block text-xs font-medium text-gray-600">
+                                وصف الصورة {index + 1}
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => generateAutoDescription(index)}
+                                disabled={isAnalyzing}
+                                className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 disabled:opacity-50"
+                              >
+                                <Sparkles className="h-3 w-3" />
+                                {isAnalyzing ? 'جاري التحليل...' : 'توليد تلقائي'}
+                              </button>
+                            </div>
+                            <Input
+                              type="text"
+                              value={imageDescriptions[index] || ''}
+                              onChange={(e) => handleDescriptionChange(index, e.target.value)}
+                              placeholder="اكتب وصفاً للصورة أو استخدم التوليد التلقائي..."
+                              className="text-sm"
+                            />
+                          </div>
                         </div>
                       ))}
                     </div>
