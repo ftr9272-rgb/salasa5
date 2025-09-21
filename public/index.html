@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salasa5 - منصة تربط بين الموردين وتجار التجزئة وشركات الشحن</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <h1 class="logo">Salasa5</h1>
+                <nav class="nav">
+                    <div id="auth-buttons" class="auth-buttons">
+                        <button id="login-btn" class="btn btn-outline">تسجيل الدخول</button>
+                        <button id="register-btn" class="btn btn-primary">إنشاء حساب</button>
+                    </div>
+                    <div id="user-menu" class="user-menu" style="display: none;">
+                        <span id="user-name"></span>
+                        <button id="dashboard-btn" class="btn btn-outline">لوحة التحكم</button>
+                        <button id="logout-btn" class="btn btn-secondary">تسجيل الخروج</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Landing Page -->
+            <section id="landing" class="landing">
+                <div class="container">
+                    <div class="hero">
+                        <h2>منصة تربط بين الموردين وتجار التجزئة وشركات الشحن</h2>
+                        <p>اكتشف منصة شاملة تسهل التجارة الإلكترونية وتربط بين جميع أطراف سلسلة التوريد</p>
+                        
+                        <div class="features">
+                            <div class="feature-card">
+                                <h3>للموردين</h3>
+                                <p>عرض منتجاتك وإدارة الطلبات بسهولة</p>
+                                <ul>
+                                    <li>إضافة وإدارة المنتجات</li>
+                                    <li>متابعة الطلبات والمبيعات</li>
+                                    <li>تحديث حالة الطلبات</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <h3>لتجار التجزئة</h3>
+                                <p>تصفح المنتجات واطلب ما تحتاجه</p>
+                                <ul>
+                                    <li>تصفح كتالوج المنتجات</li>
+                                    <li>إنشاء طلبات جديدة</li>
+                                    <li>متابعة حالة الطلبات</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <h3>لشركات الشحن</h3>
+                                <p>إدارة عمليات التوصيل والشحن</p>
+                                <ul>
+                                    <li>قبول طلبات الشحن</li>
+                                    <li>تتبع الشحنات</li>
+                                    <li>تحديث حالة التوصيل</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Login Form -->
+            <section id="login-form" class="form-section" style="display: none;">
+                <div class="container">
+                    <div class="form-container">
+                        <h2>تسجيل الدخول</h2>
+                        <form id="login-form-element">
+                            <div class="form-group">
+                                <label for="login-email">البريد الإلكتروني</label>
+                                <input type="email" id="login-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">كلمة المرور</label>
+                                <input type="password" id="login-password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">دخول</button>
+                            <button type="button" id="back-to-landing" class="btn btn-secondary">العودة</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Register Form -->
+            <section id="register-form" class="form-section" style="display: none;">
+                <div class="container">
+                    <div class="form-container">
+                        <h2>إنشاء حساب جديد</h2>
+                        <form id="register-form-element">
+                            <div class="form-group">
+                                <label for="register-name">الاسم</label>
+                                <input type="text" id="register-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-email">البريد الإلكتروني</label>
+                                <input type="email" id="register-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-password">كلمة المرور</label>
+                                <input type="password" id="register-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-role">نوع الحساب</label>
+                                <select id="register-role" required>
+                                    <option value="">اختر نوع الحساب</option>
+                                    <option value="supplier">مورد</option>
+                                    <option value="retailer">تاجر تجزئة</option>
+                                    <option value="shipping">شركة شحن</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-company">اسم الشركة (اختياري)</label>
+                                <input type="text" id="register-company">
+                            </div>
+                            <button type="submit" class="btn btn-primary">إنشاء حساب</button>
+                            <button type="button" id="back-to-landing-2" class="btn btn-secondary">العودة</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard -->
+            <section id="dashboard" class="dashboard" style="display: none;">
+                <div class="container">
+                    <h2>لوحة التحكم</h2>
+                    <div id="dashboard-content">
+                        <!-- Dashboard content will be dynamically loaded -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 Salasa5. جميع الحقوق محفوظة.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
