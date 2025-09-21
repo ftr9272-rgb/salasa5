@@ -20,11 +20,18 @@ const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
     setError('');
     setLoading(true);
 
+    // Additional validation to ensure we have the required fields
+    if (!username.trim() || !password.trim()) {
+      setError('يرجى إدخال اسم المستخدم وكلمة المرور');
+      setLoading(false);
+      return;
+    }
+
     try {
       // Call API via apiFetch which centralizes Authorization header handling
       const data = await apiFetch('/api/auth/login', {
         method: 'POST',
-        body: { username, password }
+        body: { username: username.trim(), password: password.trim() }
       });
       if (data && data.token) {
         try { setToken(data.token); } catch (setErr) { console.debug('Failed to set token', setErr); }
