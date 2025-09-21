@@ -17,6 +17,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { useNavigate, useParams } from 'react-router-dom';
+import ImageDescription from '../ui/image-description';
 
 const EditProductPage = () => {
   const { productId } = useParams();
@@ -430,6 +431,29 @@ const EditProductPage = () => {
               </CardContent>
             </Card>
           </motion.div>
+
+          {/* وصف الصورة بالذكاء الاصطناعي */}
+          {(imagePreviews.length > 0 || (product.images && product.images.length > 0)) && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <ImageDescription 
+                image={imagePreviews[0] || (product.images && product.images[0])}
+                onDescriptionGenerated={(description) => {
+                  console.log('Generated description for product image:', description);
+                  // يمكن حفظ الوصف في حقل description تلقائياً أو في حقل منفصل
+                  if (!product.description || product.description.trim() === '') {
+                    setProduct(prev => ({
+                      ...prev,
+                      description: description
+                    }));
+                  }
+                }}
+              />
+            </motion.div>
+          )}
         </div>
 
         {/* أزرار الحفظ */}

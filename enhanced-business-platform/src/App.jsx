@@ -8,6 +8,7 @@ import Auth from './components/Auth';
 import AuthRequestPassword from './components/AuthRequestPassword';
 import AuthResetPassword from './components/AuthResetPassword';
 import SmartMarketplace from './components/SmartMarketplace';
+import ImageDescriptionPage from './components/ImageDescriptionPage';
 
 // Merchant Components
 import MerchantLayout from './components/merchant/MerchantLayout';
@@ -50,7 +51,7 @@ import ShippingProfile from './components/shipping/ShippingProfile';
 import ShippingSettings from './components/shipping/ShippingSettings';
 
 function App() {
-  const [currentView, setCurrentView] = useState('landing'); // landing, auth, dashboard, marketplace
+  const [currentView, setCurrentView] = useState('landing'); // landing, auth, dashboard, marketplace, image-description
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userType, setUserType] = useState('merchant'); // merchant, supplier, shipping
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -81,8 +82,16 @@ function App() {
     setCurrentView('marketplace');
   };
 
+  const handleGoToImageDescription = () => {
+    setCurrentView('image-description');
+  };
+
   const handleBackFromMarketplace = () => {
     setCurrentView('dashboard');
+  };
+
+  const handleBackFromImageDescription = () => {
+    setCurrentView('landing');
   };
 
   const renderMerchantContent = () => {
@@ -234,7 +243,11 @@ function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <LandingPage onGetStarted={handleGetStarted} onGoToMarketplace={handleGoToMarketplace} />
+            <LandingPage 
+              onGetStarted={handleGetStarted} 
+              onGoToMarketplace={handleGoToMarketplace}
+              onGoToImageDescription={handleGoToImageDescription}
+            />
           </Motion.div>
         )}
 
@@ -288,6 +301,19 @@ function App() {
               userType={userType} 
               onBack={handleBackFromMarketplace}
             />
+          </Motion.div>
+        )}
+
+        {currentView === 'image-description' && (
+          <Motion.div
+            key="image-description"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.5 }}
+            className="min-h-screen"
+          >
+            <ImageDescriptionPage onBack={handleBackFromImageDescription} />
           </Motion.div>
         )}
       </AnimatePresence>
