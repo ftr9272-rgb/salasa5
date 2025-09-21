@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "buildCommand": "cd enhanced-business-platform && npm run build",
+  "outputDirectory": "enhanced-business-platform/dist",
+  "installCommand": "cd enhanced-business-platform && npm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
