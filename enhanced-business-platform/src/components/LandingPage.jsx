@@ -15,10 +15,11 @@ import {
   Globe,
   CheckCircle,
   PlayCircle,
-  ChevronDown
+  ChevronDown,
+  Camera
 } from 'lucide-react';
 
-const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
+const LandingPage = ({ onGetStarted, onGoToMarketplace, onGoToImageDescriber }) => {
   const [activeFeature, setActiveFeature] = useState(0);
 
   const stats = [
@@ -138,6 +139,16 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
               >
                 <span>اذهب إلى السوق الذكي</span>
                 <Store className="h-4 w-4" />
+              </motion.button>
+
+              <motion.button
+                onClick={onGoToImageDescriber}
+                className="bg-gradient-to-r from-green-500 to-teal-600 text-white px-6 py-3 rounded-full font-semibold text-md shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <span>وصف الصور الذكي</span>
+                <Camera className="h-4 w-4" />
               </motion.button>
 
               <motion.button

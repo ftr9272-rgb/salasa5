@@ -8,6 +8,7 @@ import Auth from './components/Auth';
 import AuthRequestPassword from './components/AuthRequestPassword';
 import AuthResetPassword from './components/AuthResetPassword';
 import SmartMarketplace from './components/SmartMarketplace';
+import ImageDescriber from './components/ImageDescriber';
 
 // Merchant Components
 import MerchantLayout from './components/merchant/MerchantLayout';
@@ -50,7 +51,7 @@ import ShippingProfile from './components/shipping/ShippingProfile';
 import ShippingSettings from './components/shipping/ShippingSettings';
 
 function App() {
-  const [currentView, setCurrentView] = useState('landing'); // landing, auth, dashboard, marketplace
+  const [currentView, setCurrentView] = useState('landing'); // landing, auth, dashboard, marketplace, image-describer
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userType, setUserType] = useState('merchant'); // merchant, supplier, shipping
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -81,8 +82,16 @@ function App() {
     setCurrentView('marketplace');
   };
 
+  const handleGoToImageDescriber = () => {
+    setCurrentView('image-describer');
+  };
+
   const handleBackFromMarketplace = () => {
     setCurrentView('dashboard');
+  };
+
+  const handleBackFromImageDescriber = () => {
+    setCurrentView('landing');
   };
 
   const renderMerchantContent = () => {
@@ -234,7 +243,7 @@ function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <LandingPage onGetStarted={handleGetStarted} onGoToMarketplace={handleGoToMarketplace} />
+            <LandingPage onGetStarted={handleGetStarted} onGoToMarketplace={handleGoToMarketplace} onGoToImageDescriber={handleGoToImageDescriber} />
           </Motion.div>
         )}
 
@@ -288,6 +297,21 @@ function App() {
               userType={userType} 
               onBack={handleBackFromMarketplace}
             />
+          </Motion.div>
+        )}
+
+        {currentView === 'image-describer' && (
+          <Motion.div
+            key="image-describer"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50"
+          >
+            <div className="py-8">
+              <ImageDescriber onBack={handleBackFromImageDescriber} />
+            </div>
           </Motion.div>
         )}
       </AnimatePresence>
