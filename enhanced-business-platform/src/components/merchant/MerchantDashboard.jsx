@@ -354,7 +354,7 @@ const MerchantDashboard = () => {
                 <div className="relative">
                   <img 
                     src={product.image} 
-                    alt={product.name} 
+                    alt={`صورة المنتج: ${product.name}`} 
                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                   <span className={`absolute top-3 left-3 ${product.badge.color} text-white text-xs font-bold px-2 py-1 rounded-full`}>

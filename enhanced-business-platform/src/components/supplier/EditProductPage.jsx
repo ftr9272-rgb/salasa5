@@ -385,7 +385,7 @@ const EditProductPage = () => {
                         <div key={index} className="relative">
                           <img
                             src={preview}
-                            alt={`معاينة ${index + 1}`}
+                            alt={`معاينة صورة المنتج المحدث رقم ${index + 1}`}
                             className="w-full h-32 object-cover rounded-lg"
                           />
                           <button
@@ -412,7 +412,7 @@ const EditProductPage = () => {
                         <div key={index} className="relative">
                           <img
                             src={image}
-                            alt={`الصورة الأصلية ${index + 1}`}
+                            alt={`الصورة الأصلية للمنتج رقم ${index + 1}`}
                             className="w-full h-32 object-cover rounded-lg"
                           />
                           <button

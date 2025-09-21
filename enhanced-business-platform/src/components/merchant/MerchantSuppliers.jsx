@@ -240,20 +240,20 @@ const MerchantSuppliers = () => {
                     <div className="flex items-center">
                       <img 
                         src={supplier.logo || 'https://via.placeholder.com/80'} 
-                        alt={supplier.company_name} 
+                        alt={`شعار شركة ${supplier.company_name}`} 
                         className="w-12 h-12 rounded-full object-cover mr-3"
                       />
                       <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white">{supplier.company_name}</CardTitle>
                     </div>
                     {supplier.is_favorite && (
-                      <Star className="h-5 w-5 text-yellow-500" fill="currentColor" />
+                      <Star className="h-5 w-5 text-yellow-500" fill="currentColor" aria-label="نجمة المفضلة" />
                     )}
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{supplier.description}</p>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex items-center text-gray-700 dark:text-gray-300">
-                    <Star className="h-4 w-4 text-yellow-500 ml-2" />
+                    <Star className="h-4 w-4 text-yellow-500 ml-2" aria-label="نجمة التقييم" />
                     <span>التقييم: {supplier.rating?.toFixed(1) || 'N/A'}</span>
                   </div>
                   <div className="flex items-center text-gray-700 dark:text-gray-300">
@@ -280,7 +280,7 @@ const MerchantSuppliers = () => {
                       </Button>
                     ) : (
                       <Button disabled className="bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed">
-                        <Star className="h-4 w-4 ml-2" /> في المفضلة
+                        <Star className="h-4 w-4 ml-2" aria-label="نجمة إضافة للمفضلة" /> في المفضلة
                       </Button>
                     )}
                   </div>
