@@ -1,0 +1,52 @@
+# Ignore OS and editor files
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+ntuser.dat
+ntuser.dat.log*
+
+# Windows Apps / OneDrive temp folders
+AppData/
+\n+# VS Code
+.vscode/
+.vscode-oss/
+.qoder/
+
+# Node & package managers
+node_modules/
+dist/
+*.log
+package-lock.json
+pnpm-lock.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.env
+venv/
+.venv/
+env/
+.env/
+*.db
+*.sqlite
+*.sqlite3
+boot_run_output.txt
+boot_trace.txt
+
+# Tools headless artifacts (keep if you want them)
+tools/headless/artifacts/
+
+# Ignore local restore points / backups
+*.ps1
+*.bak
+
+# Cache and temporary files
+.cache/
+.temp/
+*.tmp
+*.log
