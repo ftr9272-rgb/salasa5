@@ -1,0 +1,14 @@
+business-platform-api/
+tools/
+scripts/
+.git/
+.github/
+*.md
+enhanced-business-platform/node_modules/
+enhanced-business-platform/src/
+enhanced-business-platform/.eslintrc.js
+enhanced-business-platform/vite.config.js
+enhanced-business-platform/tailwind.config.js
+enhanced-business-platform/postcss.config.js
+enhanced-business-platform/package-lock.json
+enhanced-business-platform/pnpm-lock.yaml
