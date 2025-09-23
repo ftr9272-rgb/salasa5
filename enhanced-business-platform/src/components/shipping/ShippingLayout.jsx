@@ -15,10 +15,11 @@ import {
   LogOut,
   Truck,
   MapPin,
-  Route
+  Route,
+  Store
 } from 'lucide-react';
 
-const ShippingLayout = ({ children, activeTab, setActiveTab, onLogout, onGoToMarketplace }) => {
+const ShippingLayout = ({ children, activeTab, setActiveTab, onLogout }) => {
   // Sidebar always visible (no toggle required)
 
   const navItems = [
@@ -111,7 +112,7 @@ const ShippingLayout = ({ children, activeTab, setActiveTab, onLogout, onGoToMar
             
             <div className="flex items-center gap-4">
               <motion.button
-                onClick={onGoToMarketplace}
+                onClick={() => setActiveTab('marketplace')}
                 className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

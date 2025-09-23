@@ -1,0 +1,3169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>السوق الذكي - منصة أعمالي التجارية</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@200;300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #059669;
+            --secondary-color: #0d9488;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --info-color: #3b82f6;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Advanced Animations */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(-45deg, #059669, #0d9488, #0891b2, #0e7490);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        /* Enhanced Card Styles */
+        .card-enhanced {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-enhanced::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .card-enhanced:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card-enhanced:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(5, 150, 105, 0.2);
+        }
+        
+        /* Product Card Styles */
+        .product-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card .product-image {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.1) rotate(2deg);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+        
+        /* Filter Styles */
+        .filter-button {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .filter-button.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .filter-button:hover {
+            border-color: var(--primary-color);
+            background: rgba(5, 150, 105, 0.1);
+        }
+        
+        /* Enhanced Search Enhancement */
+        .search-enhanced {
+            position: relative;
+        }
+        
+        .search-enhanced input {
+            background: white;
+            border: 2px solid rgba(5, 150, 105, 0.1);
+            border-radius: 50px;
+            padding: 15px 50px 15px 20px;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .search-enhanced input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+            outline: none;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+        
+        /* Advanced Search and Filters Styles */
+        .search-container-enhanced {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            border: 1px solid rgba(34, 197, 94, 0.1);
+        }
+        
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .search-icon-large {
+            position: absolute;
+            right: 20px;
+            color: #6b7280;
+            z-index: 10;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .search-input-large {
+            flex: 1;
+            padding: 16px 20px 16px 60px;
+            font-size: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            background: #f9fafb;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input-large:focus {
+            outline: none;
+            border-color: #22c55e;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+        }
+        
+        .search-button-advanced {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .search-button-advanced:hover {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+        }
+        
+        .quick-filters-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .quick-filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 25px;
+            background: white;
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-filter-btn:hover {
+            border-color: #22c55e;
+            background: #f0fdf4;
+            color: #16a34a;
+            transform: translateY(-1px);
+        }
+        
+        .quick-filter-btn.active {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+        
+        .results-control-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 24px;
+        }
+        
+        .results-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .results-count {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .results-sort-label {
+            font-weight: 500;
+        }
+        
+        .results-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sort-dropdown-wrapper {
+            position: relative;
+        }
+        
+        .sort-dropdown {
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            min-width: 140px;
+            transition: all 0.3s ease;
+        }
+        
+        .sort-dropdown:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+        
+        .view-toggle-buttons {
+            display: flex;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .view-btn {
+            padding: 10px 12px;
+            border: none;
+            background: white;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .view-btn:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .view-btn.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        
+        .action-btn {
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-btn:hover {
+            border-color: #22c55e;
+            background: #f0fdf4;
+            color: #16a34a;
+            transform: translateY(-1px);
+        }
+        
+        /* Search and Filter Mobile Responsive */
+        @media (max-width: 768px) {
+            .search-wrapper {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .search-button-advanced {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .quick-filters-row {
+                justify-content: center;
+            }
+            
+            .results-control-bar {
+                flex-direction: column;
+                gap: 16px;
+                padding: 16px;
+            }
+            
+            .results-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+        
+        /* Enhanced Categories Styles */
+        .categories-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .categories-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #1f2937, #374151);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .categories-subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+            font-weight: 500;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .categories-grid-enhanced {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .category-card-enhanced {
+            position: relative;
+            background: white;
+            border-radius: 20px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 2px solid #f3f4f6;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .category-card-enhanced::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #22c55e, #16a34a, #15803d);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .category-card-enhanced:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #22c55e;
+        }
+        
+        .category-card-enhanced:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .category-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .category-card-enhanced:hover .category-icon-wrapper {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            transform: scale(1.1);
+        }
+        
+        .category-icon {
+            width: 36px;
+            height: 36px;
+            color: #22c55e;
+            transition: all 0.3s ease;
+        }
+        
+        .category-card-enhanced:hover .category-icon {
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .category-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        
+        .category-card-enhanced:hover .category-name {
+            color: #16a34a;
+        }
+        
+        .category-count {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(34, 197, 94, 0.9), transparent);
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .category-card-enhanced:hover .category-overlay {
+            transform: translateY(0);
+        }
+        
+        .category-explore-btn {
+            width: 100%;
+            padding: 12px 24px;
+            background: white;
+            color: #16a34a;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-explore-btn:hover {
+            background: #f0fdf4;
+            transform: scale(1.05);
+        }
+        
+        /* Categories Mobile Responsive */
+        @media (max-width: 768px) {
+            .categories-title {
+                font-size: 2rem;
+            }
+            
+            .categories-grid-enhanced {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 16px;
+            }
+            
+            .category-card-enhanced {
+                padding: 24px 16px;
+            }
+            
+            .category-icon-wrapper {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 16px;
+            }
+            
+            .category-icon {
+                width: 28px;
+                height: 28px;
+            }
+        }
+        .user-type-selector-panel {
+            position: fixed;
+            top: 120px;
+            left: 30px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .user-type-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            color: #6b7280;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: right;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-type-btn:hover {
+            background: #f0fdfa;
+            border-color: #34d399;
+            color: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+        }
+        
+        .user-type-btn.active {
+            background: linear-gradient(135deg, #059669, #0d9488);
+            border-color: #059669;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+        }
+        
+        .user-type-btn.active:hover {
+            background: linear-gradient(135deg, #047857, #0f766e);
+        }
+        
+        .current-user-display {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 1024px) {
+            .user-type-selector-panel {
+                position: static;
+                margin: 1rem;
+                width: auto;
+            }
+            
+            .user-type-selector-panel .glass {
+                min-width: auto;
+            }
+        }
+        
+        /* Enhanced Header Styles */
+        .header-enhanced {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6, #0ea5e9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link {
+            position: relative;
+            padding: 10px 16px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .icon-btn {
+            padding: 10px;
+            color: white;
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+        
+        .user-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .user-profile-header:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .search-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            border-radius: 50px;
+            padding: 12px 50px 12px 20px;
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            z-index: 10;
+        }
+        
+        /* Enhanced Hero Section */
+        .hero-section-enhanced {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6, #0ea5e9);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .hero-section-enhanced::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            z-index: 1;
+        }
+        
+        .hero-content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-main-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #e0f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-main-title {
+                font-size: 3.5rem;
+            }
+        }
+        
+        .hero-subtitle {
+            font-size: 1.125rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .hero-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        .hero-stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .hero-stat-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero-stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            color: #fbbf24;
+        }
+        
+        .hero-stat-label {
+            display: block;
+            font-size: 0.875rem;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+        
+        .search-enhanced input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border-radius: 50px;
+            border: 2px solid rgba(5, 150, 105, 0.1);
+            background: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-enhanced input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 10px 30px rgba(5, 150, 105, 0.1);
+        }
+        
+        .search-enhanced .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+        }
+        
+        /* Tooltip Styles */
+        .tooltip-enhanced {
+            position: relative;
+        }
+        
+        .tooltip-enhanced .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            width: 220px;
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateY(10px);
+            backdrop-filter: blur(10px);
+            font-size: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tooltip-enhanced .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
+        }
+        
+        .tooltip-enhanced:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Category Icons */
+        .category-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Stats Animation */
+        .stats-counter {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .grid-responsive {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Main container -->
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="header-enhanced sticky top-0 z-30 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <!-- Logo & Brand -->
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+                            <i data-lucide="briefcase" class="text-white w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-black text-white">أعمالي</h1>
+                            <p class="text-xs text-emerald-100">منصة الأعمال الذكية</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Links -->
+                    <nav class="hidden md:flex items-center gap-2">
+                        <a href="#" class="nav-link active">السوق</a>
+                        <a href="#" class="nav-link">الموردون</a>
+                        <a href="#" class="nav-link">التجار</a>
+                        <a href="#" class="nav-link">الشحن</a>
+                    </nav>
+                    
+                    <!-- Search Bar -->
+                    <div class="search-enhanced flex-1 max-w-lg mx-8 hidden lg:block">
+                        <i data-lucide="search" class="search-icon w-5 h-5"></i>
+                        <input type="text" id="mainSearch" placeholder="ابحث في السوق الذكي..." class="search-input"/>
+                    </div>
+                    
+                    <!-- Action Buttons & User Profile -->
+                    <div class="flex items-center gap-4">
+                        <!-- Theme Toggle -->
+                        <button class="icon-btn">
+                            <i data-lucide="moon" class="w-5 h-5"></i>
+                        </button>
+                        
+                        <!-- Notifications -->
+                        <button class="icon-btn relative">
+                            <i data-lucide="bell" class="w-5 h-5"></i>
+                            <span class="notification-badge">2</span>
+                        </button>
+                        
+                        <!-- User Profile -->
+                        <div class="user-profile-header">
+                            <div class="w-9 h-9 bg-emerald-100 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600 font-bold text-sm">أ</span>
+                            </div>
+                            <span class="hidden sm:inline text-white font-medium">أحمد</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- User Type Selector (Similar to TijaraLink) -->
+        <div class="user-type-selector-panel hidden lg:block">
+            <div class="glass rounded-2xl p-6 shadow-xl min-w-[260px]">
+                <h4 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
+                    <i data-lucide="user-cog" class="w-5 h-5 text-emerald-600"></i>
+                    محاكاة المستخدم
+                </h4>
+                
+                <div class="space-y-3">
+                    <button class="user-type-btn active" data-type="visitor">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                        <span>زائر</span>
+                    </button>
+                    
+                    <button class="user-type-btn" data-type="supplier">
+                        <i data-lucide="building-2" class="w-5 h-5"></i>
+                        <span>مورد</span>
+                    </button>
+                    
+                    <button class="user-type-btn" data-type="merchant">
+                        <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                        <span>تاجر</span>
+                    </button>
+                    
+                    <button class="user-type-btn" data-type="shipping">
+                        <i data-lucide="truck" class="w-5 h-5"></i>
+                        <span>شركة شحن</span>
+                    </button>
+                </div>
+                
+                <div class="current-user-display mt-5 pt-4 border-t border-gray-200">
+                    <div class="text-sm text-gray-600 mb-2">
+                        <strong>المستخدم الحالي:</strong>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
+                            <span class="text-emerald-600 font-bold text-sm">أ</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-800" id="currentUserName">أحمد محمد</div>
+                            <div class="text-xs text-gray-500" id="currentUserType">زائر</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Hero Section (Enhanced) -->
+            <section class="hero-section-enhanced">
+                <div class="hero-content-wrapper">
+                    <div class="hero-text-content">
+                        <h1 class="hero-main-title">مرحباً بك في سوق أعمالي الذكي</h1>
+                        <p class="hero-subtitle">المنصة الذكية التي تربط الموردين والتجار وشركات الشحن في مكان واحد</p>
+                        
+                        <!-- Stats Grid -->
+                        <div class="hero-stats-grid">
+                            <div class="hero-stat-item">
+                                <span class="hero-stat-number">500+</span>
+                                <span class="hero-stat-label">مورد معتمد</span>
+                            </div>
+                            <div class="hero-stat-item">
+                                <span class="hero-stat-number">1000+</span>
+                                <span class="hero-stat-label">تاجر نشط</span>
+                            </div>
+                            <div class="hero-stat-item">
+                                <span class="hero-stat-number">50+</span>
+                                <span class="hero-stat-label">شركة شحن</span>
+                            </div>
+                            <div class="hero-stat-item">
+                                <span class="hero-stat-number">10K+</span>
+                                <span class="hero-stat-label">معاملة يومية</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Enhanced Categories Section (TijaraLink inspired) -->
+            <section class="mb-12" id="categoriesSection">
+                <div class="categories-header">
+                    <h3 class="categories-title">تصفح حسب الفئة</h3>
+                    <p class="categories-subtitle">اكتشف المنتجات والخدمات حسب التصنيفات المختلفة</p>
+                </div>
+                
+                <div class="categories-grid-enhanced" id="categoriesGrid">
+                    <!-- Electronics Category -->
+                    <div class="category-card-enhanced" data-category="electronics">
+                        <div class="category-icon-wrapper">
+                            <i data-lucide="smartphone" class="category-icon"></i>
+                        </div>
+                        <h4 class="category-name">الإلكترونيات</h4>
+                        <p class="category-count">245+ منتج</p>
+                        <div class="category-overlay">
+                            <button class="category-explore-btn">استكشف</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Fashion Category -->
+                    <div class="category-card-enhanced" data-category="fashion">
+                        <div class="category-icon-wrapper">
+                            <i data-lucide="shirt" class="category-icon"></i>
+                        </div>
+                        <h4 class="category-name">الأزياء</h4>
+                        <p class="category-count">180+ منتج</p>
+                        <div class="category-overlay">
+                            <button class="category-explore-btn">استكشف</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Food & Beverages Category -->
+                    <div class="category-card-enhanced" data-category="food">
+                        <div class="category-icon-wrapper">
+                            <i data-lucide="coffee" class="category-icon"></i>
+                        </div>
+                        <h4 class="category-name">الأغذية والمشروبات</h4>
+                        <p class="category-count">320+ منتج</p>
+                        <div class="category-overlay">
+                            <button class="category-explore-btn">استكشف</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Home & Garden Category -->
+                    <div class="category-card-enhanced" data-category="home">
+                        <div class="category-icon-wrapper">
+                            <i data-lucide="home" class="category-icon"></i>
+                        </div>
+                        <h4 class="category-name">المنزل والحديقة</h4>
+                        <p class="category-count">150+ منتج</p>
+                        <div class="category-overlay">
+                            <button class="category-explore-btn">استكشف</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Beauty & Health Category -->
+                    <div class="category-card-enhanced" data-category="beauty">
+                        <div class="category-icon-wrapper">
+                            <i data-lucide="heart" class="category-icon"></i>
+                        </div>
+                        <h4 class="category-name">الجمال والصحة</h4>
+                        <p class="category-count">95+ منتج</p>
+                        <div class="category-overlay">
+                            <button class="category-explore-btn">استكشف</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Automotive Category -->
+                    <div class="category-card-enhanced" data-category="automotive">
+                        <div class="category-icon-wrapper">
+                            <i data-lucide="car" class="category-icon"></i>
+                        </div>
+                        <h4 class="category-name">قطع غيار السيارات</h4>
+                        <p class="category-count">210+ منتج</p>
+                        <div class="category-overlay">
+                            <button class="category-explore-btn">استكشف</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Sports & Recreation Category -->
+                    <div class="category-card-enhanced" data-category="sports">
+                        <div class="category-icon-wrapper">
+                            <i data-lucide="dumbbell" class="category-icon"></i>
+                        </div>
+                        <h4 class="category-name">الرياضة والترفيه</h4>
+                        <p class="category-count">120+ منتج</p>
+                        <div class="category-overlay">
+                            <button class="category-explore-btn">استكشف</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Office Supplies Category -->
+                    <div class="category-card-enhanced" data-category="office">
+                        <div class="category-icon-wrapper">
+                            <i data-lucide="briefcase" class="category-icon"></i>
+                        </div>
+                        <h4 class="category-name">مستلزمات المكتب</h4>
+                        <p class="category-count">85+ منتج</p>
+                        <div class="category-overlay">
+                            <button class="category-explore-btn">استكشف</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Enhanced Search and Filters Section (TijaraLink inspired) -->
+            <div class="mb-8" id="searchFiltersSection">
+                <!-- Advanced Search Bar -->
+                <div class="mb-6">
+                    <div class="search-container-enhanced">
+                        <div class="search-wrapper">
+                            <i data-lucide="search" class="search-icon-large"></i>
+                            <input 
+                                type="text" 
+                                id="mainSearchAdvanced" 
+                                placeholder="ابحث عن المنتجات، الموردين، أو شركات الشحن..." 
+                                class="search-input-large"
+                            />
+                            <button class="search-button-advanced">
+                                <i data-lucide="filter" class="w-5 h-5 ml-2"></i>
+                                فلترة متقدمة
+                            </button>
+                        </div>
+                        
+                        <!-- Quick Filters -->
+                        <div class="quick-filters-row">
+                            <button class="quick-filter-btn active" data-filter="all">
+                                <i data-lucide="grid-3x3" class="w-4 h-4"></i>
+                                جميع النتائج
+                            </button>
+                            <button class="quick-filter-btn" data-filter="products">
+                                <i data-lucide="package" class="w-4 h-4"></i>
+                                المنتجات
+                            </button>
+                            <button class="quick-filter-btn" data-filter="suppliers">
+                                <i data-lucide="building-2" class="w-4 h-4"></i>
+                                الموردين
+                            </button>
+                            <button class="quick-filter-btn" data-filter="shipping">
+                                <i data-lucide="truck" class="w-4 h-4"></i>
+                                الشحن
+                            </button>
+                            <button class="quick-filter-btn" data-filter="services">
+                                <i data-lucide="zap" class="w-4 h-4"></i>
+                                الخدمات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Control Bar -->
+                <div class="results-control-bar">
+                    <div class="results-info">
+                        <span class="results-count">عرض 1-24 من 156 نتيجة</span>
+                        <span class="results-sort-label">مرتبة حسب:</span>
+                    </div>
+                    
+                    <div class="results-actions">
+                        <!-- Sort Dropdown -->
+                        <div class="sort-dropdown-wrapper">
+                            <select class="sort-dropdown" id="sortSelectAdvanced">
+                                <option value="newest">الأحدث أولاً</option>
+                                <option value="popular">الأكثر شيوعاً</option>
+                                <option value="price_low">الأقل سعراً</option>
+                                <option value="price_high">الأعلى سعراً</option>
+                                <option value="rating">الأعلى تقييماً</option>
+                                <option value="name">ترتيب أبجدي</option>
+                            </select>
+                        </div>
+                        
+                        <!-- View Toggle -->
+                        <div class="view-toggle-buttons">
+                            <button class="view-btn active" id="gridViewBtn" data-view="grid">
+                                <i data-lucide="grid-3x3" class="w-5 h-5"></i>
+                            </button>
+                            <button class="view-btn" id="listViewBtn" data-view="list">
+                                <i data-lucide="list" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Additional Actions -->
+                        <button class="action-btn" id="favoriteViewBtn">
+                            <i data-lucide="heart" class="w-5 h-5"></i>
+                        </button>
+                        <button class="action-btn" id="compareViewBtn">
+                            <i data-lucide="shuffle" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8" id="resultsGrid">
+                <!-- Product Card 1 -->
+                <div class="card-enhanced product-card overflow-hidden group" data-type="products">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="Laptop" class="w-full h-48 object-cover product-image"/>
+                        <span class="product-badge bg-emerald-500">جديد</span>
+                        <button class="absolute top-3 right-3 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="heart" class="w-5 h-5 text-gray-600"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-lg font-bold text-gray-800">حاسوب محمول للأعمال</h4>
+                            <div class="flex items-center bg-amber-50 px-2 py-1 rounded-full">
+                                <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-current"></i>
+                                <span class="text-sm font-bold text-gray-700 mr-1">4.8</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm">شركة النور للإلكترونيات</p>
+                        <div class="flex items-center justify-between">
+                            <span class="font-black text-xl text-emerald-600">3,500 <span class="text-sm font-normal">ر.س</span></span>
+                            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300">
+                                تفاصيل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Supplier Card -->
+                <div class="card-enhanced overflow-hidden group" data-type="suppliers">
+                    <div class="relative">
+                        <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i data-lucide="building-2" class="w-16 h-16 text-white"></i>
+                        </div>
+                        <div class="absolute -bottom-6 right-6">
+                            <img src="https://i.pravatar.cc/80?u=supplier1" alt="Supplier" class="w-12 h-12 rounded-full border-4 border-white shadow-lg">
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-lg font-bold text-gray-800">مؤسسة الأصيل التجارية</h4>
+                            <div class="flex items-center bg-emerald-50 px-2 py-1 rounded-full">
+                                <i data-lucide="star" class="w-4 h-4 text-emerald-400 fill-current"></i>
+                                <span class="text-sm font-bold text-gray-700 mr-1">4.9</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm">إلكترونيات ومعدات • 156 منتج</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                <span class="text-sm text-gray-600">متاح الآن</span>
+                            </div>
+                            <button class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300">
+                                زيارة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card 2 -->
+                <div class="card-enhanced product-card overflow-hidden group" data-type="products">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="Sofa" class="w-full h-48 object-cover product-image"/>
+                        <span class="product-badge bg-blue-500">الأكثر مبيعاً</span>
+                        <button class="absolute top-3 right-3 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="heart" class="w-5 h-5 text-gray-600"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-lg font-bold text-gray-800">أثاث مكتبي فاخر</h4>
+                            <div class="flex items-center bg-amber-50 px-2 py-1 rounded-full">
+                                <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-current"></i>
+                                <span class="text-sm font-bold text-gray-700 mr-1">4.6</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm">مصنع الأخشاب الذهبية</p>
+                        <div class="flex items-center justify-between">
+                            <span class="font-black text-xl text-emerald-600">1,200 <span class="text-sm font-normal">ر.س</span></span>
+                            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300">
+                                تفاصيل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Trader Card -->
+                <div class="card-enhanced overflow-hidden group" data-type="traders">
+                    <div class="relative">
+                        <div class="h-32 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                            <i data-lucide="store" class="w-16 h-16 text-white"></i>
+                        </div>
+                        <div class="absolute -bottom-6 right-6">
+                            <img src="https://i.pravatar.cc/80?u=trader1" alt="Trader" class="w-12 h-12 rounded-full border-4 border-white shadow-lg">
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-lg font-bold text-gray-800">تجارة المستقبل</h4>
+                            <div class="flex items-center bg-purple-50 px-2 py-1 rounded-full">
+                                <i data-lucide="star" class="w-4 h-4 text-purple-400 fill-current"></i>
+                                <span class="text-sm font-bold text-gray-700 mr-1">4.7</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm">تاجر تجزئة • 89 طلب شهري</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                <span class="text-sm text-gray-600">نشط</span>
+                            </div>
+                            <button class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-2 rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300">
+                                تواصل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- More Product Cards -->
+                <div class="card-enhanced product-card overflow-hidden group" data-type="products">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="Camera" class="w-full h-48 object-cover product-image"/>
+                        <span class="product-badge bg-amber-500">مخزون محدود</span>
+                        <button class="absolute top-3 right-3 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="heart" class="w-5 h-5 text-gray-600"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-lg font-bold text-gray-800">كاميرات مراقبة HD</h4>
+                            <div class="flex items-center bg-amber-50 px-2 py-1 rounded-full">
+                                <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-current"></i>
+                                <span class="text-sm font-bold text-gray-700 mr-1">4.5</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm">شركة التقنية الآمنة</p>
+                        <div class="flex items-center justify-between">
+                            <span class="font-black text-xl text-emerald-600">450 <span class="text-sm font-normal">ر.س</span></span>
+                            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300">
+                                تفاصيل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional cards can be added here following the same pattern -->
+                
+            </div>
+            
+            <!-- Load More Button -->
+            <div class="text-center mb-12">
+                <button class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center space-x-2 mx-auto">
+                    <span>تحميل المزيد</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Featured Suppliers -->
+            <div class="mb-12">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-3xl font-bold text-gray-800">موردين مميزين</h3>
+                    <button class="text-emerald-600 font-bold hover:text-emerald-700 flex items-center group">
+                        <span>عرض الكل</span>
+                        <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+                
+                <div class="swiper suppliersSwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="card-enhanced p-8 text-center">
+                                <div class="w-20 h-20 mx-auto mb-6 relative">
+                                    <img src="https://i.pravatar.cc/80?u=supplier2" alt="Supplier" class="w-full h-full rounded-full shadow-lg">
+                                    <span class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 border-2 border-white rounded-full"></span>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">شركة النور للمواد الغذائية</h4>
+                                <p class="text-gray-600 mb-4">مواد غذائية ومشروبات</p>
+                                <div class="flex items-center justify-center space-x-4 mb-6">
+                                    <div class="text-center">
+                                        <p class="text-2xl font-bold text-emerald-600">243</p>
+                                        <p class="text-xs text-gray-600">منتج</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-2xl font-bold text-blue-600">4.6</p>
+                                        <p class="text-xs text-gray-600">تقييم</p>
+                                    </div>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 rounded-full font-bold hover:shadow-lg transition-all">
+                                    زيارة المتجر
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="swiper-slide">
+                            <div class="card-enhanced p-8 text-center">
+                                <div class="w-20 h-20 mx-auto mb-6 relative">
+                                    <img src="https://i.pravatar.cc/80?u=supplier3" alt="Supplier" class="w-full h-full rounded-full shadow-lg">
+                                    <span class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 border-2 border-white rounded-full"></span>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">معرض الأناقة للملابس</h4>
+                                <p class="text-gray-600 mb-4">ملابس وإكسسوارات</p>
+                                <div class="flex items-center justify-center space-x-4 mb-6">
+                                    <div class="text-center">
+                                        <p class="text-2xl font-bold text-emerald-600">89</p>
+                                        <p class="text-xs text-gray-600">منتج</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-2xl font-bold text-blue-600">4.9</p>
+                                        <p class="text-xs text-gray-600">تقييم</p>
+                                    </div>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 rounded-full font-bold hover:shadow-lg transition-all">
+                                    زيارة المتجر
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="swiper-slide">
+                            <div class="card-enhanced p-8 text-center">
+                                <div class="w-20 h-20 mx-auto mb-6 relative">
+                                    <img src="https://i.pravatar.cc/80?u=supplier4" alt="Supplier" class="w-full h-full rounded-full shadow-lg">
+                                    <span class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 border-2 border-white rounded-full"></span>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">مستودع البناء المتطور</h4>
+                                <p class="text-gray-600 mb-4">مواد بناء وأدوات</p>
+                                <div class="flex items-center justify-center space-x-4 mb-6">
+                                    <div class="text-center">
+                                        <p class="text-2xl font-bold text-emerald-600">312</p>
+                                        <p class="text-xs text-gray-600">منتج</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-2xl font-bold text-blue-600">4.7</p>
+                                        <p class="text-xs text-gray-600">تقييم</p>
+                                    </div>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 rounded-full font-bold hover:shadow-lg transition-all">
+                                    زيارة المتجر
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+                                <i data-lucide="shopping-cart" class="text-white w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">السوق الذكي</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4">منصة B2B متطورة تجمع الموردين والتجار في مكان واحد</p>
+                        <div class="flex space-x-4">
+                            <button class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                                <i data-lucide="facebook" class="w-5 h-5"></i>
+                            </button>
+                            <button class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                                <i data-lucide="twitter" class="w-5 h-5"></i>
+                            </button>
+                            <button class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                                <i data-lucide="instagram" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-4">روابط سريعة</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors">عن المنصة</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">كيف تعمل</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">التسعير</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">المدونة</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-4">للموردين</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors">انضم كمورد</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">إضافة منتجات</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">إدارة الطلبات</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">دليل المورد</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-4">الدعم</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors">مركز المساعدة</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">تواصل معنا</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">الأسئلة الشائعة</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">سياسة الخصوصية</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                    <p>&copy; 2025 السوق الذكي - منصة أعمالي. جميع الحقوق محفوظة.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Initialize lucide icons
+        lucide.createIcons();
+        
+        // Stats counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stats-counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                let current = 0;
+                
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                setTimeout(updateCounter, 1000);
+            });
+        }
+        
+        // Initialize counter animation
+        animateCounters();
+        
+        // Enhanced Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const quickFilterButtons = document.querySelectorAll('.quick-filter-btn');
+        const resultCards = document.querySelectorAll('[data-type]');
+        
+        // Legacy filter buttons
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filter = button.getAttribute('data-filter');
+                
+                resultCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-type') === filter) {
+                        card.style.display = 'block';
+                        card.classList.add('animate__animated', 'animate__fadeInUp');
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Enhanced Quick Filter functionality
+        quickFilterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all quick filter buttons
+                quickFilterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filter = button.getAttribute('data-filter');
+                
+                // Update results count
+                let visibleCount = 0;
+                resultCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-type') === filter) {
+                        card.style.display = 'block';
+                        card.classList.add('animate__animated', 'animate__fadeInUp');
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Update results count display
+                const resultsCountEl = document.querySelector('.results-count');
+                if (resultsCountEl) {
+                    resultsCountEl.textContent = `عرض 1-${visibleCount} من ${visibleCount} نتيجة`;
+                }
+            });
+        });
+        
+        // Enhanced View toggle functionality
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const listViewBtn = document.getElementById('listViewBtn');
+        const gridView = document.getElementById('gridView'); // Legacy
+        const listView = document.getElementById('listView'); // Legacy
+        const resultsGrid = document.getElementById('resultsGrid');
+        
+        // Enhanced view toggle
+        if (gridViewBtn && listViewBtn) {
+            gridViewBtn.addEventListener('click', () => {
+                gridViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+                
+                if (resultsGrid) {
+                    resultsGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8';
+                }
+            });
+            
+            listViewBtn.addEventListener('click', () => {
+                listViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+                
+                if (resultsGrid) {
+                    resultsGrid.className = 'grid grid-cols-1 gap-6 mb-8';
+                }
+            });
+        }
+        
+        // Legacy view toggle (keep for compatibility)
+        if (gridView && listView) {
+            gridView.addEventListener('click', () => {
+                gridView.classList.add('bg-emerald-500', 'text-white');
+                gridView.classList.remove('bg-gray-100', 'text-gray-600');
+                listView.classList.add('bg-gray-100', 'text-gray-600');
+                listView.classList.remove('bg-emerald-500', 'text-white');
+                
+                if (resultsGrid) {
+                    resultsGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8';
+                }
+            });
+            
+            listView.addEventListener('click', () => {
+                listView.classList.add('bg-emerald-500', 'text-white');
+                listView.classList.remove('bg-gray-100', 'text-gray-600');
+                gridView.classList.add('bg-gray-100', 'text-gray-600');
+                gridView.classList.remove('bg-emerald-500', 'text-white');
+                
+                if (resultsGrid) {
+                    resultsGrid.className = 'grid grid-cols-1 gap-6 mb-8';
+                }
+            });
+        }
+        
+        // Enhanced Search functionality
+        const searchInput = document.getElementById('mainSearch');
+        const searchInputAdvanced = document.getElementById('mainSearchAdvanced');
+        
+        function performSearch(searchTerm) {
+            const term = searchTerm.toLowerCase();
+            let visibleCount = 0;
+            
+            resultCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                if (cardText.includes(term) || term === '') {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update results count
+            const resultsCountEl = document.querySelector('.results-count');
+            if (resultsCountEl) {
+                resultsCountEl.textContent = `عرض 1-${visibleCount} من ${visibleCount} نتيجة`;
+            }
+        }
+        
+        // Legacy search
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                performSearch(e.target.value);
+            });
+        }
+        
+        // Enhanced search
+        if (searchInputAdvanced) {
+            searchInputAdvanced.addEventListener('input', (e) => {
+                performSearch(e.target.value);
+            });
+        }
+        
+        // Sort functionality
+        const sortSelect = document.getElementById('sortSelectAdvanced');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', (e) => {
+                const sortValue = e.target.value;
+                const visibleCards = Array.from(resultCards).filter(card => 
+                    card.style.display !== 'none'
+                );
+                
+                // Simple sorting example (you can enhance this based on your data structure)
+                const container = document.getElementById('resultsGrid');
+                if (container) {
+                    visibleCards.sort((a, b) => {
+                        // Add your sorting logic here based on sortValue
+                        return 0; // Placeholder
+                    });
+                    
+                    // Re-append sorted cards
+                    visibleCards.forEach(card => container.appendChild(card));
+                }
+            });
+        }
+        
+        // Enhanced Category card functionality
+        const categoryCards = document.querySelectorAll('.category-card');
+        const categoryCardsEnhanced = document.querySelectorAll('.category-card-enhanced');
+        
+        // Legacy category cards
+        categoryCards.forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.add('animate__animated', 'animate__pulse');
+                setTimeout(() => {
+                    card.classList.remove('animate__animated', 'animate__pulse');
+                }, 1000);
+            });
+        });
+        
+        // Enhanced category cards
+        categoryCardsEnhanced.forEach(card => {
+            card.addEventListener('click', () => {
+                const category = card.getAttribute('data-category');
+                
+                // Add click animation
+                card.classList.add('animate__animated', 'animate__pulse');
+                
+                // Filter results by category
+                const resultCards = document.querySelectorAll('[data-type]');
+                resultCards.forEach(resultCard => {
+                    const cardText = resultCard.textContent.toLowerCase();
+                    const categoryName = card.querySelector('.category-name').textContent.toLowerCase();
+                    
+                    if (cardText.includes(categoryName.split(' ')[0]) || category === 'all') {
+                        resultCard.style.display = 'block';
+                        resultCard.classList.add('animate__animated', 'animate__fadeInUp');
+                    } else {
+                        resultCard.style.display = 'none';
+                    }
+                });
+                
+                // Update active filter button
+                const quickFilterButtons = document.querySelectorAll('.quick-filter-btn');
+                quickFilterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Scroll to results
+                const resultsGrid = document.getElementById('resultsGrid');
+                if (resultsGrid) {
+                    resultsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                // Remove animation class
+                setTimeout(() => {
+                    card.classList.remove('animate__animated', 'animate__pulse');
+                }, 1000);
+            });
+            
+            // Add hover sound effect simulation (you can add actual sound files)
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+        
+        // Initialize Swiper for Suppliers
+        const suppliersSwiper = new Swiper('.suppliersSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                },
+                768: {
+                    slidesPerView: 3,
+                },
+                1024: {
+                    slidesPerView: 4,
+                }
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+        });
+        
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all cards
+        document.querySelectorAll('.card-enhanced').forEach(card => {
+            observer.observe(card);
+        });
+        
+        // Add ripple effect to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+        
+        // Add ripple effect styles
+        const style = document.createElement('style');
+        style.textContent = `
+            button {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .ripple {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.5);
+                transform: scale(0);
+                animation: ripple-animation 0.6s ease-out;
+                pointer-events: none;
+            }
+            
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Add loading animation for images
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('load', function() {
+                this.classList.add('animate__animated', 'animate__fadeIn');
+            });
+        });
+        
+        // Smart Market Initialization Function
+        window.initializeSmartMarket = function(userType) {
+            console.log('Initializing Smart Market for user type:', userType);
+            
+            // Initialize categories based on user type
+            initializeCategories(userType);
+            
+            // Initialize navigation tabs
+            initializeUserTypeTabs(userType);
+            
+            // Show appropriate sections
+            showUserTypeSection(userType);
+            
+            // Load user-specific content
+            loadUserContent(userType);
+            
+            // Initialize event listeners
+            initializeUserTypeEventListeners();
+            
+            // Initialize user type selector
+            initializeUserTypeSelector(userType);
+        };
+        
+        // User Type Selector functionality
+        function initializeUserTypeSelector(currentUserType = 'visitor') {
+            const userTypeButtons = document.querySelectorAll('.user-type-btn');
+            const currentUserTypeDisplay = document.getElementById('currentUserType');
+            const currentUserNameDisplay = document.getElementById('currentUserName');
+            
+            // User type mapping
+            const userTypeNames = {
+                'visitor': 'زائر',
+                'supplier': 'مورد',
+                'merchant': 'تاجر',
+                'shipping': 'شركة شحن'
+            };
+            
+            // Set initial state
+            updateUserTypeDisplay(currentUserType);
+            
+            // Add click event listeners
+            userTypeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const selectedType = this.getAttribute('data-type');
+                    
+                    // Remove active class from all buttons
+                    userTypeButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update user type display
+                    updateUserTypeDisplay(selectedType);
+                    
+                    // Trigger content update
+                    showUserTypeSection(selectedType);
+                    loadUserContent(selectedType);
+                    
+                    // Add visual feedback
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+            
+            function updateUserTypeDisplay(userType) {
+                if (currentUserTypeDisplay) {
+                    currentUserTypeDisplay.textContent = userTypeNames[userType] || 'زائر';
+                }
+                
+                // Update the active button
+                userTypeButtons.forEach(btn => btn.classList.remove('active'));
+                const activeButton = document.querySelector(`.user-type-btn[data-type="${userType}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+            }
+        }
+        };
+        
+        function initializeCategories(userType) {
+            const categoriesGrid = document.getElementById('categoriesGrid');
+            let categories = [];
+            
+            if (userType === 'supplier') {
+                categories = [
+                    { icon: 'package', name: 'منتجاتي', count: '24 منتج', color: 'blue' },
+                    { icon: 'tag', name: 'عروضي', count: '8 عروض', color: 'green' },
+                    { icon: 'users', name: 'عملائي', count: '56 عميل', color: 'purple' },
+                    { icon: 'chart-bar', name: 'تقاريري', count: 'إحصائيات', color: 'orange' },
+                    { icon: 'shopping-cart', name: 'طلبات التجار', count: '12 طلب', color: 'red' },
+                    { icon: 'star', name: 'تقييماتي', count: '4.8/5', color: 'yellow' }
+                ];
+            } else if (userType === 'merchant') {
+                categories = [
+                    { icon: 'search', name: 'البحث عن منتجات', count: '1000+ منتج', color: 'blue' },
+                    { icon: 'shopping-cart', name: 'طلباتي', count: '15 طلب', color: 'green' },
+                    { icon: 'users', name: 'مورديني', count: '8 موردين', color: 'purple' },
+                    { icon: 'heart', name: 'المفضلة', count: '23 منتج', color: 'red' },
+                    { icon: 'truck', name: 'الشحن', count: '5 شركات', color: 'orange' },
+                    { icon: 'file-text', name: 'الفواتير', count: '45 فاتورة', color: 'yellow' }
+                ];
+            } else if (userType === 'shipping_company') {
+                categories = [
+                    { icon: 'truck', name: 'خدماتي', count: '12 خدمة', color: 'blue' },
+                    { icon: 'map-pin', name: 'الشحنات', count: '89 شحنة', color: 'green' },
+                    { icon: 'calculator', name: 'عروض الأسعار', count: '34 عرض', color: 'purple' },
+                    { icon: 'users', name: 'عملائي', count: '156 عميل', color: 'orange' },
+                    { icon: 'route', name: 'المسارات', count: '25 مسار', color: 'red' },
+                    { icon: 'clock', name: 'المواعيد', count: 'اليوم', color: 'yellow' }
+                ];
+            } else {
+                // Default categories for guests
+                categories = [
+                    { icon: 'laptop', name: 'إلكترونيات', count: '156 منتج', color: 'blue' },
+                    { icon: 'apple', name: 'مواد غذائية', count: '243 منتج', color: 'green' },
+                    { icon: 'shirt', name: 'ملابس', count: '89 منتج', color: 'purple' },
+                    { icon: 'hammer', name: 'أدوات', count: '312 منتج', color: 'orange' },
+                    { icon: 'sofa', name: 'أثاث', count: '78 منتج', color: 'red' },
+                    { icon: 'car', name: 'سيارات', count: '94 منتج', color: 'yellow' }
+                ];
+            }
+            
+            categoriesGrid.innerHTML = categories.map(category => `
+                <div class="category-card card-enhanced p-6 text-center cursor-pointer" onclick="filterByCategory('${category.name}')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-${category.color}-100 to-${category.color}-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="${category.icon}" class="w-8 h-8 text-${category.color}-600"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">${category.name}</h4>
+                    <p class="text-sm text-gray-600">${category.count}</p>
+                </div>
+            `).join('');
+            
+            // Re-initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+        
+        function initializeUserTypeTabs(userType) {
+            const userTypeTabs = document.getElementById('userTypeTabs');
+            let tabs = [];
+            
+            if (userType === 'supplier') {
+                tabs = [
+                    { id: 'my-products', label: 'منتجاتي', active: true },
+                    { id: 'my-offers', label: 'عروضي' },
+                    { id: 'merchant-requests', label: 'طلبات التجار' },
+                    { id: 'analytics', label: 'التحليلات' }
+                ];
+            } else if (userType === 'merchant') {
+                tabs = [
+                    { id: 'browse-products', label: 'تصفح المنتجات', active: true },
+                    { id: 'my-requests', label: 'طلباتي' },
+                    { id: 'suppliers', label: 'الموردون' },
+                    { id: 'shipping', label: 'الشحن' }
+                ];
+            } else if (userType === 'shipping_company') {
+                tabs = [
+                    { id: 'my-services', label: 'خدماتي', active: true },
+                    { id: 'shipping-requests', label: 'طلبات الشحن' },
+                    { id: 'my-quotes', label: 'عروضي' },
+                    { id: 'tracking', label: 'التتبع' }
+                ];
+            } else {
+                tabs = [
+                    { id: 'all', label: 'الكل', active: true },
+                    { id: 'suppliers', label: 'الموردين' },
+                    { id: 'products', label: 'المنتجات' },
+                    { id: 'services', label: 'الخدمات' }
+                ];
+            }
+            
+            userTypeTabs.innerHTML = tabs.map(tab => `
+                <button class="filter-button ${tab.active ? 'active' : ''} px-6 py-3 rounded-full font-bold" 
+                        data-tab="${tab.id}" onclick="switchTab('${tab.id}')">
+                    ${tab.label}
+                </button>
+            `).join('');
+        }
+        
+        function showUserTypeSection(userType) {
+            // Hide all sections first
+            const supplierSection = document.getElementById('supplierSection');
+            const traderSection = document.getElementById('traderSection');
+            const shippingSection = document.getElementById('shippingSection');
+            const mainContentGrid = document.getElementById('mainContentGrid');
+            
+            if (supplierSection) supplierSection.classList.add('hidden');
+            if (traderSection) traderSection.classList.add('hidden');
+            if (shippingSection) shippingSection.classList.add('hidden');
+            if (mainContentGrid) mainContentGrid.classList.add('hidden');
+            
+            // Show appropriate section
+            if (userType === 'supplier' && supplierSection) {
+                supplierSection.classList.remove('hidden');
+            } else if (userType === 'merchant' && traderSection) {
+                traderSection.classList.remove('hidden');
+            } else if (userType === 'shipping_company' && shippingSection) {
+                shippingSection.classList.remove('hidden');
+            } else if (mainContentGrid) {
+                // Default view for guests or undefined types
+                mainContentGrid.classList.remove('hidden');
+            }
+        }
+        
+        function loadUserContent(userType) {
+            if (userType === 'supplier') {
+                loadSupplierContent();
+            } else if (userType === 'merchant') {
+                loadMerchantContent();
+            } else if (userType === 'shipping_company') {
+                loadShippingContent();
+            }
+        }
+        
+        function loadSupplierContent() {
+            // Load supplier's products
+            const myProductsGrid = document.getElementById('myProductsGrid');
+            if (myProductsGrid) {
+                myProductsGrid.innerHTML = `
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 right-2">
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">جهاز كمبيوتر محمول Dell</h4>
+                        <p class="text-gray-600 text-sm mb-3">عدد المشاهدات: 156 | المبيعات: 24</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">2,500 ر.س</span>
+                            <span class="text-sm text-gray-500">متاح: 15 قطعة</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 btn-gradient py-2 rounded-lg font-bold text-sm">تعديل</button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-gray-600">حذف</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1541746972996-4e0b0f93e586?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 right-2">
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">كراسي مكتبية فاخرة</h4>
+                        <p class="text-gray-600 text-sm mb-3">عدد المشاهدات: 89 | المبيعات: 18</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">750 ر.س</span>
+                            <span class="text-sm text-gray-500">متاح: 32 قطعة</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 btn-gradient py-2 rounded-lg font-bold text-sm">تعديل</button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-gray-600">حذف</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 left-2">
+                                <span class="badge-new px-3 py-1 rounded-full text-xs font-bold">جديد</span>
+                            </div>
+                            <div class="absolute top-2 right-2">
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">معدات مطبخ احترافية</h4>
+                        <p class="text-gray-600 text-sm mb-3">عدد المشاهدات: 45 | المبيعات: 8</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">5,200 ر.س</span>
+                            <span class="text-sm text-gray-500">متاح: 12 قطعة</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 btn-gradient py-2 rounded-lg font-bold text-sm">تعديل</button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-gray-600">حذف</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 right-2">
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">طابعات ليزر HP</h4>
+                        <p class="text-gray-600 text-sm mb-3">عدد المشاهدات: 123 | المبيعات: 16</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">1,800 ر.س</span>
+                            <span class="text-sm text-gray-500">متاح: 25 قطعة</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 btn-gradient py-2 rounded-lg font-bold text-sm">تعديل</button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-gray-600">حذف</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1616627188540-3c9e31df4aba?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 right-2">
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">أدوات البناء المتطورة</h4>
+                        <p class="text-gray-600 text-sm mb-3">عدد المشاهدات: 67 | المبيعات: 12</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">3,450 ر.س</span>
+                            <span class="text-sm text-gray-500">متاح: 8 قطعة</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 btn-gradient py-2 rounded-lg font-bold text-sm">تعديل</button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-gray-600">حذف</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 left-2">
+                                <span class="badge-hot px-3 py-1 rounded-full text-xs font-bold">الأكثر مبيعاً</span>
+                            </div>
+                            <div class="absolute top-2 right-2">
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">أجهزة تكييف Samsung</h4>
+                        <p class="text-gray-600 text-sm mb-3">عدد المشاهدات: 234 | المبيعات: 42</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">2,100 ر.س</span>
+                            <span class="text-sm text-gray-500">متاح: 20 قطعة</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 btn-gradient py-2 rounded-lg font-bold text-sm">تعديل</button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-gray-600">حذف</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Load supplier's offers
+            const myOffersGrid = document.getElementById('myOffersGrid');
+            if (myOffersGrid) {
+                myOffersGrid.innerHTML = `
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">عرض خاص - أجهزة الكمبيوتر</h4>
+                                <span class="badge-hot px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">خصم 20% على جميع أجهزة الكمبيوتر المحمولة</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">خصم 20%</span>
+                            <span class="text-sm text-gray-500">ينتهي خلال 5 أيام</span>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-4">
+                            المشاهدات: 89 | الطلبات: 12
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">إدارة العرض</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">عرض الجمعة البيضاء</h4>
+                                <span class="badge-hot px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">خصم يصل إلى 50% على معدات المكاتب</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">خصم 50%</span>
+                            <span class="text-sm text-gray-500">ينتهي خلال 3 أيام</span>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-4">
+                            المشاهدات: 156 | الطلبات: 28
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">إدارة العرض</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">عرض الكمية - الطابعات</h4>
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">خصم 15% عند شراء 10 قطع أو أكثر</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">خصم 15%</span>
+                            <span class="text-sm text-gray-500">ينتهي خلال 10 أيام</span>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-4">
+                            المشاهدات: 67 | الطلبات: 8
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">إدارة العرض</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">عرض نهاية الموسم</h4>
+                                <span class="badge-new px-3 py-1 rounded-full text-xs font-bold">جديد</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">تخفيضات على أجهزة التكييف والتبريد</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">خصم 25%</span>
+                            <span class="text-sm text-gray-500">ينتهي خلال 7 أيام</span>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-4">
+                            المشاهدات: 134 | الطلبات: 19
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">إدارة العرض</button>
+                    </div>
+                `;
+            }
+            
+            // Load merchant requests
+            const merchantRequestsGrid = document.getElementById('merchantRequestsGrid');
+            if (merchantRequestsGrid) {
+                merchantRequestsGrid.innerHTML = `
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                ت
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">شركة التجارة الذكية</h4>
+                                <span class="text-xs text-gray-500">منذ ساعتين</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">طلب شراء: 50 جهاز كمبيوتر محمول للشركة</p>
+                        <div class="mb-4">
+                            <span class="text-lg font-bold text-emerald-600">الميزانية: 125,000 ر.س</span>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">تقديم عرض</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                م
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">مجموعة الأعمال الحديثة</h4>
+                                <span class="text-xs text-gray-500">منذ 4 ساعات</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">طلب شراء: أثاث مكتبي لمقر جديد (200 قطعة)</p>
+                        <div class="mb-4">
+                            <span class="text-lg font-bold text-emerald-600">الميزانية: 180,000 ر.س</span>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">تقديم عرض</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                ر
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">رواد المطاعم</h4>
+                                <span class="text-xs text-gray-500">منذ يوم واحد</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">طلب شراء: معدات مطبخ احترافية لسلسلة مطاعم</p>
+                        <div class="mb-4">
+                            <span class="text-lg font-bold text-emerald-600">الميزانية: 250,000 ر.س</span>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">تقديم عرض</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                س
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">شركة البناء السعودية</h4>
+                                <span class="text-xs text-gray-500">منذ 6 ساعات</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">طلب شراء: أدوات البناء والمعدات الثقيلة</p>
+                        <div class="mb-4">
+                            <span class="text-lg font-bold text-emerald-600">الميزانية: 500,000 ر.س</span>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">تقديم عرض</button>
+                    </div>
+                `;
+            }
+        }
+        
+        function loadMerchantContent() {
+            // Load merchant's purchase requests
+            const myRequestsGrid = document.getElementById('myRequestsGrid');
+            if (myRequestsGrid) {
+                myRequestsGrid.innerHTML = `
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">طلب شراء أجهزة كمبيوتر</h4>
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">50 جهاز كمبيوتر محمول للمكاتب</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">125,000 ر.س</span>
+                            <span class="text-sm text-gray-500">العروض المستلمة: 8</span>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">عرض التفاصيل</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">طلب شراء أثاث مكتبي</h4>
+                                <span class="badge-hot px-3 py-1 rounded-full text-xs font-bold">عاجل</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">أثاث كامل لمقر الشركة الجديد</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">180,000 ر.س</span>
+                            <span class="text-sm text-gray-500">العروض المستلمة: 12</span>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">عرض التفاصيل</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">طلب شراء أجهزة تكييف</h4>
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">20 وحدة تكييف لمبنى إداري</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">85,000 ر.س</span>
+                            <span class="text-sm text-gray-500">العروض المستلمة: 5</span>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">عرض التفاصيل</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">طلب شراء معدات مطبخ</h4>
+                                <span class="badge-new px-3 py-1 rounded-full text-xs font-bold">جديد</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">معدات مطبخ احترافية لمطعم جديد</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">95,000 ر.س</span>
+                            <span class="text-sm text-gray-500">العروض المستلمة: 3</span>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">عرض التفاصيل</button>
+                    </div>
+                `;
+            }
+            
+            // Load available suppliers
+            const availableSuppliersGrid = document.getElementById('availableSuppliersGrid');
+            if (availableSuppliersGrid) {
+                availableSuppliersGrid.innerHTML = `
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                ش
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">شركة التقنية المتقدمة</h4>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                                    <span class="text-gray-600 text-sm mr-2">(4.8)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">150+ منتج متاح | إلكترونيات ومعدات مكتبية</p>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">عرض المنتجات</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                م
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">مصنع الأثاث الحديث</h4>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                                    <span class="text-gray-600 text-sm mr-2">(4.7)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">200+ منتج متاح | أثاث مكتبي ومنزلي</p>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">عرض المنتجات</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                ت
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">توريد معدات التبريد</h4>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                                    <span class="text-gray-600 text-sm mr-2">(4.6)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">89+ منتج متاح | أجهزة تكييف وتبريد</p>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">عرض المنتجات</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                ط
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">معرض المطابخ الاحترافية</h4>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                                    <span class="text-gray-600 text-sm mr-2">(4.9)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">125+ منتج متاح | معدات مطابخ احترافية</p>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">عرض المنتجات</button>
+                    </div>
+                `;
+            }
+            
+            // Load browse products
+            const browseProductsGrid = document.getElementById('browseProductsGrid');
+            if (browseProductsGrid) {
+                browseProductsGrid.innerHTML = `
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 left-2">
+                                <span class="badge-hot px-3 py-1 rounded-full text-xs font-bold">عرض ساخن</span>
+                            </div>
+                            <div class="absolute top-2 right-2">
+                                <button class="w-8 h-8 bg-white/80 rounded-full flex items-center justify-center text-gray-600 hover:bg-white hover:text-red-500">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">جهاز كمبيوتر محمول Dell</h4>
+                        <p class="text-gray-600 text-sm mb-3">من: شركة التقنية المتقدمة</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">2,500 ر.س</span>
+                            <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">طلب عرض سعر</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1541746972996-4e0b0f93e586?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 right-2">
+                                <button class="w-8 h-8 bg-white/80 rounded-full flex items-center justify-center text-gray-600 hover:bg-white hover:text-red-500">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">كراسي مكتبية فاخرة</h4>
+                        <p class="text-gray-600 text-sm mb-3">من: مصنع الأثاث الحديث</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">750 ر.س</span>
+                            <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">طلب عرض سعر</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 left-2">
+                                <span class="badge-new px-3 py-1 rounded-full text-xs font-bold">جديد</span>
+                            </div>
+                            <div class="absolute top-2 right-2">
+                                <button class="w-8 h-8 bg-white/80 rounded-full flex items-center justify-center text-gray-600 hover:bg-white hover:text-red-500">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">مكيف هواء Samsung</h4>
+                        <p class="text-gray-600 text-sm mb-3">من: توريد معدات التبريد</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">2,100 ر.س</span>
+                            <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">طلب عرض سعر</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 right-2">
+                                <button class="w-8 h-8 bg-white/80 rounded-full flex items-center justify-center text-gray-600 hover:bg-white hover:text-red-500">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">معدات مطبخ احترافية</h4>
+                        <p class="text-gray-600 text-sm mb-3">من: معرض المطابخ الاحترافية</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">5,200 ر.س</span>
+                            <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">طلب عرض سعر</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 left-2">
+                                <span class="badge-hot px-3 py-1 rounded-full text-xs font-bold">الأكثر طلباً</span>
+                            </div>
+                            <div class="absolute top-2 right-2">
+                                <button class="w-8 h-8 bg-white/80 rounded-full flex items-center justify-center text-gray-600 hover:bg-white hover:text-red-500">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">طابعة ليزر HP</h4>
+                        <p class="text-gray-600 text-sm mb-3">من: شركة التقنية المتقدمة</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">1,800 ر.س</span>
+                            <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">طلب عرض سعر</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1616627188540-3c9e31df4aba?w=300&h=200&fit=crop" alt="منتج" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute top-2 right-2">
+                                <button class="w-8 h-8 bg-white/80 rounded-full flex items-center justify-center text-gray-600 hover:bg-white hover:text-red-500">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">أدوات البناء المتطورة</h4>
+                        <p class="text-gray-600 text-sm mb-3">من: مؤسسة البناء الذكي</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-emerald-600">3,450 ر.س</span>
+                            <div class="flex text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">طلب عرض سعر</button>
+                    </div>
+                `;
+            }
+        }
+        
+        function loadShippingContent() {
+            // Load shipping services
+            const myServicesGrid = document.getElementById('myServicesGrid');
+            if (myServicesGrid) {
+                myServicesGrid.innerHTML = `
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">الشحن السريع داخل المدينة</h4>
+                            <p class="text-gray-600 text-sm">توصيل خلال 24 ساعة</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">24 ساعة</div>
+                                <div class="text-gray-500">وقت التسليم</div>
+                            </div>
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">15 ر.س</div>
+                                <div class="text-gray-500">السعر الأساسي</div>
+                            </div>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">تعديل الخدمة</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">الشحن بين المدن</h4>
+                            <p class="text-gray-600 text-sm">توصيل خلال 2-3 أيام</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">2-3 أيام</div>
+                                <div class="text-gray-500">وقت التسليم</div>
+                            </div>
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">25 ر.س</div>
+                                <div class="text-gray-500">السعر الأساسي</div>
+                            </div>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">تعديل الخدمة</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">الشحن السريع VIP</h4>
+                            <p class="text-gray-600 text-sm">توصيل خلال 12 ساعة</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">12 ساعة</div>
+                                <div class="text-gray-500">وقت التسليم</div>
+                            </div>
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">35 ر.س</div>
+                                <div class="text-gray-500">السعر الأساسي</div>
+                            </div>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">تعديل الخدمة</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">شحن البضائع الثقيلة</h4>
+                            <p class="text-gray-600 text-sm">للبضائع أكثر من 100 كيلو</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">3-5 أيام</div>
+                                <div class="text-gray-500">وقت التسليم</div>
+                            </div>
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">2 ر.س/كيلو</div>
+                                <div class="text-gray-500">السعر</div>
+                            </div>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">تعديل الخدمة</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">التوصيل المبرد</h4>
+                            <p class="text-gray-600 text-sm">للمنتجات التي تحتاج تبريد</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">24 ساعة</div>
+                                <div class="text-gray-500">وقت التسليم</div>
+                            </div>
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">45 ر.س</div>
+                                <div class="text-gray-500">السعر الأساسي</div>
+                            </div>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">تعديل الخدمة</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">الشحن الدولي</h4>
+                            <p class="text-gray-600 text-sm">للدول المجاورة</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">5-7 أيام</div>
+                                <div class="text-gray-500">وقت التسليم</div>
+                            </div>
+                            <div class="text-center p-2 bg-gray-50 rounded">
+                                <div class="font-bold text-emerald-600">120 ر.س</div>
+                                <div class="text-gray-500">السعر الأساسي</div>
+                            </div>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">تعديل الخدمة</button>
+                    </div>
+                `;
+            }
+            
+            // Load shipping requests
+            const shippingRequestsGrid = document.getElementById('shippingRequestsGrid');
+            if (shippingRequestsGrid) {
+                shippingRequestsGrid.innerHTML = `
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                ت
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">شركة التجارة الذكية</h4>
+                                <span class="text-xs text-gray-500">منذ 30 دقيقة</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">طلب شحن: 50 صندوق من الرياض إلى جدة</p>
+                        <div class="mb-4">
+                            <span class="text-lg font-bold text-emerald-600">الوزن: 500 كيلو</span>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">تقديم عرض سعر</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                م
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">مجموعة الأعمال الحديثة</h4>
+                                <span class="text-xs text-gray-500">منذ ساعة واحدة</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">طلب شحن: أثاث مكتبي من الدمام إلى الرياض</p>
+                        <div class="mb-4">
+                            <span class="text-lg font-bold text-emerald-600">الوزن: 1200 كيلو</span>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">تقديم عرض سعر</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                ر
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">رواد المطاعم</h4>
+                                <span class="text-xs text-gray-500">منذ 2 ساعة</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">طلب شحن مبرد: مواد غذائية من الرياض إلى جدة</p>
+                        <div class="mb-4">
+                            <span class="text-lg font-bold text-emerald-600">الوزن: 300 كيلو</span>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">تقديم عرض سعر</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                س
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">شركة البناء السعودية</h4>
+                                <span class="text-xs text-gray-500">منذ 3 ساعات</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">طلب شحن عاجل: أدوات بناء من الرياض إلى أبها</p>
+                        <div class="mb-4">
+                            <span class="text-lg font-bold text-emerald-600">الوزن: 2000 كيلو</span>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">تقديم عرض سعر</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                ع
+                            </div>
+                            <div class="mr-4">
+                                <h4 class="font-bold text-gray-800">شركة العطور الفاخرة</h4>
+                                <span class="text-xs text-gray-500">منذ 4 ساعات</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">طلب شحن دولي: عطور إلى الإمارات والكويت</p>
+                        <div class="mb-4">
+                            <span class="text-lg font-bold text-emerald-600">الوزن: 150 كيلو</span>
+                        </div>
+                        <button class="w-full btn-gradient py-2 rounded-lg font-bold text-sm">تقديم عرض سعر</button>
+                    </div>
+                `;
+            }
+            
+            // Load shipping quotes
+            const myQuotesGrid = document.getElementById('myQuotesGrid');
+            if (myQuotesGrid) {
+                myQuotesGrid.innerHTML = `
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">عرض شحن إلى جدة</h4>
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">مرسل</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">شحن 50 صندوق للشركة التجارية</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">2,500 ر.س</span>
+                            <span class="text-sm text-gray-500">خلال 3 أيام</span>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">عرض التفاصيل</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">عرض شحن أثاث مكتبي</h4>
+                                <span class="badge-hot px-3 py-1 rounded-full text-xs font-bold">مقبول</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">شحن أثاث من الدمام إلى الرياض</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">4,200 ر.س</span>
+                            <span class="text-sm text-gray-500">خلال 2 أيام</span>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">عرض التفاصيل</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">عرض شحن مبرد</h4>
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">مرسل</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">شحن مواد غذائية مبردة</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">1,800 ر.س</span>
+                            <span class="text-sm text-gray-500">خلال 24 ساعة</span>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">عرض التفاصيل</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">عرض شحن عاجل</h4>
+                                <span class="badge-new px-3 py-1 rounded-full text-xs font-bold">جديد</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">شحن أدوات بناء عاجل</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">6,500 ر.س</span>
+                            <span class="text-sm text-gray-500">خلال يوم واحد</span>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">عرض التفاصيل</button>
+                    </div>
+                    
+                    <div class="product-card card-enhanced p-6">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800">عرض شحن دولي</h4>
+                                <span class="badge-verified px-3 py-1 rounded-full text-xs font-bold">مرسل</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">شحن عطور إلى الإمارات</p>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-600">3,200 ر.س</span>
+                            <span class="text-sm text-gray-500">خلال 5 أيام</span>
+                        </div>
+                        <button class="w-full btn-secondary py-2 rounded-lg font-bold text-sm">عرض التفاصيل</button>
+                    </div>
+                `;
+            }
+        }
+        
+        function initializeUserTypeEventListeners() {
+            // Add event listeners for interactive elements
+            const gridView = document.getElementById('gridView');
+            const listView = document.getElementById('listView');
+            const sortSelect = document.getElementById('sortSelect');
+            
+            if (gridView) {
+                gridView.addEventListener('click', function() {
+                    setViewMode('grid');
+                });
+            }
+            
+            if (listView) {
+                listView.addEventListener('click', function() {
+                    setViewMode('list');
+                });
+            }
+            
+            if (sortSelect) {
+                sortSelect.addEventListener('change', function() {
+                    sortContent(this.value);
+                });
+            }
+        }
+        
+        function switchTab(tabId) {
+            // Remove active class from all tabs
+            document.querySelectorAll('#userTypeTabs .filter-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            const clickedTab = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedTab) {
+                clickedTab.classList.add('active');
+            }
+            
+            // Show appropriate content based on tab
+            console.log('Switching to tab:', tabId);
+        }
+        
+        function filterByCategory(category) {
+            console.log('Filtering by category:', category);
+        }
+        
+        function setViewMode(mode) {
+            const gridView = document.getElementById('gridView');
+            const listView = document.getElementById('listView');
+            
+            if (!gridView || !listView) return;
+            
+            if (mode === 'grid') {
+                gridView.classList.add('bg-emerald-500', 'text-white');
+                gridView.classList.remove('bg-gray-100', 'text-gray-600');
+                listView.classList.add('bg-gray-100', 'text-gray-600');
+                listView.classList.remove('bg-emerald-500', 'text-white');
+            } else {
+                listView.classList.add('bg-emerald-500', 'text-white');
+                listView.classList.remove('bg-gray-100', 'text-gray-600');
+                gridView.classList.add('bg-gray-100', 'text-gray-600');
+                gridView.classList.remove('bg-emerald-500', 'text-white');
+            }
+        }
+        
+        function sortContent(sortBy) {
+            console.log('Sorting by:', sortBy);
+        }
+        
+        // Functions for supplier actions
+        window.addNewProduct = function() {
+            alert('إضافة منتج جديد - سيتم تطوير هذه الوظيفة لاحقاً');
+        }
+        
+        window.createNewOffer = function() {
+            alert('إنشاء عرض جديد - سيتم تطوير هذه الوظيفة لاحقاً');
+        }
+        
+        // Functions for merchant actions
+        window.createPurchaseRequest = function() {
+            alert('إنشاء طلب شراء - سيتم تطوير هذه الوظيفة لاحقاً');
+        }
+        
+        // Functions for shipping company actions
+        window.addNewService = function() {
+            alert('إضافة خدمة جديدة - سيتم تطوير هذه الوظيفة لاحقاً');
+        }
+        
+        window.createShippingQuote = function() {
+            alert('إنشاء عرض سعر شحن - سيتم تطوير هذه الوظيفة لاحقاً');
+        }
+        
+        // Auto-initialize on page load
+        if (window.currentUserType) {
+            window.initializeSmartMarket(window.currentUserType);
+        }
+    </script>
+    
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</body>
+</html>

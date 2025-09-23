@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { Store, Factory, Truck, User, Lock } from 'lucide-react';
@@ -166,6 +166,7 @@ const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
                   {loading ? 'جارٍ...' : 'تسجيل الدخول'}
                 </Button>
               </div>
+              
               <div className="mt-2 text-sm text-center">
                 <button type="button" className="text-blue-600 hover:underline" onClick={() => onShowRequestReset && onShowRequestReset()}>نسيت كلمة المرور؟</button>
                 <span className="mx-2">|</span>

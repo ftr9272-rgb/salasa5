@@ -16,22 +16,24 @@ import {
   Bell,
   Menu,
   X,
-  LogOut
+  LogOut,
+  Store
 } from 'lucide-react';
 
-const MerchantLayout = ({ children, activeTab, setActiveTab, onLogout, onGoToMarketplace }) => {
+const MerchantLayout = ({ children, activeTab, setActiveTab, onLogout }) => {
   // Sidebar always visible
 
   const navItems = [
     { id: 'dashboard', name: 'لوحة التحكم', icon: Home },
-    { id: 'suppliers', name: 'تصفح الموردين', icon: Users },
-    { id: 'favorites', name: 'الموردين المفضلين', icon: Star },
+    { id: 'suppliers', name: 'الموردين', icon: Users },
+    { id: 'products', name: 'المنتجات', icon: Package },
     { id: 'quotation-requests', name: 'طلبات عروض الأسعار', icon: FileText },
     { id: 'received-quotations', name: 'عروض الأسعار المستلمة', icon: DollarSign },
     { id: 'purchase-orders', name: 'طلبات الشراء', icon: ShoppingCart },
-    { id: 'payments', name: 'المدفوعات', icon: DollarSign },
     { id: 'shipping-companies', name: 'شركات الشحن', icon: Truck },
-    { id: 'shipping-quotes', name: 'عروض الشحن', icon: Package },
+    { id: 'shipping-quotes', name: 'عروض الشحن', icon: Truck },
+    { id: 'favorites', name: 'المفضلة', icon: Star },
+    { id: 'payments', name: 'المدفوعات', icon: DollarSign },
     { id: 'reports', name: 'التقارير', icon: FileText },
     { id: 'profile', name: 'الملف الشخصي', icon: User },
     { id: 'settings', name: 'الإعدادات', icon: Settings },
@@ -110,11 +112,13 @@ const MerchantLayout = ({ children, activeTab, setActiveTab, onLogout, onGoToMar
               <h1 className="text-2xl font-bold text-gray-900">
                 {navItems.find(item => item.id === activeTab)?.name || 'لوحة التحكم'}
               </h1>
+                {/* Debug badge to show current activeTab during testing */}
+                <span className="ml-3 inline-block px-2 py-1 text-xs rounded-md bg-yellow-100 text-yellow-800 border border-yellow-200">tab: {activeTab}</span>
             </div>
             
             <div className="flex items-center gap-4">
               <motion.button
-                onClick={onGoToMarketplace}
+                onClick={() => setActiveTab('marketplace')}
                 className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

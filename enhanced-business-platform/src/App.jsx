@@ -89,8 +89,12 @@ function App() {
     switch (activeTab) {
       case 'dashboard':
         return <MerchantDashboard />;
+      case 'marketplace':
+        return <SmartMarketplace userType={userType} />;
       case 'suppliers':
         return <MerchantSuppliers />;
+      case 'products':
+        return <MerchantSupplierProducts />;
       case 'supplier-products':
         return <MerchantSupplierProducts />;
       case 'favorites':
@@ -124,6 +128,8 @@ function App() {
     switch (activeTab) {
       case 'dashboard':
         return <SupplierDashboard />;
+      case 'marketplace':
+        return <SmartMarketplace userType={userType} />;
       case 'products':
         return <SupplierProducts />;
       case 'orders':
@@ -153,6 +159,8 @@ function App() {
     switch (activeTab) {
       case 'dashboard':
         return <ShippingDashboard />;
+      case 'marketplace':
+        return <SmartMarketplace userType={userType} />;
       case 'shipments':
         return <ShippingShipments />;
       case 'drivers':
@@ -182,7 +190,6 @@ function App() {
             activeTab={activeTab} 
             setActiveTab={setActiveTab}
             onLogout={handleLogout}
-            onGoToMarketplace={handleGoToMarketplace}
           >
             {renderMerchantContent()}
           </MerchantLayout>
@@ -193,7 +200,6 @@ function App() {
             activeTab={activeTab} 
             setActiveTab={setActiveTab}
             onLogout={handleLogout}
-            onGoToMarketplace={handleGoToMarketplace}
           >
             {renderSupplierContent()}
           </SupplierLayout>
@@ -204,7 +210,6 @@ function App() {
             activeTab={activeTab} 
             setActiveTab={setActiveTab}
             onLogout={handleLogout}
-            onGoToMarketplace={handleGoToMarketplace}
           >
             {renderShippingContent()}
           </ShippingLayout>
@@ -215,7 +220,6 @@ function App() {
             activeTab={activeTab} 
             setActiveTab={setActiveTab}
             onLogout={handleLogout}
-            onGoToMarketplace={handleGoToMarketplace}
           >
             {renderMerchantContent()}
           </MerchantLayout>

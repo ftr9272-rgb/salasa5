@@ -79,7 +79,7 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 font-cairo overflow-hidden">
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 font-cairo">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/5 to-green-600/10"></div>
@@ -88,7 +88,7 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
         <div className="absolute -left-24 -top-24 w-96 h-96 bg-gradient-to-br from-pink-400 to-yellow-400 rounded-full opacity-30 blur-3xl animate-blob"></div>
         <div className="absolute -right-24 top-56 w-72 h-72 bg-gradient-to-br from-indigo-400 to-teal-400 rounded-full opacity-25 blur-3xl animate-blob animation-delay-2000"></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -177,29 +177,16 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
           </motion.div>
         </div>
       </section>
-      {/* Testimonial card overlay */}
-      <div className="testimonial-overlay fixed right-8 top-40 z-40">
-        <div className="bg-white rounded-2xl p-4 shadow-2xl glass-effect w-80">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 flex items-center justify-center text-white font-bold">ع</div>
-            <div>
-              <div className="font-semibold">علي الحربي</div>
-              <div className="text-xs text-gray-500">مدير مشتريات - شركة النور</div>
-            </div>
-          </div>
-          <p className="text-sm text-gray-700 mt-3">"منصة أعمالي حسّنت عمليات الشراء لدينا وقلّلت تكلفة الشحن بنسبة 18% خلال الشهر الأول"</p>
-        </div>
-      </div>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               لماذا تختار <span className="text-blue-600">منصة أعمالي</span>؟
@@ -237,14 +224,14 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
       </section>
 
       {/* User Types Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               اختر <span className="text-blue-600">دورك</span> وابدأ النجاح
@@ -299,7 +286,7 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-green-600">
+      <section className="py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-green-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -340,7 +327,7 @@ const LandingPage = ({ onGetStarted, onGoToMarketplace }) => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h3 className="text-2xl font-bold mb-4">منصة أعمالي</h3>

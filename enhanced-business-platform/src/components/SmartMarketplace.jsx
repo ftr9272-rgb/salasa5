@@ -1,498 +1,822 @@
-import React, { useState, useEffect } from 'react';
-// motion is used via JSX tags (e.g. <motion.div />); ESLint's no-unused-vars may false-positive here
-// eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { 
+  Search, 
+  Filter, 
+  Grid3X3, 
+  List, 
+  Heart, 
+  Shuffle, 
+  Star,
+  Package,
+  Building2,
+  Truck,
+  Zap,
+  Smartphone,
+  Shirt,
+  Coffee,
+  Home,
+  Car,
+  Dumbbell,
+  Briefcase,
+  User,
+  UserCog,
+  ShoppingCart,
+  Bell,
+  Moon,
+  ArrowLeft,
+  Factory,
+  MessageCircle,
+  Phone,
+  FileText,
+  Share2,
+  Calendar,
+  MapPin,
+  Plus,
+  Users,
+  Handshake,
+  Building,
+  TruckIcon,
+  Store
+} from 'lucide-react';
 
 const SmartMarketplace = ({ userType, onBack }) => {
-  const [activeView, setActiveView] = useState(userType || 'merchant');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [viewMode, setViewMode] = useState('grid');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [showPartnerModal, setShowPartnerModal] = useState(false);
+  const [selectedPartnerType, setSelectedPartnerType] = useState('');
+  const [partnerName, setPartnerName] = useState('');
+  const [partnerContact, setPartnerContact] = useState('');
 
-  const switchUserType = (type) => {
-    setActiveView(type);
+  // استخدام userType من props مباشرة
+  const currentUserType = userType || 'merchant';
+
+  // Enhanced Categories Data
+  const categories = [
+    { id: 'all', name: 'جميع الفئات', count: '1000+', icon: Package },
+    { id: 'electronics', name: 'الإلكترونيات', count: '245+', icon: Smartphone },
+    { id: 'industrial', name: 'الصناعية', count: '180+', icon: Factory },
+    { id: 'textiles', name: 'الأقمشة والنسيج', count: '320+', icon: Shirt },
+    { id: 'medical', name: 'الطبية', count: '150+', icon: Heart },
+    { id: 'automotive', name: 'السيارات', count: '200+', icon: Car },
+    { id: 'construction', name: 'البناء والتشييد', count: '120+', icon: Home },
+    { id: 'services', name: 'الخدمات', count: '90+', icon: Truck }
+  ];
+
+  const userTypes = [
+    { id: 'supplier', name: 'مورد', icon: Building2 },
+    { id: 'merchant', name: 'تاجر', icon: ShoppingCart },
+    { id: 'shipping', name: 'شركة شحن', icon: Truck }
+  ];
+
+  const partnerTypes = [
+    { id: 'supplier', name: 'مورد معتمد', icon: Building },
+    { id: 'merchant', name: 'تاجر موثوق', icon: Store },
+    { id: 'shipping', name: 'شركة شحن', icon: TruckIcon },
+    { id: 'distributor', name: 'موزع', icon: Package },
+    { id: 'manufacturer', name: 'مصنع', icon: Factory },
+    { id: 'service_provider', name: 'مزود خدمة', icon: Handshake }
+  ];
+
+  // Products organized by user type
+  const userSpecificData = {
+    supplier: {
+      products: [
+        {
+          id: 5,
+          name: 'عرض منتجات التصنيع المتطورة',
+          supplier: 'مصنع الدقة الصناعية',
+          price: '8,500',
+          rating: 4.9,
+          image: 'https://images.unsplash.com/photo-1565792668941-c1a5e9c6ce83?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'عرض مورد',
+          userType: 'supplier',
+          category: 'industrial'
+        },
+        {
+          id: 6,
+          name: 'منتج جديد - مواد خام متقدمة',
+          supplier: 'موردي المواد الأساسية',
+          price: '2,100',
+          rating: 4.7,
+          image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'منتج جديد',
+          userType: 'supplier',
+          category: 'electronics'
+        },
+        {
+          id: 11,
+          name: 'أقمشة فاخرة للمصانع',
+          supplier: 'مصانع النسيج الحديثة',
+          price: '1,200',
+          rating: 4.5,
+          image: 'https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'جودة عالية',
+          userType: 'supplier',
+          category: 'textiles'
+        },
+        {
+          id: 12,
+          name: 'معدات طبية متخصصة',
+          supplier: 'الشركة الطبية المتقدمة',
+          price: '15,000',
+          rating: 4.9,
+          image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'معتمد طبياً',
+          userType: 'supplier',
+          category: 'medical'
+        },
+        {
+          id: 13,
+          name: 'مكونات السيارات الأصلية',
+          supplier: 'قطع غيار السيارات',
+          price: '3,500',
+          rating: 4.6,
+          image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'أصلي',
+          userType: 'supplier',
+          category: 'automotive'
+        },
+        {
+          id: 14,
+          name: 'أدوات البناء المتطورة',
+          supplier: 'شركة البناء الذكية',
+          price: '5,800',
+          rating: 4.8,
+          image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'متين',
+          userType: 'supplier',
+          category: 'construction'
+        }
+      ]
+    },
+    merchant: {
+      products: [
+        {
+          id: 7,
+          name: 'طلب شراء - نظام نقاط بيع',
+          supplier: 'مطلوب من التجار',
+          price: '4,200',
+          rating: 4.8,
+          image: 'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'طلب شراء',
+          userType: 'merchant',
+          category: 'electronics'
+        },
+        {
+          id: 8,
+          name: 'طلب شحن - حلول الدفع',
+          supplier: 'يحتاج خدمة شحن',
+          price: '1,800',
+          rating: 4.6,
+          image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'طلب شحن',
+          userType: 'merchant',
+          category: 'services'
+        },
+        {
+          id: 15,
+          name: 'طلب شراء - أجهزة صناعية',
+          supplier: 'التاجر المحترف',
+          price: '12,000',
+          rating: 4.7,
+          image: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'طلب عاجل',
+          userType: 'merchant',
+          category: 'industrial'
+        },
+        {
+          id: 16,
+          name: 'طلب ملابس بالجملة',
+          supplier: 'متجر الأزياء الكبير',
+          price: '8,500',
+          rating: 4.4,
+          image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'بالجملة',
+          userType: 'merchant',
+          category: 'textiles'
+        },
+        {
+          id: 17,
+          name: 'طلب معدات طبية',
+          supplier: 'صيدلية الحي',
+          price: '6,200',
+          rating: 4.8,
+          image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'مستعجل',
+          userType: 'merchant',
+          category: 'medical'
+        },
+        {
+          id: 18,
+          name: 'طلب قطع سيارات',
+          supplier: 'ورشة السيارات الحديثة',
+          price: '2,900',
+          rating: 4.5,
+          image: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'ضروري',
+          userType: 'merchant',
+          category: 'automotive'
+        }
+      ]
+    },
+    shipping: {
+      products: [
+        {
+          id: 9,
+          name: 'عرض خدمة شحن سريع',
+          supplier: 'أسطول النقل المتطور',
+          price: '85',
+          rating: 4.9,
+          image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'عرض خدمة',
+          userType: 'shipping',
+          category: 'services'
+        },
+        {
+          id: 10,
+          name: 'خدمة تتبع متطورة',
+          supplier: 'تقنيات التتبع الذكية',
+          price: '32',
+          rating: 4.8,
+          image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'خدمة مميزة',
+          userType: 'shipping',
+          category: 'electronics'
+        },
+        {
+          id: 19,
+          name: 'شحن المعدات الثقيلة',
+          supplier: 'شركة الشحن الصناعي',
+          price: '450',
+          rating: 4.7,
+          image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'شحن ثقيل',
+          userType: 'shipping',
+          category: 'industrial'
+        },
+        {
+          id: 20,
+          name: 'توصيل الأدوية الطبية',
+          supplier: 'خدمة التوصيل الطبي',
+          price: '25',
+          rating: 4.9,
+          image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'سري ومؤمن',
+          userType: 'shipping',
+          category: 'medical'
+        },
+        {
+          id: 21,
+          name: 'نقل السيارات',
+          supplier: 'شاحنات نقل السيارات',
+          price: '320',
+          rating: 4.6,
+          image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'نقل آمن',
+          userType: 'shipping',
+          category: 'automotive'
+        },
+        {
+          id: 22,
+          name: 'شحن المواد الحساسة',
+          supplier: 'النقل المتخصص',
+          price: '180',
+          rating: 4.8,
+          image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+          badge: 'حساس',
+          userType: 'shipping',
+          category: 'textiles'
+        }
+      ]
+    }
   };
 
-  const [supplierQuery, setSupplierQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-
-  useEffect(() => {
-    const t = setTimeout(() => setDebouncedQuery(supplierQuery.trim().toLowerCase()), 300);
-    return () => clearTimeout(t);
-  }, [supplierQuery]);
-
-  const fadeIn = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
+  // منطق عرض المنتجات حسب نوع المستخدم
+  const getAllProductsForUser = () => {
+    if (currentUserType === 'shipping') {
+      // شركات الشحن ترى فقط طلبات الشحن من التجار
+      return userSpecificData.merchant.products.filter(product => 
+        product.badge === 'طلب شحن' || product.name.includes('شحن')
+      );
+    } else {
+      // التجار والموردون يرون جميع المنتجات
+      return [
+        ...userSpecificData.supplier.products,
+        ...userSpecificData.merchant.products,
+        ...userSpecificData.shipping.products
+      ];
+    }
   };
+
+  const allProducts = getAllProductsForUser();
+  const currentProducts = selectedCategory === 'all' 
+    ? allProducts 
+    : allProducts.filter(product => product.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-white font-cairo" dir="rtl">
+      {/* Enhanced Header */}
+      <header className="bg-white shadow-lg relative overflow-hidden border-b-2 border-gray-100">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Back Button */}
+            <button
+              onClick={onBack}
+              className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span className="hidden sm:inline">العودة</span>
+            </button>
+
+            {/* Logo & Brand */}
             <div className="flex items-center gap-4">
-              <button
-                onClick={onBack}
-                className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-                </svg>
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Briefcase className="text-white w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">السوق الذكي</h1>
-                <p className="text-white/80 text-sm">اكتشف الفرص التجارية المناسبة لك</p>
+                <h1 className="text-xl font-black text-gray-800">أعمالي</h1>
+                <p className="text-xs text-gray-600">منصة الأعمال الاحترافية</p>
               </div>
             </div>
             
-            {/* User Type Selector */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => switchUserType('merchant')}
-                className={`px-4 py-2 rounded-lg transition-all text-sm font-medium ${
-                  activeView === 'merchant' ? 'bg-white/30' : 'bg-white/10 hover:bg-white/20'
-                }`}
-              >
-                تاجر التجزئة
+            {/* Navigation Links */}
+            <nav className="hidden md:flex items-center gap-2">
+              <button className="nav-link active bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-semibold">السوق</button>
+              <button className="nav-link text-gray-600 hover:text-blue-600 px-4 py-2 rounded-lg transition-colors">الموردون</button>
+              <button className="nav-link text-gray-600 hover:text-blue-600 px-4 py-2 rounded-lg transition-colors">التجار</button>
+              <button className="nav-link text-gray-600 hover:text-blue-600 px-4 py-2 rounded-lg transition-colors">الشحن</button>
+            </nav>
+            
+            {/* Action Buttons & User Profile */}
+            <div className="flex items-center gap-4">
+              {/* User Type Indicator */}
+              <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+                <User className="w-4 h-4 text-blue-600" />
+                <span className="text-sm font-medium text-blue-700">
+                  {userTypes.find(u => u.id === currentUserType)?.name}
+                </span>
+              </div>
+              
+              <button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                <Moon className="w-5 h-5 text-gray-600" />
               </button>
-              <button
-                onClick={() => switchUserType('supplier')}
-                className={`px-4 py-2 rounded-lg transition-all text-sm font-medium ${
-                  activeView === 'supplier' ? 'bg-white/30' : 'bg-white/10 hover:bg-white/20'
-                }`}
-              >
-                مورد
+              
+              <button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors relative">
+                <Bell className="w-5 h-5 text-gray-600" />
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full text-xs text-white flex items-center justify-center">2</span>
               </button>
-              <button
-                onClick={() => switchUserType('shipping')}
-                className={`px-4 py-2 rounded-lg transition-all text-sm font-medium ${
-                  activeView === 'shipping' ? 'bg-white/30' : 'bg-white/10 hover:bg-white/20'
-                }`}
-              >
-                شركة شحن
-              </button>
+              
+              <div className="flex items-center gap-3 bg-gray-100 rounded-full px-4 py-2">
+                <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center">
+                  <span className="text-blue-600 font-bold text-sm">أ</span>
+                </div>
+                <span className="hidden sm:inline text-white font-medium">أحمد</span>
+              </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-6 py-8">
-        {/* Merchant View */}
-        {activeView === 'merchant' && (
-          <motion.div {...fadeIn}>
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">مرحباً بك في السوق</h2>
-              <p className="text-gray-600">اكتشف أفضل الموردين والمنتجات وخدمات الشحن</p>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Compact Hero Section */}
+        <section className="relative mb-12 rounded-2xl overflow-hidden bg-white shadow-lg border border-gray-200">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50"></div>
+          <div className="relative px-6 py-12 text-center">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6 tracking-tight text-slate-900">
+              منصة أعمالي - السوق الذكي
+            </h1>
+            <p className="text-lg mb-8 text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              منصة متطورة تجمع كبار الموردين والتجار وشركات الشحن المعتمدة
+            </p>
+            
+            {/* Advanced Search Bar */}
+            <div className="mb-8 max-w-xl mx-auto">
+              <div className="relative">
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="ابحث عن المنتجات، الموردين، أو الخدمات..."
+                  className="block w-full pr-10 pl-4 py-3 border border-gray-300 rounded-xl text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm"
+                />
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                  <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+                    بحث
+                  </button>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-3 justify-center">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 cursor-pointer hover:bg-blue-200 transition-colors">
+                  أدوات صناعية
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 cursor-pointer hover:bg-green-200 transition-colors">
+                  شحن سريع
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 cursor-pointer hover:bg-purple-200 transition-colors">
+                  معدات طبية
+                </span>
+              </div>
             </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Suppliers Section */}
-              <div className="lg:col-span-2">
-                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                      </div>
-                      الموردين المتاحين
-                    </h3>
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm text-gray-500">24 مورد نشط</span>
-                      <input
-                        aria-label="ابحث في الموردين"
-                        placeholder="ابحث عن مورد أو فئة..."
-                        value={supplierQuery}
-                        onChange={(e) => setSupplierQuery(e.target.value)}
-                        className="text-sm px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-                      />
-                    </div>
+            
+            {/* Compact Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto">{[
+                { number: '500+', label: 'مورد معتمد', icon: '🏪', color: 'bg-gradient-to-br from-blue-50 to-blue-100' },
+                { number: '1000+', label: 'تاجر نشط', icon: '🛒', color: 'bg-gradient-to-br from-green-50 to-green-100' },
+                { number: '50+', label: 'شركة شحن', icon: '🚚', color: 'bg-gradient-to-br from-purple-50 to-purple-100' },
+                { number: '10K+', label: 'معاملة يومية', icon: '📊', color: 'bg-gradient-to-br from-orange-50 to-orange-100' }
+              ].map((stat, index) => (
+                <div key={index} className={`${stat.color} rounded-xl p-3 border border-gray-200 hover:border-blue-300 transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-1`}>
+                  <div className="text-center">
+                    <div className="text-lg mb-1">{stat.icon}</div>
+                    <div className="text-xl font-black text-slate-800 mb-1">{stat.number}</div>
+                    <div className="text-slate-600 text-xs font-medium">{stat.label}</div>
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {(
-                      [
-                        { name: 'مؤسسة الأصيل التجارية', category: 'إلكترونيات ومعدات', rating: 4.8, reviews: 127, products: 156, color: 'from-green-400 to-emerald-500', tags: ['توصيل سريع', 'أسعار منافسة'] },
-                        { name: 'شركة النور للمواد الغذائية', category: 'مواد غذائية ومشروبات', rating: 4.6, reviews: 89, products: 243, color: 'from-blue-400 to-indigo-500', tags: ['جودة عالية', 'خصومات كمية'] },
-                        { name: 'معرض الأناقة للملابس', category: 'ملابس وإكسسوارات', rating: 4.9, reviews: 203, products: 89, color: 'from-purple-400 to-pink-500', tags: ['أحدث الموضة', 'عروض موسمية'] },
-                        { name: 'مستودع البناء المتطور', category: 'مواد بناء وأدوات', rating: 4.7, reviews: 156, products: 312, color: 'from-orange-400 to-red-500', tags: ['مخزون كبير', 'ضمان الجودة'] }
-                      ]
-                    )
-                      .filter((s) => {
-                        if (!debouncedQuery) return true;
-                        return (
-                          s.name.toLowerCase().includes(debouncedQuery) ||
-                          s.category.toLowerCase().includes(debouncedQuery) ||
-                          s.tags.join(' ').toLowerCase().includes(debouncedQuery)
-                        );
-                      })
-                      .map((supplier, index) => (
-                        <motion.div
-                          key={index}
-                          className="border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all cursor-pointer"
-                          whileHover={{ y: -5 }}
-                        >
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className={`w-12 h-12 bg-gradient-to-r ${supplier.color} rounded-xl flex items-center justify-center text-white font-bold`}>
-                              م{index + 1}
-                            </div>
-                            <div>
-                              <h4 className="font-semibold text-gray-800">{supplier.name}</h4>
-                              <p className="text-sm text-gray-500">{supplier.category}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-between text-sm mb-3">
-                            <span className="text-green-600 font-medium">⭐ {supplier.rating} ({supplier.reviews} تقييم)</span>
-                            <span className="text-gray-500">{supplier.products} منتج</span>
-                          </div>
-                          <div className="flex gap-2 flex-wrap">
-                            {supplier.tags.map((tag, tagIndex) => (
-                              <span key={tagIndex} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        </motion.div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
+        {/* Main Content with Sidebar */}
+        <div className="flex flex-col lg:flex-row gap-6 mb-12">
+          {/* Compact Sidebar - Categories */}
+          <aside className="lg:w-72 w-full">
+            <div className="bg-white rounded-xl shadow-md border border-gray-200 p-5 sticky top-6">
+              <div className="mb-5">
+                <h3 className="text-xl font-bold text-slate-800 mb-2">
+                  فئات المنتجات
+                </h3>
+                <p className="text-sm text-slate-500">
+                  اختر الفئة المناسبة لك
+                </p>
+              </div>
+              
+              <div className="space-y-2">
+                {categories.map((category) => {
+                  const IconComponent = category.icon;
+                  const isSelected = selectedCategory === category.id;
+                  return (
+                    <div
+                      key={category.id}
+                      onClick={() => setSelectedCategory(category.id)}
+                      className={`group relative rounded-lg p-3 cursor-pointer transition-all duration-300 border ${
+                        isSelected 
+                          ? 'bg-blue-50 border-blue-200 shadow-sm' 
+                          : 'bg-slate-50 hover:bg-blue-50 border-transparent hover:border-blue-200'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-3 space-x-reverse">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 shadow-sm ${
+                          isSelected 
+                            ? 'bg-blue-600 text-white' 
+                            : 'bg-white group-hover:bg-blue-100'
+                        }`}>
+                          <IconComponent className={`w-5 h-5 transition-colors duration-300 ${
+                            isSelected 
+                              ? 'text-white' 
+                              : 'text-blue-600'
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className={`text-sm font-bold transition-colors ${
+                            isSelected 
+                              ? 'text-blue-700' 
+                              : 'text-slate-700 group-hover:text-blue-600'
+                          }`}>
+                            {category.name}
+                          </h4>
+                          <p className="text-xs text-slate-500 mt-1">{category.count} منتج</p>
+                        </div>
+                        <div className={`transition-opacity duration-300 ${
+                          isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                        }`}>
+                          <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* Filter Section */}
+              <div className="mt-6 pt-5 border-t border-slate-200">
+                <h4 className="text-lg font-bold text-slate-800 mb-4">فلترة النتائج</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-600">السعر</span>
+                    <button className="text-blue-600 text-sm font-medium hover:text-blue-700">
+                      تخصيص
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-600">التقييم</span>
+                    <div className="flex space-x-1 space-x-reverse">
+                      {[1,2,3,4,5].map(star => (
+                        <svg key={star} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
                       ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Shipping Companies */}
-              <div>
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
-                        <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1V8a1 1 0 00-1-1h-3z"/>
-                      </svg>
                     </div>
-                    شركات الشحن
-                  </h3>
-                  
-                  <div className="space-y-4">
-                    {[
-                      { name: 'شركة السرعة للنقل', description: 'توصيل سريع داخل المدينة', price: 15, time: '24 ساعة', status: 'متاح الآن', statusColor: 'green' },
-                      { name: 'مؤسسة الأمان للشحن', description: 'شحن آمن للبضائع الثقيلة', price: 25, time: '48 ساعة', status: 'مشغول', statusColor: 'orange' },
-                      { name: 'شركة الوفاء اللوجستية', description: 'شحن اقتصادي للكميات الكبيرة', price: 12, time: '72 ساعة', status: 'متاح الآن', statusColor: 'green' }
-                    ].map((company, index) => (
-                      <motion.div
-                        key={index}
-                        className="border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all cursor-pointer"
-                        whileHover={{ y: -2 }}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold text-gray-800">{company.name}</h4>
-                          <span className={`text-${company.statusColor}-600 text-sm font-medium`}>{company.status}</span>
-                        </div>
-                        <p className="text-sm text-gray-500 mb-3">{company.description}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-purple-600">{company.price} ريال</span>
-                          <span className="text-xs text-gray-500">خلال {company.time}</span>
-                        </div>
-                      </motion.div>
-                    ))}
                   </div>
                 </div>
               </div>
             </div>
-          </motion.div>
-        )}
+          </aside>
 
-        {/* Supplier View */}
-        {activeView === 'supplier' && (
-          <motion.div {...fadeIn}>
+          {/* Main Content - Products */}
+          <main className="flex-1">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">لوحة المورد</h2>
-              <p className="text-gray-600">اعرض منتجاتك واستقبل طلبات التجار</p>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h3 className="text-3xl font-bold text-slate-800">
+                    منتجات مختارة لـ {userTypes.find(u => u.id === currentUserType)?.name}
+                  </h3>
+                  <p className="text-slate-600 mt-2">
+                    {currentProducts.length} منتج متاح
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <select className="bg-white border border-slate-300 rounded-lg px-4 py-2 text-sm text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option>ترتيب حسب: الأحدث</option>
+                    <option>ترتيب حسب: السعر</option>
+                    <option>ترتيب حسب: التقييم</option>
+                  </select>
+                  <div className="flex bg-gray-100 rounded-lg p-1">
+                    <button className="p-2 rounded-md bg-white shadow-sm">
+                      <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      </svg>
+                    </button>
+                    <button className="p-2 rounded-md">
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* My Products */}
-              <div className="lg:col-span-2">
-                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-                        </svg>
-                      </div>
-                      منتجاتي المعروضة
-                    </h3>
-                    <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
-                      + إضافة منتج جديد
+            {/* Enhanced Product Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              {currentProducts.map((product) => (
+                <div key={product.id} className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl border border-gray-200 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1">
+                  {/* Image Container */}
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    {/* Badge */}
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                        {product.badge}
+                      </span>
+                    </div>
+                    
+                    {/* Heart Button */}
+                    <button className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg hover:scale-110 hover:bg-white">
+                      <Heart className="w-5 h-5 text-gray-600 hover:text-blue-500 transition-colors" />
                     </button>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                      { name: 'لابتوب HP EliteBook', description: 'لابتوب عالي الأداء للأعمال', price: 2500, quantity: 15, views: 45, orders: 3, status: 'متوفر', statusColor: 'green' },
-                      { name: 'طابعة Canon متعددة الوظائف', description: 'طابعة ليزر ملونة عالية الجودة', price: 850, quantity: 3, views: 28, orders: 7, status: 'قليل', statusColor: 'yellow' },
-                      { name: 'كاميرا مراقبة ذكية', description: 'كاميرا عالية الدقة مع تطبيق ذكي', price: 320, quantity: 25, views: 67, orders: 12, status: 'متوفر', statusColor: 'green' },
-                      { name: 'راوتر WiFi 6 متقدم', description: 'راوتر عالي السرعة للشبكات الكبيرة', price: 450, quantity: 0, views: 89, orders: 15, status: 'نفد', statusColor: 'red' }
-                    ].map((product, index) => (
-                      <motion.div
-                        key={index}
-                        className="border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all"
-                        whileHover={{ y: -2 }}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <h4 className="font-semibold text-gray-800">{product.name}</h4>
-                          <span className={`px-2 py-1 bg-${product.statusColor}-100 text-${product.statusColor}-700 text-xs rounded-full`}>
-                            {product.status}
+                  {/* Content */}
+                  <div className="p-6">
+                    {/* Header with Rating and Status */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1 pr-3">
+                        <h4 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors leading-tight mb-2">
+                          {product.name}
+                        </h4>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                            product.userType === 'supplier' ? 'bg-green-100 text-green-700' :
+                            product.userType === 'merchant' ? 'bg-yellow-100 text-yellow-700' :
+                            'bg-blue-100 text-blue-700'
+                          }`}>
+                            {product.userType === 'supplier' ? 'عرض مورد' :
+                             product.userType === 'merchant' ? 'طلب تاجر' :
+                             'خدمة شحن'}
                           </span>
-                        </div>
-                        <p className="text-sm text-gray-500 mb-3">{product.description}</p>
-                        <div className="flex items-center justify-between mb-3">
-                          <span className={`text-lg font-bold ${product.quantity > 0 ? 'text-green-600' : 'text-gray-400'}`}>
-                            {product.price} ريال
-                          </span>
-                          <span className="text-sm text-gray-500">الكمية: {product.quantity}</span>
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          <span>👁️ {product.views} مشاهدة</span> • <span>🛒 {product.orders} طلبات</span>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Merchant Requests */}
-              <div>
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
-                        <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3z"/>
-                      </svg>
-                    </div>
-                    طلبات التجار
-                  </h3>
-                  
-                  <div className="space-y-4">
-                    {[
-                      { merchant: 'متجر الإلكترونيات الحديثة', product: '10 × لابتوب HP EliteBook', amount: 25000, status: 'طلب جديد', statusColor: 'blue' },
-                      { merchant: 'مكتب الأعمال المتطور', product: '5 × طابعة Canon', amount: 4250, status: 'قيد المراجعة', statusColor: 'orange' },
-                      { merchant: 'شركة الأمن الشامل', product: '20 × كاميرا مراقبة', amount: 6400, status: 'مقبول', statusColor: 'green' }
-                    ].map((request, index) => (
-                      <motion.div
-                        key={index}
-                        className="border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all"
-                        whileHover={{ y: -2 }}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold text-gray-800">{request.merchant}</h4>
-                          <span className={`px-2 py-1 bg-${request.statusColor}-100 text-${request.statusColor}-700 text-xs rounded-full`}>
-                            {request.status}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-500 mb-3">يطلب: {request.product}</p>
-                        <div className="flex items-center justify-between">
-                          <span className={`text-lg font-bold ${request.status === 'مقبول' ? 'text-green-600' : 'text-blue-600'}`}>
-                            {request.amount.toLocaleString()} ريال
-                          </span>
-                          {request.status !== 'مقبول' ? (
-                            <div className="flex gap-2">
-                              <button className="px-3 py-1 bg-green-600 text-white text-xs rounded-lg hover:bg-green-700">قبول</button>
-                              <button className="px-3 py-1 bg-gray-300 text-gray-700 text-xs rounded-lg hover:bg-gray-400">رفض</button>
-                            </div>
-                          ) : (
-                            <span className="text-xs text-gray-500">جاري التحضير</span>
+                          {product.badge.includes('عاجل') || product.badge.includes('مستعجل') && (
+                            <span className="text-xs px-2 py-1 rounded-full font-medium bg-red-100 text-red-700 animate-pulse">
+                              عاجل
+                            </span>
                           )}
                         </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Shipping View */}
-        {activeView === 'shipping' && (
-          <motion.div {...fadeIn}>
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">لوحة شركة الشحن</h2>
-              <p className="text-gray-600">اعرض خدماتك واستقبل طلبات الشحن</p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Available Shipments */}
-              <div className="lg:col-span-2">
-                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                      <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
-                          <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1V8a1 1 0 00-1-1h-3z"/>
-                        </svg>
                       </div>
-                      طلبات الشحن المتاحة
-                    </h3>
-                    <span className="text-sm text-gray-500">12 طلب جديد</span>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    {[
-                      { 
-                        merchant: 'متجر الإلكترونيات الحديثة', 
-                        supplier: 'مؤسسة الأصيل التجارية',
-                        from: 'الرياض - حي الملز',
-                        to: 'جدة - حي الروضة',
-                        weight: 25,
-                        value: 25000,
-                        price: 180,
-                        priority: 'عاجل',
-                        priorityColor: 'green',
-                        icon: 'blue'
-                      },
-                      {
-                        merchant: 'شركة الأمن الشامل',
-                        supplier: 'مؤسسة الأصيل التجارية',
-                        from: 'الرياض - حي الملز',
-                        to: 'الدمام - حي الفيصلية',
-                        weight: 45,
-                        value: 6400,
-                        price: 120,
-                        priority: 'عادي',
-                        priorityColor: 'blue',
-                        icon: 'green'
-                      },
-                      {
-                        merchant: 'مكتب الأعمال المتطور',
-                        supplier: 'شركة النور للمواد الغذائية',
-                        from: 'جدة - حي البلد',
-                        to: 'الرياض - حي العليا',
-                        weight: 12,
-                        value: 4250,
-                        price: 95,
-                        priority: 'متوسط',
-                        priorityColor: 'yellow',
-                        icon: 'orange'
-                      }
-                    ].map((shipment, index) => (
-                      <motion.div
-                        key={index}
-                        className="border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all"
-                        whileHover={{ y: -2 }}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 bg-${shipment.icon}-100 rounded-lg flex items-center justify-center`}>
-                              <svg className={`w-6 h-6 text-${shipment.icon}-600`} fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
-                              </svg>
-                            </div>
-                            <div>
-                              <h4 className="font-semibold text-gray-800">{shipment.merchant}</h4>
-                              <p className="text-sm text-gray-500">من: {shipment.supplier}</p>
-                            </div>
-                          </div>
-                          <span className={`px-2 py-1 bg-${shipment.priorityColor}-100 text-${shipment.priorityColor}-700 text-xs rounded-full`}>
-                            {shipment.priority}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4 mb-3">
-                          <div>
-                            <p className="text-xs text-gray-500">من</p>
-                            <p className="text-sm font-medium">{shipment.from}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-500">إلى</p>
-                            <p className="text-sm font-medium">{shipment.to}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-xs text-gray-500">الوزن: {shipment.weight} كيلو</p>
-                            <p className="text-xs text-gray-500">القيمة: {shipment.value.toLocaleString()} ريال</p>
-                          </div>
-                          <div className="text-left">
-                            <p className="text-lg font-bold text-purple-600">{shipment.price} ريال</p>
-                            <button className="px-4 py-1 bg-purple-600 text-white text-xs rounded-lg hover:bg-purple-700 mt-1">
-                              تقديم عرض
-                            </button>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* My Services & Statistics */}
-              <div className="space-y-6">
-                {/* My Services */}
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                    <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                      <svg className="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"/>
-                        <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"/>
-                      </svg>
-                    </div>
-                    خدماتي
-                  </h3>
-                  
-                  <div className="space-y-4">
-                    {[
-                      { name: 'الشحن السريع', description: 'توصيل خلال 24 ساعة داخل المدينة', price: '15-25 ريال', status: 'متاح', statusColor: 'green' },
-                      { name: 'الشحن الاقتصادي', description: 'توصيل خلال 3-5 أيام بأسعار منافسة', price: '8-15 ريال', status: 'متاح', statusColor: 'green' },
-                      { name: 'الشحن الآمن', description: 'للبضائع الثمينة مع تأمين شامل', price: '25-40 ريال', status: 'محدود', statusColor: 'yellow' }
-                    ].map((service, index) => (
-                      <div key={index} className="border border-gray-200 rounded-xl p-4">
-                        <h4 className="font-semibold text-gray-800 mb-2">{service.name}</h4>
-                        <p className="text-sm text-gray-500 mb-3">{service.description}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-purple-600">{service.price}</span>
-                          <span className={`px-2 py-1 bg-${service.statusColor}-100 text-${service.statusColor}-700 text-xs rounded-full`}>
-                            {service.status}
-                          </span>
-                        </div>
+                      <div className="flex items-center bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+                        <Star className="w-4 h-4 text-blue-500 fill-current" />
+                        <span className="text-sm font-bold text-blue-700 mr-1">{product.rating}</span>
                       </div>
-                    ))}
+                    </div>
+                    
+                    {/* Supplier Info */}
+                    <div className="mb-4">
+                      <p className="text-slate-600 text-sm font-medium">{product.supplier}</p>
+                      <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {product.userType === 'shipping' ? 'خدمة محلية' : 'الرياض'}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {product.userType === 'shipping' ? 'متاح الآن' : 'متاح'}
+                        </span>
+                        {product.userType === 'merchant' && (
+                          <span className="flex items-center gap-1">
+                            <Truck className="w-3 h-3" />
+                            شحن مطلوب
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Interactive Actions */}
+                    <div className="mb-4 pb-4 border-b border-gray-100">
+                      <div className="grid grid-cols-2 gap-2">
+                        <button className="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                          <MessageCircle className="w-4 h-4" />
+                          محادثة
+                        </button>
+                        <button className="flex items-center justify-center gap-2 bg-green-50 hover:bg-green-100 text-green-700 px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                          <Phone className="w-4 h-4" />
+                          اتصال
+                        </button>
+                        <button className="flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-purple-700 px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                          <FileText className="w-4 h-4" />
+                          طلب عرض
+                        </button>
+                        <button className="flex items-center justify-center gap-2 bg-orange-50 hover:bg-orange-100 text-orange-700 px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                          <Share2 className="w-4 h-4" />
+                          مشاركة
+                        </button>
+                      </div>
+                      {product.userType === 'shipping' && (
+                        <div className="mt-2 grid grid-cols-2 gap-2">
+                          <button className="flex items-center justify-center gap-2 bg-teal-50 hover:bg-teal-100 text-teal-700 px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                            <Calendar className="w-4 h-4" />
+                            جدولة
+                          </button>
+                          <button className="flex items-center justify-center gap-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-xs font-medium transition-colors">
+                            <MapPin className="w-4 h-4" />
+                            تتبع
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Price and Main Action */}
+                    <div className="flex items-center justify-between">
+                      <div className="text-right">
+                        <span className="font-black text-2xl text-slate-800">
+                          {product.price}
+                        </span>
+                        <span className="text-sm font-normal text-slate-600 mr-1">ر.س</span>
+                      </div>
+                      <button className="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold text-sm hover:shadow-lg hover:scale-105 transition-all duration-300 hover:bg-blue-700">
+                        {product.userType === 'supplier' ? 'عرض المنتج' : 
+                         product.userType === 'merchant' ? 'استجابة للطلب' : 
+                         'تقديم عرض'}
+                      </button>
+                    </div>
                   </div>
                 </div>
-
-                {/* Statistics */}
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-4">إحصائيات الأداء</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">الشحنات المكتملة</span>
-                      <span className="font-bold text-green-600">247</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">التقييم العام</span>
-                      <span className="font-bold text-yellow-600">⭐ 4.8</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">الإيرادات الشهرية</span>
-                      <span className="font-bold text-purple-600">12,450 ريال</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          </motion.div>
-        )}
+          </main>
+        </div>
       </main>
+
+      {/* Partner Modal */}
+      {showPartnerModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" dir="rtl">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl transform transition-all duration-300 scale-95 animate-scaleIn">
+            <button 
+              onClick={() => setShowPartnerModal(false)}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <Users className="text-white w-8 h-8" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">إضافة شريك جديد</h3>
+              <p className="text-gray-600">اختر نوع الشريك وأدخل المعلومات المطلوبة</p>
+            </div>
+            
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">نوع الشريك</label>
+                <div className="grid grid-cols-2 gap-3">
+                  {partnerTypes.map((type) => (
+                    <button
+                      key={type.id}
+                      onClick={() => setSelectedPartnerType(type.id)}
+                      className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-300 ${
+                        selectedPartnerType === type.id
+                          ? 'border-blue-500 bg-blue-50 shadow-md'
+                          : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                      }`}
+                    >
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-2 ${
+                        selectedPartnerType === type.id
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-100 text-gray-600'
+                      }`}>
+                        <type.icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{type.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">اسم الشريك</label>
+                <input
+                  type="text"
+                  value={partnerName}
+                  onChange={(e) => setPartnerName(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  placeholder="أدخل اسم الشريك"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">معلومات الاتصال</label>
+                <input
+                  type="text"
+                  value={partnerContact}
+                  onChange={(e) => setPartnerContact(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  placeholder="رقم الهاتف أو البريد الإلكتروني"
+                />
+              </div>
+              
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => setShowPartnerModal(false)}
+                  className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                >
+                  إلغاء
+                </button>
+                <button
+                  onClick={() => {
+                    // هنا يمكن إضافة منطق حفظ الشريك
+                    console.log('إضافة شريك:', { type: selectedPartnerType, name: partnerName, contact: partnerContact });
+                    setShowPartnerModal(false);
+                    // إعادة تعيين الحقول
+                    setSelectedPartnerType('');
+                    setPartnerName('');
+                    setPartnerContact('');
+                  }}
+                  disabled={!selectedPartnerType || !partnerName || !partnerContact}
+                  className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors ${
+                    !selectedPartnerType || !partnerName || !partnerContact
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
+                  }`}
+                >
+                  إضافة الشريك
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <style jsx>{`
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        .animate-scaleIn {
+          animation: scaleIn 0.3s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 };
 
 export default SmartMarketplace;
-
