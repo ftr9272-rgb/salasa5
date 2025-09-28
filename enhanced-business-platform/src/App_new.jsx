@@ -51,9 +51,10 @@ import ShippingSettings from './components/shipping/ShippingSettings';
 import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
+  // اقرأ الحالة من localStorage حتى يعمل الدخول التجريبي بدون أعادة تحميل يدوية
   const [currentView, setCurrentView] = useState('landing'); // landing, auth, dashboard, marketplace
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userType, setUserType] = useState('merchant'); // merchant, supplier, shipping
+  const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('loggedIn') === 'true');
+  const [userType, setUserType] = useState(() => localStorage.getItem('userType') || 'merchant'); // merchant, supplier, shipping
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const handleGetStarted = () => {
@@ -61,21 +62,28 @@ function App() {
   };
 
   const handleLogin = (type, userData) => {
-    setUserType(type);
+    // يسمح بأن يتم استدعاء onLogin() بدون معاملات (Auth التجريبي ينادي بدون معاملات)
+    const resolvedType = type || localStorage.getItem('userType') || 'merchant';
+    setUserType(resolvedType);
     setIsAuthenticated(true);
     setCurrentView('dashboard');
     setActiveTab('dashboard');
-    // تخزين بيانات المستخدم
+
     if (userData) {
-      localStorage.setItem('userType', type);
+      localStorage.setItem('userType', resolvedType);
       localStorage.setItem('userData', JSON.stringify(userData));
     }
+    localStorage.setItem('loggedIn', 'true');
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     setCurrentView('landing');
     setActiveTab('dashboard');
+    setUserType('merchant');
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('userType');
+    localStorage.removeItem('userData');
   };
 
   const handleGoToMarketplace = () => {
@@ -242,10 +250,10 @@ function App() {
           </div>
 
           <nav className="flex items-center gap-3" role="navigation" aria-label="القائمة الرئيسية">
-            <button type="button" onClick={() => setCurrentView('landing')} className="px-3 py-2 rounded-md text-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">الصفحة الرئيسية</button>
-            <button type="button" onClick={() => setCurrentView('marketplace')} className="px-3 py-2 rounded-md text-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">السوق</button>
+            <button type="button" onClick={() => setCurrentView('landing')} className="px-3 py-2 rounded-md text-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:o[...]">الرئيسية</button>
+            <button type="button" onClick={() => setCurrentView('marketplace')} className="px-3 py-2 rounded-md text-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visib[...]">السوق</button>
             {!isAuthenticated ? (
-              <button type="button" onClick={handleGetStarted} className="btn-enhanced px-4 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" aria-label="ابدأ الآن">ابدأ الآن</button>
+              <button type="button" onClick={handleGetStarted} className="btn-enhanced px-4 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm shadow-lg focus-visib[...]">ابدأ الآن</button>
             ) : (
               <div className="flex items-center gap-2">
                 <button type="button" onClick={() => setCurrentView('dashboard')} className="px-3 py-2 rounded-md text-sm hover:bg-gray-100">لوحة التحكم</button>
