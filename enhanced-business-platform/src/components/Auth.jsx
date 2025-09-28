@@ -3,35 +3,17 @@ import { motion } from 'framer-motion';
 import { Store, Factory, Truck, User } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { Input } from './ui/input';
 import { Label } from './ui/label';
 
 const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('merchant');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    // تحقق وهمي: اسم المستخدم وكلمة المرور ثابتة لكل نوع حساب
-    if (
-      (userType === 'merchant' && username === 'merchant' && password === '1234') ||
-      (userType === 'supplier' && username === 'supplier' && password === '1234') ||
-      (userType === 'shipping' && username === 'shipping' && password === '1234')
-    ) {
-      localStorage.setItem('loggedIn', 'true');
-      localStorage.setItem('userType', userType);
-      setLoading(false);
-      onLogin && onLogin();
-    } else {
-      setError('اسم المستخدم أو كلمة المرور أو نوع الحساب غير صحيح');
-      setLoading(false);
-    }
+    // دخول تجريبي بدون أي بيانات
+    localStorage.setItem('loggedIn', 'true');
+    localStorage.setItem('userType', userType);
+    onLogin && onLogin();
   };
 
   return (
@@ -47,8 +29,8 @@ const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
             >
               <User className="h-8 w-8 text-white" />
             </motion.div>
-            <CardTitle className="text-2xl font-bold text-gray-900">تسجيل الدخول</CardTitle>
-            <p className="text-gray-600">اختر نوع حسابك وادخل بياناتك</p>
+            <CardTitle className="text-2xl font-bold text-gray-900">تسجيل دخول تجريبي</CardTitle>
+            <p className="text-gray-600">اختر نوع الحساب واضغط دخول مباشرة</p>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-3">
@@ -83,60 +65,10 @@ const Auth = ({ onLogin, onShowRequestReset, onShowReset }) => {
                 </Button>
               </div>
             </div>
-            <div>
-              <Label htmlFor="username">اسم المستخدم</Label>
-              <Input
-                id="username"
-                type="text"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                autoComplete="username"
-                required
-                className="mt-1"
-              />
-            </div>
-            <div>
-              <Label htmlFor="password">كلمة المرور</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                autoComplete="current-password"
-                required
-                className="mt-1"
-              />
-            </div>
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
-              >
-                {error}
-              </motion.div>
-            )}
             <div className="flex items-center justify-between">
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'جارٍ...' : 'تسجيل الدخول'}
+              <Button type="submit" className="w-full">
+                دخول تجريبي
               </Button>
-            </div>
-            <div className="mt-2 text-sm text-center">
-              <button
-                type="button"
-                className="text-blue-600 hover:underline"
-                onClick={() => onShowRequestReset && onShowRequestReset()}
-              >
-                نسيت كلمة المرور؟
-              </button>
-              <span className="mx-2">|</span>
-              <button
-                type="button"
-                className="text-blue-600 hover:underline"
-                onClick={() => onShowReset && onShowReset()}
-              >
-                إعادة تعيين كلمة المرور
-              </button>
             </div>
           </CardContent>
         </Card>
