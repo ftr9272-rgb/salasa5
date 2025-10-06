@@ -1,240 +1,40 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const [sending, setSending] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // If a Formspree (or similar) endpoint is set via Vite env, send POST directly.
-    // Otherwise fall back to opening mailto: (client-side fallback).
-    const endpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT as string || '';
-
-    const payload = {
-      name: formData.name,
-      email: formData.email,
-      subject: formData.subject,
-      message: formData.message
-    };
-
-    if (endpoint && endpoint.includes('formspree.io') || endpoint.startsWith('http')) {
-      try {
-        setSending(true);
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-
-        if (res.ok) {
-          alert('تم إرسال رسالتك بنجاح. سنقوم بالرد عليك في أقرب وقت ممكن.');
-          setFormData({ name: '', email: '', subject: '', message: '' });
-        } else {
-          console.error('Contact form submission failed', res.status, await res.text());
-          alert('حدث خطأ أثناء إرسال الرسالة. سيتم تحويلك لعميل البريد كخيار بديل.');
-          // fallback to mailto if POST failed
-          const adminEmail = 'ftr9272@gmail.com';
-          const subject = encodeURIComponent(formData.subject || 'رسالة من نموذج الاتصال - منصة تجارتنا');
-          const bodyLines = [
-            `الاسم: ${formData.name}`,
-            `البريد: ${formData.email}`,
-            '',
-            formData.message
-          ];
-          const body = encodeURIComponent(bodyLines.join('\n'));
-          window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
-        }
-      } catch (err) {
-        console.error('Contact form error', err);
-        alert('تعذر إرسال الرسالة عبر الخادم. سيتم فتح عميل البريد كخيار بديل.');
-        const adminEmail = 'ftr9272@gmail.com';
-        const subject = encodeURIComponent(formData.subject || 'رسالة من نموذج الاتصال - منصة تجارتنا');
-        const bodyLines = [
-          `الاسم: ${formData.name}`,
-          `البريد: ${formData.email}`,
-          '',
-          formData.message
-        ];
-        const body = encodeURIComponent(bodyLines.join('\n'));
-        window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
-      } finally {
-        setSending(false);
-      }
-    } else {
-      // No endpoint configured — fallback to mailto
-      const adminEmail = 'ftr9272@gmail.com';
-      const subject = encodeURIComponent(formData.subject || 'رسالة من نموذج الاتصال - منصة تجارتنا');
-      const bodyLines = [
-        `الاسم: ${formData.name}`,
-        `البريد: ${formData.email}`,
-        '',
-        formData.message
-      ];
-      const body = encodeURIComponent(bodyLines.join('\n'));
-      window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
-      alert('سيتم تحويلك لعميل البريد لإرسال الرسالة إلى ftr9272@gmail.com.');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }
-  };
+  const adminEmail = 'ftr9272@gmail.com';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
             تواصل معنا
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            لدينا فريق دعم متخصص جاهز للإجابة عن جميع استفساراتك ومساعدتك في استخدام المنصة
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            تم إزالة نموذج الاتصال — لإرسال رسالة، الرجاء التواصل عبر البريد الإلكتروني التالي. سنقوم بالرد في أقرب وقت ممكن.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-2xl shadow-xl p-8"
-          >
-            <h2 className="text-2xl font-bold text-gray-800 mb-8">أرسل لنا رسالة</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  الاسم الكامل
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  البريد الإلكتروني
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                  الموضوع
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  الرسالة
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={5}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-bold hover:from-blue-700 hover:to-purple-700 transition-all"
-              >
-                إرسال الرسالة
-              </button>
-            </form>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="space-y-8"
-          >
-            <div className="bg-white rounded-2xl shadow-xl p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">معلومات التواصل</h2>
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl">📍</span>
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-bold text-gray-800">العنوان</h3>
-                    <p className="text-gray-600 mt-1">
-                      جدة - المملكة العربية السعودية
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl">✉️</span>
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-bold text-gray-800">البريد الإلكتروني</h3>
-                    <p className="text-gray-600 mt-1">
-                      ftr9272@gmail.com
-                    </p>
-                  </div>
-                </div>
-              </div>
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="bg-white rounded-2xl shadow-xl p-8 text-center">
+          <div className="mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 mx-auto mb-4">
+              <span className="text-2xl">✉️</span>
             </div>
-
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-8 text-white">
-              <h2 className="text-2xl font-bold mb-6">ساعات العمل</h2>
-              <div className="space-y-4">
-                <div className="flex justify-between pb-2 border-b border-white/20">
-                  <span>جميع الأيام</span>
-                  <span>24 ساعة</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+            <h2 className="text-2xl font-bold mb-2">البريد الإلكتروني للتواصل</h2>
+            <p className="text-gray-700 mb-4">لأي استفسار، اقتراح أو دعم فني، راسلنا على العنوان التالي:</p>
+            <a href={`mailto:${adminEmail}`} className="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-600 transition-all">
+              {adminEmail}
+            </a>
+          </div>
+          <div className="mt-6 text-sm text-muted-foreground">
+            <p>ملاحظة: تم تعطيل إرسال الرسائل عبر النموذج. استخدام البريد يضمن وصول رسالتك مباشرة إلى صندوقنا الوارد.</p>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
