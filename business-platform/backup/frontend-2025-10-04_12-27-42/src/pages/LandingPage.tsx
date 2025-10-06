@@ -151,14 +151,14 @@ const LandingPage = () => {
                 ) : (
                   <>
                     <Link 
-                      to="/register"
+                      to="/contact"
                       className="group bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl hover:from-cyan-600 hover:to-blue-700 transition-all font-bold shadow-2xl hover:shadow-cyan-500/25 flex items-center justify-center transform hover:-translate-y-1 duration-300"
                     >
                       إنشاء حساب مجاني
                       <ArrowRight className="mr-2 w-5 h-5 group-hover:mr-3 transition-all" />
                     </Link>
                     <Link 
-                      to="/login"
+                      to="/contact"
                       className="group bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-xl hover:bg-white/20 transition-all font-bold flex items-center justify-center transform hover:-translate-y-1 duration-300"
                     >
                       تسجيل الدخول

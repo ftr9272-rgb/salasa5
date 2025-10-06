@@ -191,8 +191,8 @@ function Header() {
               </div>
             ) : (
               <>
-                <Link to="/login" className="text-foreground hover:text-primary transition-colors font-arabic">تسجيل الدخول</Link>
-                <Link to="/register" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors font-arabic">إنشاء حساب</Link>
+                <Link to="/contact" className="text-foreground hover:text-primary transition-colors font-arabic">تسجيل الدخول</Link>
+                <Link to="/contact" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors font-arabic">إنشاء حساب</Link>
               </>
             )}
 
