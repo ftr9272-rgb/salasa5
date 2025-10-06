@@ -17,35 +17,81 @@ const ContactPage = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Basic behavior: open the user's mail client with a prefilled email to the admin address.
-    // This does NOT send from the server; it opens the user's email app so they can send the message.
-    // If you want server-side delivery (so messages arrive even if sender doesn't have a mail client),
-    // we can implement a serverless endpoint (SendGrid/SES/SMTP) or integrate Formspree — let me know.
+    // If a Formspree (or similar) endpoint is set via Vite env, send POST directly.
+    // Otherwise fall back to opening mailto: (client-side fallback).
+    const endpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT as string || '';
 
-    const adminEmail = 'ftr9272@gmail.com';
-    const subject = encodeURIComponent(formData.subject || 'رسالة من نموذج الاتصال - منصة تجارتنا');
-    const bodyLines = [
-      `الاسم: ${formData.name}`,
-      `البريد: ${formData.email}`,
-      '',
-      formData.message
-    ];
-    const body = encodeURIComponent(bodyLines.join('\n'));
-    const mailto = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message
+    };
 
-    // Try to open the mail client
-    window.location.href = mailto;
+    if (endpoint && endpoint.includes('formspree.io') || endpoint.startsWith('http')) {
+      try {
+        setSending(true);
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
 
-    alert('سيتم تحويلك لعميل البريد لإرسال الرسالة إلى ftr9272@gmail.com.');
-
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    });
+        if (res.ok) {
+          alert('تم إرسال رسالتك بنجاح. سنقوم بالرد عليك في أقرب وقت ممكن.');
+          setFormData({ name: '', email: '', subject: '', message: '' });
+        } else {
+          console.error('Contact form submission failed', res.status, await res.text());
+          alert('حدث خطأ أثناء إرسال الرسالة. سيتم تحويلك لعميل البريد كخيار بديل.');
+          // fallback to mailto if POST failed
+          const adminEmail = 'ftr9272@gmail.com';
+          const subject = encodeURIComponent(formData.subject || 'رسالة من نموذج الاتصال - منصة تجارتنا');
+          const bodyLines = [
+            `الاسم: ${formData.name}`,
+            `البريد: ${formData.email}`,
+            '',
+            formData.message
+          ];
+          const body = encodeURIComponent(bodyLines.join('\n'));
+          window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
+        }
+      } catch (err) {
+        console.error('Contact form error', err);
+        alert('تعذر إرسال الرسالة عبر الخادم. سيتم فتح عميل البريد كخيار بديل.');
+        const adminEmail = 'ftr9272@gmail.com';
+        const subject = encodeURIComponent(formData.subject || 'رسالة من نموذج الاتصال - منصة تجارتنا');
+        const bodyLines = [
+          `الاسم: ${formData.name}`,
+          `البريد: ${formData.email}`,
+          '',
+          formData.message
+        ];
+        const body = encodeURIComponent(bodyLines.join('\n'));
+        window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
+      } finally {
+        setSending(false);
+      }
+    } else {
+      // No endpoint configured — fallback to mailto
+      const adminEmail = 'ftr9272@gmail.com';
+      const subject = encodeURIComponent(formData.subject || 'رسالة من نموذج الاتصال - منصة تجارتنا');
+      const bodyLines = [
+        `الاسم: ${formData.name}`,
+        `البريد: ${formData.email}`,
+        '',
+        formData.message
+      ];
+      const body = encodeURIComponent(bodyLines.join('\n'));
+      window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
+      alert('سيتم تحويلك لعميل البريد لإرسال الرسالة إلى ftr9272@gmail.com.');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    }
   };
 
   return (
