@@ -1,0 +1,56 @@
+# Node / build
+node_modules/
+dist/
+build/
+/.parcel-cache
+/.pnp/
+/.pnp.js
+
+# Vite / local dev
+/.vite/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OneDrive and user-specific
+OneDrive/
+AppData/
+Desktop/
+Downloads/
+Documents/
+
+# Package managers
+package-lock.json
+pnpm-lock.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+
+# db / env
+*.sqlite
+*.db
+.env
+.env.local
+
+# macOS
+.DS_Store
+
+# Windows jump lists / temp
+NTUSER.DAT*
+.vercel

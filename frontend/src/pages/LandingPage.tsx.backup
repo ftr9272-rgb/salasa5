@@ -1,0 +1,689 @@
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { motion } from 'framer-motion';
+import { ArrowRight, CheckCircle, Star, Users, TrendingUp, Shield, BarChart3, Globe, Zap, Truck, ShoppingCart, Package, Award, Clock, Headphones } from 'lucide-react';
+import { useState } from 'react';
+
+const LandingPage = () => {
+  const { user, login } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<string | null>(null);
+
+  const handleDemoLogin = async (email: string, password: string, role: string) => {
+    setIsLoading(role);
+    try {
+      await login(email, password);
+      // التوجيه حسب الدور الصحيح
+      const routeMap: Record<string, string> = {
+        'merchant': '/merchant',
+        'supplier': '/supplier', 
+        'shipping': '/shipping'
+      };
+      navigate(routeMap[role] || '/merchant');
+    } catch (error) {
+      console.error('Demo login failed:', error);
+    } finally {
+      setIsLoading(null);
+    }
+  };
+
+  const features = [
+    {
+      title: 'للموردين',
+      description: 'إدارة المنتجات والطلبات والتواصل مع العملاء بسهولة',
+      icon: Package,
+      color: 'from-emerald-500 to-teal-600',
+      features: ['عرض المنتجات', 'إدارة المخزون', 'تتبع الطلبات', 'تحليل المبيعات']
+    },
+    {
+      title: 'للتجار',
+      description: 'تصفح المنتجات وإدارة الطلبات والمدفوعات في مكان واحد',
+      icon: ShoppingCart,
+      color: 'from-purple-500 to-blue-600',
+      features: ['مقارنة الأسعار', 'إدارة الطلبات', 'التواصل المباشر', 'تقارير مالية']
+    },
+    {
+      title: 'لشركات الشحن',
+      description: 'تتبع الشحنات وإدارة التوصيلات بكفاءة',
+      icon: Truck,
+      color: 'from-amber-500 to-orange-600',
+      features: ['تتبع الشحنات', 'إدارة التوصيلات', 'تقارير الأداء', 'إدارة السائقين']
+    }
+  ];
+
+  const platformFeatures = [
+    { title: 'إدارة التجارة', description: 'إدارة شاملة لجميع عملياتك التجارية', icon: Users },
+    { title: 'منتجات متنوعة', description: 'عرض وإدارة منتجاتك بسهولة', icon: Package },
+    { title: 'شحن موثوق', description: 'خدمات شحن احترافية ومضمونة', icon: Truck },
+    { title: 'جودة عالية', description: 'نقدم أفضل الخدمات والحلول', icon: Star }
+  ];
+
+  const benefits = [
+    {
+      title: 'زيادة المبيعات',
+      description: 'من خلال الوصول إلى شبكة واسعة من العملاء المحتملين',
+      icon: TrendingUp,
+      color: 'bg-gradient-to-br from-emerald-500 to-teal-600'
+    },
+    {
+      title: 'توفير الوقت',
+      description: 'إدارة جميع العمليات التجارية من مكان واحد',
+      icon: Clock,
+      color: 'bg-gradient-to-br from-blue-500 to-indigo-600'
+    },
+    {
+      title: 'أمان البيانات',
+      description: 'حماية معلوماتك باستخدام أحدث تقنيات الأمان',
+      icon: Shield,
+      color: 'bg-gradient-to-br from-purple-500 to-pink-600'
+    },
+    {
+      title: 'دعم متخصص',
+      description: 'فريق دعم فني على مدار الساعة لمساعدتك',
+      icon: Headphones,
+      color: 'bg-gradient-to-br from-amber-500 to-orange-600'
+    }
+  ];
+
+  const pricingPlans = [
+    {
+      name: 'منصة خاصة للشركاء المعتمدين',
+      price: 'للأطراف المعتمدة فقط',
+      period: '',
+      description: 'منصة حصرية للتجار والموردين وشركات الشحن المرخصة',
+      features: [
+        'وصول خاص للتجار المعتمدين',
+        'شبكة موردين موثوقين ومرخصين',
+        'شركات شحن معتمدة وموثقة',
+        'بيئة تجارية آمنة ومحمية',
+        'ضمان الجودة والمصداقية',
+        'دعم فني متخصص للشركاء'
+      ],
+      cta: 'طلب الانضمام كشريك',
+      popular: true
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        {/* Background with navy blue gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-navy-900 via-blue-900 to-navy-800"></div>
+        
+        {/* Animated glowing blobs for depth */}
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
+          <div className="absolute top-1/5 left-1/6 w-72 h-72 bg-cyan-500 rounded-full mix-blend-screen filter blur-4xl animate-animate-blob" style={{ animationDuration: '8s' }}></div>
+          <div className="absolute bottom-1/4 right-1/6 w-80 h-80 bg-violet-500 rounded-full mix-blend-screen filter blur-4xl animate-animate-blob" style={{ animationDuration: '10s', animationDelay: '1s' }}></div>
+        </div>
+        
+        {/* Geometric pattern overlay (subtle) */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTUiIGN5PSIxNSIgcj0iMiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjIiIC8+CjxjaXJjbGUgY3g9IjQ1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4yIiAvPgo8L3N2Zz4=')] opacity-15"></div>
+        
+        <div className="container mx-auto px-6 py-28 md:py-36 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-center"
+            >
+              {/* Demo Mode Badge */}
+              <div className="inline-flex items-center px-5 py-2.5 bg-amber-500/20 backdrop-blur-lg text-amber-100 rounded-full text-sm font-medium mb-4 border border-amber-400/30 shadow-lg">
+                <div className="w-2 h-2 bg-amber-400 rounded-full mr-3 animate-pulse"></div>
+                🚀 المنصة في الوضع التجريبي - جميع البيانات تجريبية
+              </div>
+              
+              {/* Badge */}
+              <div className="inline-flex items-center px-5 py-2.5 bg-white/10 backdrop-blur-lg text-blue-100 rounded-full text-sm font-medium mb-8 border border-white/20 shadow-lg">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full mr-3 animate-pulse"></div>
+                <Award className="w-4 h-4 ml-2" />
+                الحل الشامل للتجارة الإلكترونية B2B
+              </div>
+              
+              {/* Main heading */}
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight">
+                منصة <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">تجارتنا</span>
+              </h1>
+              
+              {/* Subtitle */}
+              <p className="text-2xl md:text-3xl lg:text-4xl font-light text-blue-100 mb-6">
+                لإدارة الأعمال التجارية بشكل احترافي
+              </p>
+              
+              {/* Description */}
+              <p className="text-lg md:text-xl text-blue-200 mb-8 max-w-3xl mx-auto leading-relaxed">
+                منصة متكاملة تربط بين الموردين والتجار وشركات الشحن في بيئة آمنة وفعالة لتعزيز نمو أعمالك وزيادة أرباحك
+              </p>
+              
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                      <div className="text-center">
+                        <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-3xl">
+                          🛒
+                        </div>
+                        <h4 className="text-2xl font-bold text-gray-800 mb-3">لوحة التاجر</h4>
+                        <p className="text-gray-600 mb-6 leading-relaxed">
+                          البحث عن المنتجات والموردين المناسبين مع إدارة الطلبات والمشتريات بكفاءة عالية
+                        </p>
+                        
+                        <div className="space-y-3 mb-6">
+                          <div className="flex items-center justify-center text-sm text-gray-500">
+                            <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">🔍 بحث</span>
+                            <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full mx-2">� مشتريات</span>
+                            <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">🤝 موردين</span>
+                          </div>
+                        </div>
+                        
+                        <button 
+                          onClick={() => handleDemoLogin('merchant@demo.com', 'password123', 'merchant')}
+                          disabled={isLoading === 'merchant'}
+                          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-purple-400 disabled:to-pink-400 text-white py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 disabled:scale-100 shadow-lg"
+                        >
+                          {isLoading === 'merchant' ? (
+                            <div className="flex items-center justify-center">
+                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                              جاري تسجيل الدخول...
+                            </div>
+                          ) : (
+                            'ادخل كتاجر 🚀'
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Supplier Card */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="group relative"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                    <div className="relative bg-white rounded-2xl p-8 h-full shadow-xl">
+                      <div className="text-center">
+                        <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-3xl">
+                          📦
+                        </div>
+                        <h4 className="text-2xl font-bold text-gray-800 mb-3">لوحة المورد</h4>
+                        <p className="text-gray-600 mb-6 leading-relaxed">
+                          عرض وتقديم المنتجات بطريقة احترافية مع إدارة المخزون وتلقي طلبات التجار
+                        </p>
+                        
+                        <div className="space-y-3 mb-6">
+                          <div className="flex items-center justify-center text-sm text-gray-500">
+                            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">� عرض</span>
+                            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full mx-2">� مخزون</span>
+                            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">📋 طلبات</span>
+                          </div>
+                        </div>
+                        
+                        <button 
+                          onClick={() => handleDemoLogin('supplier@demo.com', 'password123', 'supplier')}
+                          disabled={isLoading === 'supplier'}
+                          className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-green-400 disabled:to-emerald-400 text-white py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 disabled:scale-100 shadow-lg"
+                        >
+                          {isLoading === 'supplier' ? (
+                            <div className="flex items-center justify-center">
+                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                              جاري تسجيل الدخول...
+                            </div>
+                          ) : (
+                            'ادخل كمورد 🚀'
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Shipping Card */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="group relative"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                    <div className="relative bg-white rounded-2xl p-8 h-full shadow-xl">
+                      <div className="text-center">
+                        <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-3xl">
+                          🚚
+                        </div>
+                        <h4 className="text-2xl font-bold text-gray-800 mb-3">لوحة الشحن</h4>
+                        <p className="text-gray-600 mb-6 leading-relaxed">
+                          عرض خدمات وعروض الشحن المتنوعة مع إدارة الشحنات وتقديم حلول لوجستية متقدمة
+                        </p>
+                        
+                        <div className="space-y-3 mb-6">
+                          <div className="flex items-center justify-center text-sm text-gray-500">
+                            <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full">� خدمات</span>
+                            <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full mx-2">🏷️ عروض</span>
+                            <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full">🚚 شحنات</span>
+                          </div>
+                        </div>
+                        
+                        <button 
+                          onClick={() => handleDemoLogin('shipping@demo.com', 'password123', 'shipping')}
+                          disabled={isLoading === 'shipping'}
+                          className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 disabled:from-orange-400 disabled:to-red-400 text-white py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 disabled:scale-100 shadow-lg"
+                        >
+                          {isLoading === 'shipping' ? (
+                            <div className="flex items-center justify-center">
+                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                              جاري تسجيل الدخول...
+                            </div>
+                          ) : (
+                            'ادخل كشركة شحن 🚀'
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+              
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                {user ? (
+                  <Link 
+                    to={`/${user.role}`}
+                    className="group bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl hover:from-cyan-600 hover:to-blue-700 transition-all font-bold shadow-2xl hover:shadow-cyan-500/25 flex items-center justify-center transform hover:-translate-y-1 duration-300"
+                  >
+                    الذهاب إلى لوحة التحكم
+                    <ArrowRight className="mr-2 w-5 h-5 group-hover:mr-3 transition-all" />
+                  </Link>
+                ) : (
+                  <>
+                    <Link 
+                      to="/register"
+                      className="group bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl hover:from-cyan-600 hover:to-blue-700 transition-all font-bold shadow-2xl hover:shadow-cyan-500/25 flex items-center justify-center transform hover:-translate-y-1 duration-300"
+                    >
+                      إنشاء حساب مجاني
+                      <ArrowRight className="mr-2 w-5 h-5 group-hover:mr-3 transition-all" />
+                    </Link>
+                    <Link 
+                      to="/marketplace" 
+                      className="group bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl hover:bg-white/20 transition-all font-bold border border-white/20 flex items-center justify-center"
+                    >
+                      استعرض السوق
+                      <ArrowRight className="mr-2 w-5 h-5 group-hover:mr-3 transition-all" />
+                    </Link>
+                  </>
+                )}
+              </div>
+              
+
+            </motion.div>
+          </div>
+        </div>
+        
+        {/* Decorative wave */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 120" className="fill-white">
+            <path d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,74.7C1120,75,1280,53,1360,42.7L1440,32L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+          </svg>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">حلول متكاملة لجميع أطراف التجارة</h2>
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+              منصة موحدة تلبي احتياجات الموردين والتجار وشركات الشحن مع ميزات متقدمة
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-b from-gray-50 to-white rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 overflow-hidden group"
+              >
+                <div className={`h-2 ${feature.color.replace('from-', 'bg-gradient-to-r from-')}`}></div>
+                <div className="p-8">
+                  <div className={`w-16 h-16 rounded-xl ${feature.color} flex items-center justify-center text-white mb-6`}>
+                    <feature.icon className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">{feature.title}</h3>
+                  <p className="text-gray-700 text-lg mb-6">{feature.description}</p>
+                  
+                  <ul className="space-y-3 mb-8">
+                    {feature.features.map((benefit, idx) => (
+                      <li key={idx} className="flex items-center text-gray-800 text-base">
+                        <CheckCircle className="w-5 h-5 text-green-500 ml-3 flex-shrink-0" />
+                        <span>{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <Link 
+                    to="/register" 
+                    className="text-blue-600 hover:text-blue-800 font-bold flex items-center text-lg"
+                  >
+                    تعرف على المزيد
+                    <ArrowRight className="mr-2 w-4 h-4" />
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Benefits Section */}
+      <div className="py-20 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">الفوائد الرئيسية لاستخدام منصتنا</h2>
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+              حلول مبتكرة تساعدك على تطوير أعمالك وزيادة أرباحك مع توفير الوقت والجهد
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-100 text-center"
+              >
+                <div className={`${benefit.color} w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4`}>
+                  <benefit.icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold mb-2 text-gray-900">{benefit.title}</h3>
+                <p className="text-gray-700 text-sm">{benefit.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Demo Section */}
+      <div className="py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">🚀 جرب المنصة الآن</h2>
+              <p className="text-xl md:text-2xl text-blue-200 max-w-3xl mx-auto">
+                اختر نوع حسابك وادخل مباشرة للوحة التحكم لتجربة جميع الميزات
+              </p>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Merchant Card */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                viewport={{ once: true }}
+                className="group relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                <div className="relative bg-white rounded-2xl p-8 h-full shadow-xl">
+                  <div className="text-center">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-3xl">
+                      🛒
+                    </div>
+                    <h4 className="text-2xl font-bold text-gray-800 mb-3">لوحة التاجر</h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      البحث عن المنتجات والموردين المناسبين مع إدارة الطلبات والمشتريات بكفاءة عالية
+                    </p>
+                    
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center justify-center text-sm text-gray-500">
+                        <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">🔍 بحث</span>
+                        <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full mx-2">🛒 مشتريات</span>
+                        <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">🤝 موردين</span>
+                      </div>
+                    </div>
+                    
+                    <button 
+                      onClick={() => handleDemoLogin('merchant@demo.com', 'password123', 'merchant')}
+                      disabled={isLoading === 'merchant'}
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-purple-400 disabled:to-pink-400 text-white py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 disabled:scale-100 shadow-lg"
+                    >
+                      {isLoading === 'merchant' ? (
+                        <div className="flex items-center justify-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                          جاري تسجيل الدخول...
+                        </div>
+                      ) : (
+                        'ادخل كتاجر 🚀'
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Supplier Card */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="group relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                <div className="relative bg-white rounded-2xl p-8 h-full shadow-xl">
+                  <div className="text-center">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-3xl">
+                      📦
+                    </div>
+                    <h4 className="text-2xl font-bold text-gray-800 mb-3">لوحة المورد</h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      عرض وتقديم المنتجات بطريقة احترافية مع إدارة المخزون وتلقي طلبات التجار
+                    </p>
+                    
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center justify-center text-sm text-gray-500">
+                        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">🏷️ عرض</span>
+                        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full mx-2">📦 مخزون</span>
+                        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">📋 طلبات</span>
+                      </div>
+                    </div>
+                    
+                    <button 
+                      onClick={() => handleDemoLogin('supplier@demo.com', 'password123', 'supplier')}
+                      disabled={isLoading === 'supplier'}
+                      className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-green-400 disabled:to-emerald-400 text-white py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 disabled:scale-100 shadow-lg"
+                    >
+                      {isLoading === 'supplier' ? (
+                        <div className="flex items-center justify-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                          جاري تسجيل الدخول...
+                        </div>
+                      ) : (
+                        'ادخل كمورد 🚀'
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Shipping Card */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                viewport={{ once: true }}
+                className="group relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                <div className="relative bg-white rounded-2xl p-8 h-full shadow-xl">
+                  <div className="text-center">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-3xl">
+                      🚚
+                    </div>
+                    <h4 className="text-2xl font-bold text-gray-800 mb-3">لوحة الشحن</h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      عرض خدمات وعروض الشحن المتنوعة مع إدارة الشحنات وتقديم حلول لوجستية متقدمة
+                    </p>
+                    
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center justify-center text-sm text-gray-500">
+                        <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full">🚛 خدمات</span>
+                        <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full mx-2">🏷️ عروض</span>
+                        <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full">🚚 شحنات</span>
+                      </div>
+                    </div>
+                    
+                    <button 
+                      onClick={() => handleDemoLogin('shipping@demo.com', 'password123', 'shipping')}
+                      disabled={isLoading === 'shipping'}
+                      className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 disabled:from-orange-400 disabled:to-red-400 text-white py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 disabled:scale-100 shadow-lg"
+                    >
+                      {isLoading === 'shipping' ? (
+                        <div className="flex items-center justify-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                          جاري تسجيل الدخول...
+                        </div>
+                      ) : (
+                        'ادخل كشركة شحن 🚀'
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Pricing Section */}
+      <div className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">منصة حصرية للشركاء المعتمدين</h2>
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+              شبكة مغلقة للتجار والموردين وشركات الشحن المرخصة لضمان أعلى معايير الجودة والمصداقية
+            </p>
+          </motion.div>
+
+          <div className="max-w-md mx-auto">
+            {pricingPlans.map((plan, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+                viewport={{ once: true }}
+                className={`rounded-2xl shadow-lg transition-all border ${
+                  plan.popular 
+                    ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-500 relative' 
+                    : 'bg-gray-50 border-gray-200'
+                }`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-3 right-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm font-bold px-4 py-2 rounded-full">
+                    الأكثر شعبية
+                  </div>
+                )}
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{plan.name}</h3>
+                  <p className="text-gray-700 text-lg mb-6">{plan.description}</p>
+                  
+                  <div className="mb-8">
+                    <span className="text-3xl font-bold text-gray-900">{plan.price}</span>
+                  </div>
+                  
+                  <ul className="space-y-4 mb-8">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-center text-gray-800 text-lg">
+                        <CheckCircle className="w-5 h-5 text-green-500 ml-3 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <Link 
+                    to="/register"
+                    className={`w-full py-4 rounded-xl font-bold text-center transition-all block text-lg ${
+                      plan.popular
+                        ? 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white hover:from-blue-700 hover:to-indigo-800 shadow-lg'
+                        : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                    }`}
+                  >
+                    {plan.cta}
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+  {/* CTA Section */}
+  <div className="py-20 bg-gradient-to-r from-slate-900 via-violet-800 to-cyan-700">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">هل أنت جاهز لتطوير عملك؟</h2>
+              <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-3xl mx-auto">
+                انضم إلى آلاف الشركات التي تعتمد على منصة تجارتنا لتطوير أعمالها وزيادة أرباحها بشكل احترافي
+              </p>
+              {!user && (
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link 
+                    to="/register"
+                    className="bg-white text-blue-600 px-8 py-4 rounded-xl hover:bg-blue-50 transition-all font-bold shadow-lg hover:shadow-xl inline-flex items-center justify-center text-lg"
+                  >
+                    إنشاء حساب مجاني
+                    <ArrowRight className="mr-3 w-5 h-5" />
+                  </Link>
+                  <Link 
+                    to="/marketplace" 
+                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg transform hover:scale-105 inline-flex items-center justify-center"
+                  >
+                    استعرض السوق الموحد
+                    <ArrowRight className="mr-3 w-5 h-5" />
+                  </Link>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LandingPage;

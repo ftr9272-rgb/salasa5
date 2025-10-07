@@ -1,0 +1,318 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for sidebar */
+.w-70 {
+  width: 280px;
+}
+
+.lg\:mr-70 {
+  @media (min-width: 1024px) {
+    margin-right: 280px;
+  }
+}
+
+/* الخطوط العربية */
+:root {
+  --font-cairo: 'Cairo', sans-serif;
+  --font-tajawal: 'Tajawal', sans-serif;
+}
+
+/* إعدادات RTL */
+html[dir="rtl"] {
+  font-family: var(--font-cairo);
+}
+
+/* تخصيص Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* متغيرات الألوان المخصصة - ألوان حيوية */
+:root {
+  --background: 220 25% 98%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 262 83% 58%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 142 76% 36%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 262 83% 58%;
+  --radius: 0.75rem;
+  
+  /* ألوان إضافية للوحات التحكم */
+  --success: 142 76% 36%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+  --info: 221 83% 53%;
+  --info-foreground: 0 0% 100%;
+  --merchant: 262 83% 58%;
+  --supplier: 142 76% 36%;
+  --shipping: 221 83% 53%;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 224 71% 8%;
+  --card-foreground: 210 40% 98%;
+  --popover: 224 71% 8%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 263 70% 65%;
+  --primary-foreground: 224 71% 8%;
+  --secondary: 215 27% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 215 27% 17%;
+  --muted-foreground: 217.9 10.6% 64.9%;
+  --accent: 142 69% 58%;
+  --accent-foreground: 224 71% 8%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 215 27% 17%;
+  --input: 215 27% 17%;
+  --ring: 263 70% 65%;
+  
+  /* ألوان الوضع المظلم */
+  --success: 142 69% 58%;
+  --success-foreground: 224 71% 8%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 224 71% 8%;
+  --info: 221 83% 53%;
+  --info-foreground: 224 71% 8%;
+  --merchant: 263 70% 65%;
+  --supplier: 142 69% 58%;
+  --shipping: 221 83% 53%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* تحسينات الأداء */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+/* تحسينات إمكانية الوصول */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus styles */
+.focus-visible:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* تنسيق الخط للعناصر المختلفة */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-tajawal);
+  font-weight: 600;
+}
+
+.font-arabic {
+  font-family: var(--font-cairo);
+}
+
+.font-heading {
+  font-family: var(--font-tajawal);
+}
+
+/* تحسينات للمكونات المخصصة */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-shadow-lg {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Responsive utility classes for better mobile support */
+@media (max-width: 640px) {
+  .text-responsive-sm {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1rem; /* 16px */
+  }
+  
+  .text-responsive-base {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; /* 20px */
+  }
+  
+  .text-responsive-lg {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem; /* 24px */
+  }
+  
+  .p-responsive-4 {
+    padding: 1rem; /* 16px */
+  }
+  
+  .p-responsive-6 {
+    padding: 1.5rem; /* 24px */
+  }
+  
+  .gap-responsive-2 {
+    gap: 0.5rem; /* 8px */
+  }
+  
+  .gap-responsive-4 {
+    gap: 1rem; /* 16px */
+  }
+  
+  .rounded-responsive-lg {
+    border-radius: 0.5rem; /* 8px */
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .text-responsive-sm {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; /* 20px */
+  }
+  
+  .text-responsive-base {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem; /* 24px */
+  }
+  
+  .text-responsive-lg {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.75rem; /* 28px */
+  }
+  
+  .p-responsive-4 {
+    padding: 1.25rem; /* 20px */
+  }
+  
+  .p-responsive-6 {
+    padding: 1.75rem; /* 28px */
+  }
+  
+  .gap-responsive-2 {
+    gap: 0.75rem; /* 12px */
+  }
+  
+  .gap-responsive-4 {
+    gap: 1.25rem; /* 20px */
+  }
+  
+  .rounded-responsive-lg {
+    border-radius: 0.75rem; /* 12px */
+  }
+}
+
+@media (min-width: 1025px) {
+  .text-responsive-sm {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; /* 20px */
+  }
+  
+  .text-responsive-base {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem; /* 24px */
+  }
+  
+  .text-responsive-lg {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.75rem; /* 28px */
+  }
+  
+  .p-responsive-4 {
+    padding: 1.5rem; /* 24px */
+  }
+  
+  .p-responsive-6 {
+    padding: 2rem; /* 32px */
+  }
+  
+  .gap-responsive-2 {
+    gap: 1rem; /* 16px */
+  }
+  
+  .gap-responsive-4 {
+    gap: 1.5rem; /* 24px */
+  }
+  
+  .rounded-responsive-lg {
+    border-radius: 1rem; /* 16px */
+  }
+}
+
+/* floating blob animation used in hero backgrounds */
+@keyframes float-blob {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.animate-animate-blob {
+  animation-name: float-blob;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* تأثيرات خاصة */
+.delay-2000 {
+  animation-delay: 2s;
+}
