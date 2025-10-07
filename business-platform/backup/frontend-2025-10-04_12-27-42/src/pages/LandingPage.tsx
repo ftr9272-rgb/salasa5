@@ -269,13 +269,7 @@ const LandingPage = () => {
                     ))}
                   </ul>
                   
-                  <Link 
-                    to="/register" 
-                    className="text-blue-600 hover:text-blue-800 font-bold flex items-center text-lg"
-                  >
-                    تعرف على المزيد
-                    <ArrowRight className="mr-2 w-4 h-4" />
-                  </Link>
+                  {/* link removed per request */}
                 </div>
               </motion.div>
             ))}
