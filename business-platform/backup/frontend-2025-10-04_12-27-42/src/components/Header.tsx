@@ -72,9 +72,7 @@ function Header() {
             </motion.div>
             <div className="flex flex-col">
               <span className="text-base font-bold text-foreground font-heading">تجارتنا</span>
-              {location.pathname === '/landing' && (
-                <span className="text-sm font-semibold text-foreground/80">نحن نربطكم ونمكّنكم، لا نتحكم بكم.</span>
-              )}
+              <span className="text-sm font-semibold text-foreground/80">نحن نربطكم ونمكّنكم، لا نتحكم بكم.</span>
             </div>
             </Link>
             <Link to="/landing" title="العودة إلى الصفحة الرئيسية" aria-label="العودة إلى الصفحة الرئيسية" className="p-1 rounded hover:bg-gray-100 ml-2">
