@@ -189,44 +189,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Benefits (moved up) */}
-      <div className="py-20 bg-gradient-to-r from-blue-50 to-indigo-50">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">لماذا تختار منصة تجارتنا؟</h2>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
-              مميزات فريدة تضعك في المقدمة وتضمن نجاح أعمالك التجارية
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {benefits.map((benefit, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-                viewport={{ once: true }}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-100 text-center"
-              >
-                <div className={`${benefit.color} w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4`}>
-                  <benefit.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-bold mb-2 text-gray-900">{benefit.title}</h3>
-                <p className="text-gray-700 text-sm">{benefit.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
+      {/* Features Section (moved up) */}
       <div className="py-24 bg-white">
         <div className="container mx-auto px-6">
           <motion.div
@@ -271,6 +234,43 @@ const LandingPage = () => {
                   
                   {/* link removed per request */}
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Benefits Section */}
+      <div className="py-20 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">لماذا تختار منصة تجارتنا؟</h2>
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+              مميزات فريدة تضعك في المقدمة وتضمن نجاح أعمالك التجارية
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all border border-gray-100 text-center"
+              >
+                <div className={`${benefit.color} w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4`}>
+                  <benefit.icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold mb-2 text-gray-900">{benefit.title}</h3>
+                <p className="text-gray-700 text-sm">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
