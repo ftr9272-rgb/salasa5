@@ -128,6 +128,11 @@ const LandingPage = () => {
                 منصة <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">تجارتنا</span>
               </h1>
               
+              {/* Slogan placed above the subtitle in the hero image (Landing only) */}
+              <div className="mb-4">
+                <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white mb-2">نحن نربطكم ونمكّنكم، لا نتحكم بكم.</p>
+              </div>
+
               {/* Subtitle */}
               <p className="text-2xl md:text-3xl lg:text-4xl font-light text-blue-100 mb-6">
                 ربط الموردين والتجار وشركات الشحن في نظام موثوق وآمن

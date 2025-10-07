@@ -59,11 +59,7 @@ function Header() {
           {/* الشعار */}
           <div className="flex items-center gap-3 pr-6 sm:pr-6">
             {/* Slogan: show only on the landing page */}
-            {location.pathname === '/landing' && (
-              <div className="flex flex-col items-start mr-2">
-                <span className="text-sm font-semibold text-foreground/80">نحن نربطكم ونمكّنكم، لا نتحكم بكم.</span>
-              </div>
-            )}
+            {/* no slogan here; shown on landing hero image only */}
             <Link to="/landing" className="flex items-center space-x-2 space-x-reverse">
             <motion.div
               whileHover={{ scale: 1.05 }}
