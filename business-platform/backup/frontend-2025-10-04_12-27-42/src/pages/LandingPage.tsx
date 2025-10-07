@@ -128,26 +128,25 @@ const LandingPage = () => {
                 منصة <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">تجارتنا</span>
               </h1>
               
-              {/* Slogan placed above the subtitle in the hero image (Landing only) */}
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mb-4">
-                {/* Larger, high-contrast slogan for sm+ screens; compact for xs */}
-                <p className="hidden sm:block text-3xl md:text-4xl lg:text-5xl font-light text-white/95 mb-2 tracking-tight drop-shadow-md">
-                  نحن نربطكم ونمكّنكم، لا نتحكم بكم.
-                </p>
-                <p className="sm:hidden text-xl font-light text-white/95 mb-2 tracking-tight drop-shadow">
-                  نحن نربطكم ونمكّنكم، لا نتحكم بكم.
-                </p>
+              {/* Slogan + Subtitle/Description shown in two responsive side-by-side cards */}
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mb-6">
+                <div className="flex flex-col md:flex-row gap-6 items-stretch justify-center">
+                  {/* Left card: slogan */}
+                  <div className="bg-white/10 backdrop-blur-sm border border-white/20 text-white/95 rounded-2xl p-6 max-w-xl w-full shadow-lg">
+                    <p className="text-2xl md:text-3xl lg:text-4xl font-light leading-tight tracking-tight drop-shadow-md">
+                      نحن ننظم السوق وقراراتكم الإدارية والمالية تخصكم.
+                    </p>
+                    <p className="mt-3 text-sm text-white/80">منصة تدعم الشفافية وتمكين القرار دون التدخل.</p>
+                  </div>
+
+                  {/* Right card: subtitle + description */}
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 max-w-2xl w-full shadow-md">
+                    <p className="text-2xl md:text-3xl lg:text-4xl font-light text-blue-100 mb-2">
+                      ربط الموردين والتجار وشركات الشحن في نظام موثوق وآمن
+                    </p>
+                  </div>
+                </div>
               </motion.div>
-
-              {/* Subtitle */}
-              <p className="text-2xl md:text-3xl lg:text-4xl font-light text-blue-100 mb-6">
-                ربط الموردين والتجار وشركات الشحن في نظام موثوق وآمن
-              </p>
-
-              {/* Description (platform goals) */}
-              <p className="text-lg md:text-xl text-blue-200 mb-8 max-w-3xl mx-auto leading-relaxed">
-                منصة متخصصة تربط الأطراف الثلاثة: الموردون، التجار، وشركات الشحن. هدفنا تحسين كفاءة سلسلة التوريد، تعزيز الشفافية، وتسهيل التعاون بين الشركاء ضمن بيئة مُحققة وموثوقة.
-              </p>
               
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
