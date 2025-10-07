@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Menu, X, User, LogOut, Bell, Store, Truck, Box, Shield, Home } from 'lucide-react';
 import ChatButton from './ChatButton';
@@ -8,6 +8,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 function Header() {
   const { user, logout, isAuthenticated } = useAuth();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -69,7 +70,12 @@ function Header() {
                 />
               </svg>
             </motion.div>
-            <span className="text-base font-bold text-foreground font-heading">تجارتنا</span>
+            <div className="flex flex-col">
+              <span className="text-base font-bold text-foreground font-heading">تجارتنا</span>
+              {location.pathname === '/landing' && (
+                <span className="text-sm font-semibold text-foreground/80">نحن نربطكم ونمكّنكم، لا نتحكم بكم.</span>
+              )}
+            </div>
             </Link>
             <Link to="/landing" title="العودة إلى الصفحة الرئيسية" aria-label="العودة إلى الصفحة الرئيسية" className="p-1 rounded hover:bg-gray-100 ml-2">
               <Home className="w-5 h-5 text-gray-700" />
