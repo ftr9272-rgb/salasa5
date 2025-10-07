@@ -129,9 +129,15 @@ const LandingPage = () => {
               </h1>
               
               {/* Slogan placed above the subtitle in the hero image (Landing only) */}
-              <div className="mb-4">
-                <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white mb-2">نحن نربطكم ونمكّنكم، لا نتحكم بكم.</p>
-              </div>
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mb-4">
+                {/* Larger, high-contrast slogan for sm+ screens; compact for xs */}
+                <p className="hidden sm:block text-3xl md:text-4xl lg:text-5xl font-light text-white/95 mb-2 tracking-tight drop-shadow-md">
+                  نحن نربطكم ونمكّنكم، لا نتحكم بكم.
+                </p>
+                <p className="sm:hidden text-xl font-light text-white/95 mb-2 tracking-tight drop-shadow">
+                  نحن نربطكم ونمكّنكم، لا نتحكم بكم.
+                </p>
+              </motion.div>
 
               {/* Subtitle */}
               <p className="text-2xl md:text-3xl lg:text-4xl font-light text-blue-100 mb-6">
