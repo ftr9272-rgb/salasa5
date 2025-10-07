@@ -52,7 +52,20 @@ const SmartChatWindow: React.FC<SmartChatWindowProps> = ({ onClose, userType, us
       const raw = localStorage.getItem(STORAGE_SELECTED_KEY);
       if (raw) return JSON.parse(raw) as ContactPayload;
     } catch (e) {}
-    return initialContact ?? null;
+
+    // Normalize initialContact: if it contains a nested contact object use that as partner
+    if (!initialContact) return null;
+    // some callers pass an object like { contact: { name, id, ... }, itemName } - prefer that
+    // @ts-ignore
+    if ((initialContact as any).contact && (initialContact as any).contact.name) {
+      // @ts-ignore
+      return (initialContact as any).contact as ContactPayload;
+    }
+    // If initialContact looks like a partner (has a supplier/merchant/shipping type), use it
+    if (initialContact.type === 'supplier' || initialContact.type === 'merchant' || initialContact.type === 'shipping') {
+      return initialContact as ContactPayload;
+    }
+    return null;
   });
 
   useEffect(() => {
@@ -93,7 +106,14 @@ const SmartChatWindow: React.FC<SmartChatWindowProps> = ({ onClose, userType, us
             <ShoppingBag size={20} />
             <div>
               <div className="font-semibold">مساعد {userRole || 'ذكي'}</div>
-              <div className="text-xs opacity-90">{selectedPartner ? `متصل مع ${selectedPartner.name}` : 'متصل الآن'}</div>
+              {/* Compute a reliable partner name: prefer selectedPartner, then initialContact.contact.name, otherwise fall back to no partner */}
+              {(() => {
+                // @ts-ignore
+                const nestedName = initialContact && (initialContact as any).contact?.name;
+                const isPartnerLike = initialContact && (initialContact.type === 'supplier' || initialContact.type === 'merchant' || initialContact.type === 'shipping');
+                const partnerName = selectedPartner?.name || nestedName || (isPartnerLike ? initialContact?.name : undefined);
+                return <div className="text-xs opacity-90">{partnerName ? `متصل مع ${partnerName}` : 'متصل الآن'}</div>;
+              })()}
               {initialContact?.itemName && (
                 <div className="mt-1 text-xs text-white/90">بخصوص <strong>{initialContact.itemName}</strong></div>
               )}
