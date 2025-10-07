@@ -79,7 +79,8 @@ const AddOrderWizard: React.FC<AddOrderWizardProps> = ({ isOpen, onClose, onAdd,
           details: formData.marketDetails || '',
           publishScope: formData.marketPublish === 'public' ? 'عام' : 'خاص',
           value: Number(formData.value) || 0,
-          originalItemId: selectedItem?.id || null
+          originalItemId: selectedItem?.id || null,
+          products: orderItems && orderItems.length ? orderItems.map(i => ({ productId: i.productId || '', name: i.name, price: Number(i.price) || 0, quantity: Number(i.quantity) || 1 })) : undefined
         });
       } else {
         onAdd({
@@ -233,13 +234,116 @@ const AddOrderWizard: React.FC<AddOrderWizardProps> = ({ isOpen, onClose, onAdd,
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">الكمية *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">الكمية الإجمالية *</label>
                       <input name="marketQuantity" type="number" min={1} value={formData.marketQuantity} onChange={handleChange} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder="500" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">قيمة الطلب (ريال)</label>
                       <input type="number" name="value" value={formData.value} onChange={handleChange} min="0" step="0.01" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder="150000" />
                     </div>
+                  </div>
+
+                  {/* قسم المنتجات المتعددة */}
+                  <div className="mt-4 bg-blue-50 p-3 rounded-lg border border-blue-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-blue-900">منتجات الطلب (اختياري)</h4>
+                      <button type="button" onClick={addEmptyItem} className="text-xs text-blue-600 px-2 py-1 rounded hover:bg-blue-100 transition flex items-center gap-1">
+                        <Plus className="w-3 h-3" /> إضافة منتج
+                      </button>
+                    </div>
+
+                    {orderItems.length === 0 && (
+                      <div className="text-sm text-gray-600 py-3 text-center bg-white rounded border border-dashed border-blue-300">
+                        لم تضف أي منتج بعد. يمكنك إضافة منتجات متعددة في طلب واحد
+                      </div>
+                    )}
+
+                    <div className="space-y-3">
+                      <AnimatePresence initial={false} mode="popLayout">
+                        {orderItems.map((it, idx) => (
+                          <motion.div 
+                            key={idx} 
+                            layout 
+                            initial={{ opacity: 0, scale: 0.98, y: 6 }} 
+                            animate={{ opacity: 1, scale: 1, y: 0 }} 
+                            exit={{ opacity: 0, scale: 0.98, y: -6 }} 
+                            transition={{ duration: 0.18 }} 
+                            className="grid grid-cols-12 gap-2 items-center p-2 bg-white border border-blue-200 rounded-lg"
+                          >
+                            <input 
+                              className="col-span-5 px-2 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-200 text-sm" 
+                              placeholder="اسم المنتج" 
+                              value={it.name} 
+                              onChange={(e) => updateItem(idx, 'name', e.target.value)} 
+                            />
+                            <input 
+                              className="col-span-3 px-2 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-200 text-sm" 
+                              placeholder="السعر" 
+                              type="number" 
+                              min="0" 
+                              value={it.price} 
+                              onChange={(e) => updateItem(idx, 'price', e.target.value)} 
+                            />
+                            <div className="col-span-2 flex items-center gap-1">
+                              <button 
+                                type="button" 
+                                aria-label="تقليل الكمية" 
+                                title="تقليل الكمية" 
+                                onClick={() => updateItem(idx, 'quantity', String(Math.max(1, Number(it.quantity || 1) - 1)))} 
+                                className="p-1 bg-gray-100 rounded hover:bg-gray-200"
+                              >
+                                <Minus className="w-4 h-4" />
+                              </button>
+                              <input 
+                                className="w-12 text-center px-1 py-2 border border-gray-300 rounded text-sm" 
+                                placeholder="1" 
+                                type="number" 
+                                min="1" 
+                                value={it.quantity} 
+                                onChange={(e) => updateItem(idx, 'quantity', e.target.value)} 
+                              />
+                              <button 
+                                type="button" 
+                                aria-label="زيادة الكمية" 
+                                title="زيادة الكمية" 
+                                onClick={() => updateItem(idx, 'quantity', String(Number(it.quantity || 1) + 1))} 
+                                className="p-1 bg-gray-100 rounded hover:bg-gray-200"
+                              >
+                                <Plus className="w-4 h-4" />
+                              </button>
+                            </div>
+                            <div className="col-span-2 text-center">
+                              <button 
+                                type="button" 
+                                onClick={() => removeItem(idx)} 
+                                className="text-red-600 text-xs px-2 py-1 rounded hover:bg-red-50 w-full"
+                              >
+                                إزالة
+                              </button>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
+                    </div>
+
+                    {orderItems.length > 0 && (
+                      <div className="mt-3 p-2 bg-white rounded border border-blue-200 text-sm">
+                        <div className="flex justify-between text-gray-700">
+                          <span>إجمالي المنتجات:</span>
+                          <span className="font-semibold">{orderItems.length} منتج</span>
+                        </div>
+                        <div className="flex justify-between text-gray-700 mt-1">
+                          <span>إجمالي الكمية:</span>
+                          <span className="font-semibold">{orderItems.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0)} وحدة</span>
+                        </div>
+                        {orderItems.some(it => it.price) && (
+                          <div className="flex justify-between text-blue-700 mt-1 pt-2 border-t border-blue-200">
+                            <span>إجمالي القيمة:</span>
+                            <span className="font-bold">{orderItems.reduce((sum, it) => sum + ((Number(it.price) || 0) * (Number(it.quantity) || 0)), 0).toFixed(2)} ريال</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-4">

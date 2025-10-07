@@ -4,12 +4,13 @@ import MarketPredictions from '../components/MarketPredictions';
 import MarketOpportunities from '../components/MarketOpportunities';
 // Chat is handled globally via header + ChatController in App.tsx
 // Floating chat button removed to avoid duplicate chat instances
-import AddOrderWizard from '../components/AddOrderWizard';
-import AddPartnerModal from '../components/supplier/AddPartnerModal';
+import AddShippingOrderModal from '../components/AddShippingOrderModal';
+import AddMarketOrderModal from '../components/AddMarketOrderModal';
+import AddPartnerModal from '../components/AddPartnerModalSimple';
 import AssignOrderModal from '../components/AssignOrderModal';
 import { storage } from '../utils/localStorage';
 import { useAuth } from '../contexts/AuthContext';
-import type { MarketItem, MerchantOrder, ShippingService, Partner } from '../utils/localStorage';
+import type { MarketItem, MerchantOrder, ShippingService, Partner, ShippingOrder } from '../utils/localStorage';
 import { motion } from 'framer-motion';
 import { Package, Target, Truck, Heart, Plus, Users, ShoppingCart, Menu, X } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -20,9 +21,11 @@ function MerchantDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState('الشهر');
   const [marketItems, setMarketItems] = useState<MarketItem[]>([]);
   const [merchantOrders, setMerchantOrders] = useState<MerchantOrder[]>([]);
+  const [shippingOrders, setShippingOrders] = useState<ShippingOrder[]>([]);
   const [shippingServices, setShippingServices] = useState<ShippingService[]>([]);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [showShippingOrderModal, setShowShippingOrderModal] = useState(false);
+  const [showMarketOrderModal, setShowMarketOrderModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null);
   const [showAddPartnerModal, setShowAddPartnerModal] = useState(false);
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -60,18 +63,33 @@ function MerchantDashboard() {
   useEffect(() => {
     const items = storage.getMarketItems();
     const orders = storage.getMerchantOrders();
+    const shippingOrdersList = storage.getShippingOrders();
     const services = storage.getShippingServices();
     const partners = storage.getPartners();
     const savedFavorites = localStorage.getItem('merchantFavorites');
 
     setMarketItems(items);
     setMerchantOrders(orders);
+    setShippingOrders(shippingOrdersList);
     setShippingServices(services);
     setPartners(partners);
 
     if (savedFavorites) {
       setFavorites(new Set(JSON.parse(savedFavorites)));
     }
+
+    // الاستماع لتحديثات طلبات الشحن
+    const handleShippingOrdersUpdate = () => {
+      setShippingOrders(storage.getShippingOrders());
+    };
+    
+    window.addEventListener('shipping-orders-updated', handleShippingOrdersUpdate as EventListener);
+    window.addEventListener('storage', handleShippingOrdersUpdate);
+
+    return () => {
+      window.removeEventListener('shipping-orders-updated', handleShippingOrdersUpdate as EventListener);
+      window.removeEventListener('storage', handleShippingOrdersUpdate);
+    };
   }, []);
 
   // حفظ المفضلة في localStorage
@@ -89,14 +107,54 @@ function MerchantDashboard() {
   // إنشاء طلب من منتج في السوق
   const createOrderFromItem = (item: MarketItem) => {
     setSelectedItem(item);
-    setSelectedItem(item);
-    setShowOrderModal(true);
+    setShowShippingOrderModal(true);
   };
 
-  // معالج إضافة طلب جديد من النموذج
-  const handleAddOrder = (orderData: any) => {
-    // Normalize fields coming from AddOrderModal
-    console.log('تم إضافة طلب جديد (raw):', orderData);
+  // معالج إضافة طلب شحن
+  const handleAddShippingOrder = (orderData: any) => {
+    console.log('تم إضافة طلب شحن جديد:', orderData);
+
+    const newShippingOrder = storage.addShippingOrder({
+      customerName: orderData.customerName,
+      customerPhone: orderData.customerPhone,
+      merchant: orderData.merchant,
+      packageDescription: orderData.packageDescription,
+      value: Number(orderData.value) || 0,
+      weight: orderData.weight,
+      dimensions: orderData.dimensions,
+      pickupAddress: orderData.pickupAddress,
+      destination: orderData.destination,
+      priority: orderData.priority || 'متوسطة',
+      deliveryTime: orderData.deliveryTime,
+      vehicleType: orderData.vehicleType,
+      specialInstructions: orderData.specialInstructions,
+      cashOnDelivery: orderData.cashOnDelivery || false,
+      codAmount: orderData.codAmount ? Number(orderData.codAmount) : undefined,
+      shippingServiceId: orderData.shippingServiceId || null,
+      publishToMarketplace: orderData.publishToMarketplace || false,
+      publishScope: orderData.publishScope || 'عام',
+      publishedAt: orderData.publishToMarketplace ? new Date().toISOString() : null,
+      products: orderData.products
+    });
+
+    setShippingOrders(prev => [...prev, newShippingOrder]);
+
+    // إشعارات مختلفة حسب الحالة
+    if (orderData.publishToMarketplace) {
+      toast.success(`🌐 تم نشر طلب الشحن في السوق المشترك (${orderData.publishScope})!`);
+    } else if (orderData.shippingServiceId) {
+      const svc = storage.getShippingServices().find(s => s.id === orderData.shippingServiceId);
+      toast.success(`🚚 تم تعيين الطلب لخدمة الشحن: ${svc?.name || 'غير محدد'}`);
+    } else {
+      toast.success('✅ تم إضافة طلب الشحن بنجاح!');
+    }
+
+    setShowShippingOrderModal(false);
+  };
+
+  // معالج إضافة طلب من السوق
+  const handleAddMarketOrder = (orderData: any) => {
+    console.log('تم إضافة طلب سوق جديد:', orderData);
 
     // Support both 'partner' (shipping) payload and 'market' payload emitted by AddOrderModal.
     const isMarket = Boolean(orderData.publishToMarketplace);
@@ -148,22 +206,9 @@ function MerchantDashboard() {
 
     const saved = storage.addMerchantOrder(newOrder);
     setMerchantOrders(prev => [...prev, saved]);
-    toast.success('✅ تم إنشاء الطلب بنجاح');
+    toast.success('✅ تم إنشاء طلب السوق بنجاح');
 
-    // If shipping service selected, we can attach a simple note to localStorage (shipping jobs not modeled fully)
-    if (orderData.shippingServiceId) {
-      const svc = storage.getShippingServices().find(s => s.id === orderData.shippingServiceId);
-      console.log('سيتم إرسال الطلب عبر خدمة الشحن:', svc?.name || orderData.shippingServiceId);
-      // store a lightweight mapping for visibility
-      const jobs = JSON.parse(localStorage.getItem('business_shipping_jobs') || '[]');
-      jobs.push({ orderId: saved.id, serviceId: orderData.shippingServiceId, createdAt: new Date().toISOString() });
-      localStorage.setItem('business_shipping_jobs', JSON.stringify(jobs));
-      
-      // إشعار المستخدم بأن الطلب تم تعيينه لشريك شحن
-      toast.success(`🚚 تم تعيين الطلب لشريك الشحن: ${svc?.name || 'غير محدد'}`);
-    }
-
-    setShowOrderModal(false);
+    setShowMarketOrderModal(false);
     // update local storage mirror used elsewhere
     localStorage.setItem('merchantOrders', JSON.stringify(storage.getMerchantOrders()));
   };
@@ -275,13 +320,17 @@ function MerchantDashboard() {
     }
   };
 
-  // دالة لتعيين طلب لشريك شحن
+  // دالة لتعيين طلب شحن لشريك شحن
   const assignOrderToPartner = (orderId: string, partnerId: string) => {
     try {
-      // تحديث الطلب بإضافة معرف خدمة الشحن
-      const updated = storage.updateMerchantOrder(orderId, { shippingServiceId: partnerId });
+      // تحديث طلب الشحن بإضافة معرف خدمة الشحن
+      const updated = storage.updateShippingOrder(orderId, { 
+        shippingServiceId: partnerId,
+        status: 'assigned'
+      });
+      
       if (updated) {
-        setMerchantOrders(prev => prev.map(order => order.id === orderId ? updated : order));
+        setShippingOrders(prev => prev.map(order => order.id === orderId ? updated : order));
         
         // تسجيل مهمة الشحن في localStorage
         const jobs = JSON.parse(localStorage.getItem('business_shipping_jobs') || '[]');
@@ -290,11 +339,11 @@ function MerchantDashboard() {
         
         // إشعار المستخدم
         const partner = shippingServices.find(s => s.id === partnerId);
-        toast.success(`🚚 تم تعيين الطلب لشريك الشحن: ${partner?.name || 'غير محدد'}`);
+        toast.success(`🚚 تم تعيين طلب الشحن لشركة: ${partner?.name || 'غير محدد'}`);
       }
     } catch (error) {
-      console.error('فشل في تعيين الطلب لشريك الشحن:', error);
-      toast.error('حدث خطأ أثناء تعيين الطلب لشريك الشحن');
+      console.error('فشل في تعيين طلب الشحن:', error);
+      toast.error('حدث خطأ أثناء تعيين طلب الشحن');
     }
   };
 
@@ -421,7 +470,8 @@ function MerchantDashboard() {
               <div className="space-y-2">
                 {[ 
                   { id: 'overview', label: 'نظرة عامة', icon: '📊' },
-                  { id: 'orders', label: 'الطلبات والشحنات', icon: '📦' },
+                  { id: 'orders', label: 'طلبات المنتجات', icon: '🛒' },
+                  { id: 'shipping', label: 'طلبات الشحن', icon: '�' },
                   { id: 'partners', label: 'الشركاء', icon: '🤝' },
                   { id: 'predictions', label: 'توقعات السوق', icon: '🔮' },
                   { id: 'opportunities', label: 'الفرص المتاحة', icon: '🎯' },
@@ -566,7 +616,7 @@ function MerchantDashboard() {
                             </button>
                             <button
                               type="button"
-                              onClick={() => { setSelectedItem(null); setShowOrderModal(true); /* فتح نافذة التعديل/نسخ الطلب */ }}
+                              onClick={() => { setSelectedItem(null); setShowShippingOrderModal(true); /* فتح نافذة التعديل/نسخ الطلب */ }}
                               className="text-sm border border-gray-200 px-3 py-2 rounded-lg hover:bg-gray-50"
                             >
                               تعديل/إرسال
@@ -654,11 +704,18 @@ function MerchantDashboard() {
                 </h2>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => setShowOrderModal(true)}
-                    className="bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
+                    onClick={() => setShowShippingOrderModal(true)}
+                    className="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors flex items-center gap-2"
                   >
-                    <Plus className="w-5 h-5" />
-                    إضافة طلب جديد
+                    <Truck className="w-5 h-5" />
+                    طلب شحن
+                  </button>
+                  <button
+                    onClick={() => setShowMarketOrderModal(true)}
+                    className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    طلب من السوق
                   </button>
                 </div>
               </div>
@@ -735,17 +792,16 @@ function MerchantDashboard() {
             <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 relative">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
-                  <span>📦</span> إدارة الطلبات والشحنات
+                  <span>�</span> طلبات المنتجات من السوق
                 </h2>
-                <div className="flex gap-2">
-                  <button
-                    className="p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all"
-                    title="إضافة طلب جديد"
-                    onClick={() => setShowOrderModal(true)}
-                  >
-                    <Plus className="w-5 h-5" />
-                  </button>
-                </div>
+                <button
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all flex items-center gap-2"
+                  title="إضافة طلب منتجات من السوق"
+                  onClick={() => setShowMarketOrderModal(true)}
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  طلب جديد
+                </button>
               </div>
               
               {/* علامات التبويب الفرعية للطلبات */}
@@ -863,20 +919,154 @@ function MerchantDashboard() {
                                 </svg>
                               </button>
                               <button 
-                                className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-md"
-                                title="تعيين لشريك شحن"
-                                onClick={() => openAssignOrderModal(order.id)}
+                                className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-md"
+                                title="إلغاء الطلب"
+                                onClick={() => {
+                                  if (window.confirm('هل أنت متأكد من إلغاء هذا الطلب؟')) {
+                                    cancelOrder(order.id);
+                                  }
+                                }}
                               >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* تبويب طلبات الشحن */}
+          {activeTab === 'shipping' && (
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                  <span>🚚</span> طلبات الشحن للعملاء
+                </h2>
+                <button
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg shadow-md hover:bg-emerald-700 transition-all flex items-center gap-2"
+                  title="إضافة طلب شحن جديد"
+                  onClick={() => setShowShippingOrderModal(true)}
+                >
+                  <Truck className="w-5 h-5" />
+                  طلب شحن جديد
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {shippingOrders.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Truck className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-600 mb-2">لا توجد طلبات شحن حالياً</h3>
+                    <p className="text-gray-500">اضغط على زر "طلب شحن جديد" لإنشاء طلب شحن أول</p>
+                  </div>
+                ) : (
+                  shippingOrders.map((order) => {
+                    const assignedShippingService = order.shippingServiceId 
+                      ? shippingServices.find(s => s.id === order.shippingServiceId)
+                      : null;
+                    
+                    return (
+                      <div key={order.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between mb-2">
+                              <div>
+                                <h3 className="font-bold text-gray-800">{order.customerName}</h3>
+                                <div className="text-sm text-gray-600 mt-1">
+                                  <span className="font-medium">الهاتف:</span> {order.customerPhone}
+                                </div>
+                              </div>
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                order.status === 'assigned' ? 'bg-blue-100 text-blue-800' :
+                                order.status === 'picked_up' ? 'bg-purple-100 text-purple-800' :
+                                order.status === 'in_transit' ? 'bg-orange-100 text-orange-800' :
+                                order.status === 'delivered' ? 'bg-green-100 text-green-800' :
+                                'bg-red-100 text-red-800'
+                              }`}>
+                                {order.status === 'pending' ? 'قيد الانتظار' :
+                                 order.status === 'assigned' ? 'تم التعيين' :
+                                 order.status === 'picked_up' ? 'تم الاستلام' :
+                                 order.status === 'in_transit' ? 'في الطريق' :
+                                 order.status === 'delivered' ? 'تم التوصيل' :
+                                 'ملغي'}
+                              </span>
+                            </div>
+                            
+                            <div className="text-sm text-gray-600 mt-2">
+                              <p><span className="font-medium">الوصف:</span> {order.packageDescription}</p>
+                              <p><span className="font-medium">العنوان:</span> {order.destination}</p>
+                              <p><span className="font-medium">القيمة:</span> {order.value} ريال</p>
+                              {order.cashOnDelivery && (
+                                <p><span className="font-medium">💰 الدفع عند الاستلام:</span> {order.codAmount} ريال</p>
+                              )}
+                            </div>
+
+                            {order.products && order.products.length > 0 && (
+                              <div className="mt-3 bg-gray-50 p-3 rounded">
+                                <h4 className="text-sm font-medium mb-2">المنتجات</h4>
+                                <ul className="text-sm text-gray-700 space-y-1">
+                                  {order.products.map((p, idx) => (
+                                    <li key={idx} className="flex justify-between">
+                                      <span>{p.name} x{p.quantity}</span>
+                                      <span className="font-semibold">{(p.price * p.quantity).toFixed(2)} ريال</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            {order.publishToMarketplace && (
+                              <div className="mt-2 flex items-center gap-2 text-sm">
+                                <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-md">
+                                  منشور في السوق ({order.publishScope})
+                                </span>
+                              </div>
+                            )}
+
+                            {assignedShippingService && (
+                              <div className="mt-2 flex items-center gap-2 text-sm">
+                                <span className="text-gray-500">شركة الشحن:</span>
+                                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md">
+                                  {assignedShippingService.name}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="flex flex-col gap-2">
+                            {!order.shippingServiceId && !order.publishToMarketplace && (
+                              <button
+                                className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                                onClick={() => openAssignOrderModal(order.id)}
+                              >
+                                تعيين شركة شحن
+                              </button>
+                            )}
+                            
+                            <div className="flex gap-1">
+                              <button 
+                                className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md"
+                                title="تعديل الطلب"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
                               </button>
                               <button 
                                 className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-md"
                                 title="إلغاء الطلب"
                                 onClick={() => {
-                                  if (window.confirm('هل أنت متأكد من إلغاء هذا الطلب؟')) {
-                                    cancelOrder(order.id);
+                                  if (window.confirm('هل أنت متأكد من إلغاء طلب الشحن؟')) {
+                                    storage.deleteShippingOrder(order.id);
+                                    setShippingOrders(storage.getShippingOrders());
                                   }
                                 }}
                               >
@@ -1067,13 +1257,19 @@ function MerchantDashboard() {
 
           {/* Chat is available in the header — floating instance removed */}
 
-          {/* نموذج إضافة الطلب */}
-          <AddOrderWizard
-            isOpen={showOrderModal}
-            onClose={() => { setShowOrderModal(false); setSelectedItem(null); }}
-            onAdd={handleAddOrder}
+          {/* نموذج إضافة طلب شحن */}
+          <AddShippingOrderModal
+            isOpen={showShippingOrderModal}
+            onClose={() => { setShowShippingOrderModal(false); }}
+            onAdd={handleAddShippingOrder}
+          />
+          
+          {/* نموذج إضافة طلب من السوق */}
+          <AddMarketOrderModal
+            isOpen={showMarketOrderModal}
+            onClose={() => { setShowMarketOrderModal(false); setSelectedItem(null); }}
+            onAdd={handleAddMarketOrder}
             selectedItem={selectedItem}
-            defaultMode={selectedItem ? 'partner' : 'market'}
           />
           
           {/* نموذج إضافة الشريك */}
