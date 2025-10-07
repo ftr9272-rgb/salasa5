@@ -327,6 +327,9 @@ function ChatController() {
     // New event listener for opening chat with specific contact
     const onOpenWithContact = (event: CustomEvent) => {
       const contact = event.detail.contact;
+      // debug: log incoming contact payload to help trace unexpected names
+      // eslint-disable-next-line no-console
+      console.debug('[open-chat-with-contact] payload:', contact);
       setChatContact(contact);
       setIsChatOpen(true);
     };

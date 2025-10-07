@@ -69,6 +69,11 @@ const SmartChatWindow: React.FC<SmartChatWindowProps> = ({ onClose, userType, us
   });
 
   useEffect(() => {
+    // debug: log initial contact and selected partner when chat window mounts
+    // eslint-disable-next-line no-console
+    console.debug('[SmartChatWindow] initialContact:', initialContact);
+    // eslint-disable-next-line no-console
+    console.debug('[SmartChatWindow] selectedPartner(initial):', selectedPartner);
     // when modal opens, focus search
     if (modalOpen) setTimeout(() => searchRef.current?.focus(), 0);
   }, [modalOpen]);
